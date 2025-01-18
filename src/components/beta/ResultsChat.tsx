@@ -193,7 +193,7 @@ export default function ResultsChat({
   };
 
   return (
-    <Card className="w-full max-w-2xl h-[600px] overflow-scroll flex flex-col">
+    <Card className="w-full max-w-2xl h-[100vh] overflow-scroll flex flex-col">
       <CardHeader>
         <CardTitle>Evaluation Results</CardTitle>
       </CardHeader>
