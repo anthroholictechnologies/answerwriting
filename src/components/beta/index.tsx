@@ -55,7 +55,7 @@ export const BetaAnswerChecking = () => {
                 <div className="h-6 bg-gray-200 rounded-lg w-3/4"></div>
                 <div className="h-6 bg-gray-200 rounded-lg w-1/2"></div>
               </div>
-              LOADING......
+              LOADING....
               <div className="space-y-3">
                 <div className="h-4 bg-gray-200 rounded-full w-32"></div>
                 <div className="h-6 bg-gray-200 rounded-lg w-5/6"></div>
