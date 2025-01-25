@@ -62,7 +62,7 @@ export async function hasTooManyForgetPasswordAttempts(userId: string) {
 }
 
 export async function getLatestForgetPasswordToken(userId: string) {
-  return await prisma.emailVerificationToken.findFirst({
+  return await prisma.forgetPasswordToken.findFirst({
     where: { userId },
     orderBy: { createdAt: "desc" },
   });

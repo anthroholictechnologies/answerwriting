@@ -102,7 +102,7 @@ export async function POST(
           { status: 409 },
         );
       }
-    }
+    } 
 
     const token = await createForgetPasswordToken(userExistsWithEmail.id);
     await sendForgetPasswordMail({
@@ -116,8 +116,8 @@ export async function POST(
       message: `We've sent you the password reset email.`,
       success: true,
     });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err: unknown) {
-    console.error(`Error in sending forget password email`, err);
     return NextResponse.json({
       message: "Something went wrong!! Interal server error",
       success: false,
