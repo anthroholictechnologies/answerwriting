@@ -25,11 +25,6 @@ export async function createVerificationToken(userId: string) {
   return token;
 }
 
-console.log(
-  "====${process.env.BASE_URI}/logos/logo.png",
-  `${process.env.BASE_URI}/logos/logo.png`,
-);
-
 // Helper function to send the verification email using Resened
 export const sendEmailVerificationMail = async ({
   firstName,
@@ -48,7 +43,7 @@ export const sendEmailVerificationMail = async ({
     subject: `Welcome to ${COMPANY_NAME} Please Verify Your Email`,
     react: SendVerificationEmailTemplate({
       firstName,
-      verificationLink: `${process.env.API_BASE_URI}/auth/a=${userId}&b=${token}`,
+      verificationLink: `${process.env.APP_BASE_URI}/auth/verify-email?a=${userId}&b=${token}`,
     }),
   });
 };
@@ -70,4 +65,11 @@ export async function getLatestVerificationToken(userId: string) {
     where: { userId },
     orderBy: { createdAt: "desc" },
   });
+}
+
+export function isTokenExpired(tokenExpiryTime: Date) {
+  return (
+    DateTime.fromJSDate(tokenExpiryTime, { zone: "utc" }) <
+    DateTime.now().toUTC()
+  );
 }

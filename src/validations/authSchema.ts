@@ -28,5 +28,10 @@ export const registrationSchema = z.object({
         "Password must contain at least one special character (@, $, !, %, *, ?, &)",
     }),
 });
-
 export type RegistrationInput = z.infer<typeof registrationSchema>;
+
+export const verifyEmailSchema = z.object({
+  a: z.string().uuid(),
+  b: z.string().uuid(),
+});
+export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>;

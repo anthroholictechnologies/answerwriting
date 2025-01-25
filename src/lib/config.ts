@@ -1,15 +1,21 @@
-import { registrationSchema } from "answerwriting/validations/authSchema";
+import {
+  registrationSchema,
+  verifyEmailSchema,
+} from "answerwriting/validations/authSchema";
 
 export enum ApiRoutePaths {
   REGISTER = "/api/auth/register",
+  VERIFY_EMAIL = "/api/auth/verify-email",
 }
 
 export const apiRoutesWhichRequiresValidations: ApiRoutePaths[] = [
   ApiRoutePaths.REGISTER,
+  ApiRoutePaths.VERIFY_EMAIL,
 ];
 
 export const apiRoutesSchemaMapping = {
   [ApiRoutePaths.REGISTER]: registrationSchema,
+  [ApiRoutePaths.VERIFY_EMAIL]: verifyEmailSchema,
 };
 
 export enum ErrorCodes {
@@ -18,6 +24,8 @@ export enum ErrorCodes {
   INTERNAL_SERVER_ERROR = "InternalServerError",
   TOO_MANY_VERIFICATION_EMAILS_SENT = "TooManyVerificationEmailsSent",
   VERIFICATION_EMAIL_PENDING = "VerificationEmailPending",
+  VERIFICATION_EMAIL_EXPIRED = "VerificationEmailExpired",
+  TAMPERED_EMAIL_VERIFICATION_URL = "TamperedEmailVerificationUrl",
 }
 // Define the generic API response type
 export type ApiResponse<T = unknown> = {

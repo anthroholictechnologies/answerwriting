@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:14
+    container_name: answerwriting-local-db
+    environment:
+      POSTGRES_DB: answerwriting-local
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432" # Local port 5433 to container port 5432

@@ -4,14 +4,14 @@ import {
   ErrorCodes,
 } from "answerwriting/lib/config";
 import { prisma } from "answerwriting/lib/prisma";
-import { registrationSchema } from "answerwriting/validations/authSchema";
+import { RegistrationInput } from "answerwriting/validations/authSchema";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 import bcrypt from "bcryptjs";
 import {
   createVerificationToken,
   getLatestVerificationToken,
   hasTooManyVerificationEmails,
+  isTokenExpired,
   sendEmailVerificationMail,
 } from "answerwriting/lib/helpers/emailVerification.helpers";
 import { v4 } from "uuid";
@@ -37,7 +37,7 @@ export async function POST(
 ): Promise<NextResponse<ApiResponse>> {
   try {
     // Step 1: Parse and validate the request body
-    const body = (await request.json()) as z.infer<typeof registrationSchema>;
+    const body = (await request.json()) as RegistrationInput;
     const { email, password, firstName, lastName } = body;
 
     // Step 2: Check if a user with the provided email already exists
@@ -60,13 +60,8 @@ export async function POST(
       const latestVerificationToken = await getLatestVerificationToken(
         existingUser.id,
       );
-
       if (latestVerificationToken) {
-        const emailTokenExpirationDate = new Date(
-          latestVerificationToken.expirationDate,
-        );
-
-        if (emailTokenExpirationDate < new Date()) {
+        if (isTokenExpired(latestVerificationToken.expirationDate)) {
           // Case 2b-i: Expired verification token
           if (await hasTooManyVerificationEmails(existingUser.id)) {
             return NextResponse.json(
