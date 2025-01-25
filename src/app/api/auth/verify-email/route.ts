@@ -1,6 +1,7 @@
 import { ApiResponse, ErrorCodes } from "answerwriting/lib/config";
 import { isTokenExpired } from "answerwriting/lib/helpers/emailVerification.helpers";
 import { prisma } from "answerwriting/lib/prisma";
+import { VerifyEmailInput } from "answerwriting/validations/authSchema";
 import { timingSafeEqual } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -40,56 +41,71 @@ const ErrorResponses = {
 export async function POST(
   request: NextRequest,
 ): Promise<NextResponse<ApiResponse>> {
-  const { a: userId, b: token } = await request.json();
+  try {
+    const { a: userId, b: token } = (await request.json()) as VerifyEmailInput;
 
-  if (!userId || !token) {
-    return NextResponse.json(ErrorResponses.TAMPERED_URL, { status: 400 });
-  }
+    if (!userId || !token) {
+      return NextResponse.json(ErrorResponses.TAMPERED_URL, { status: 400 });
+    }
 
-  // Fetch user and the latest token in a single query
-  const userWithToken = await prisma.user.findFirst({
-    where: { id: userId },
-    include: {
-      emailVerificationTokens: {
-        orderBy: { createdAt: "desc" },
-        take: 1,
-      },
-    },
-  });
-
-  if (!userWithToken || !userWithToken.emailVerificationTokens.length) {
-    return NextResponse.json(ErrorResponses.TAMPERED_URL, { status: 400 });
-  }
-
-  const latestToken = userWithToken.emailVerificationTokens[0];
-
-  // Check token expiry
-  if (isTokenExpired(latestToken.expirationDate)) {
-    return NextResponse.json(ErrorResponses.EMAIL_EXPIRED, { status: 400 });
-  }
-
-  // Timing-safe token comparison
-  const isValidToken = timingSafeEqual(
-    Buffer.from(token),
-    Buffer.from(latestToken.token),
-  );
-
-  if (!isValidToken) {
-    return NextResponse.json(ErrorResponses.TAMPERED_URL, { status: 400 });
-  }
-
-  await prisma.$transaction(async (tx) => {
-    await tx.user.update({
+    // Fetch user and the latest token in a single query
+    const userWithToken = await prisma.user.findFirst({
       where: { id: userId },
-      data: { emailVerified: true },
+      include: {
+        emailVerificationTokens: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+        },
+      },
     });
-    await tx.emailVerificationToken.deleteMany({
-      where: { userId },
-    });
-  });
 
-  return NextResponse.json({
-    success: true,
-    message: "Email verified successfully",
-  });
+    if (!userWithToken || !userWithToken.emailVerificationTokens.length) {
+      return NextResponse.json(ErrorResponses.TAMPERED_URL, { status: 400 });
+    }
+
+    const latestToken = userWithToken.emailVerificationTokens[0];
+
+    // Check token expiry
+    if (isTokenExpired(latestToken.expirationDate)) {
+      return NextResponse.json(ErrorResponses.EMAIL_EXPIRED, { status: 400 });
+    }
+
+    // Timing-safe token comparison
+    const isValidToken = timingSafeEqual(
+      Buffer.from(token),
+      Buffer.from(latestToken.token),
+    );
+
+    if (!isValidToken) {
+      return NextResponse.json(ErrorResponses.TAMPERED_URL, { status: 400 });
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await tx.user.update({
+        where: { id: userId },
+        data: { emailVerified: true },
+      });
+      await tx.emailVerificationToken.deleteMany({
+        where: { userId },
+      });
+    });
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Email verified successfully",
+      },
+      { status: 200 },
+    );
+  } catch (err: unknown) {
+    console.error(`Error verifying the user's email`, err);
+    return NextResponse.json(
+      {
+        message: "Internal Server Error",
+        success: false,
+        errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,
+      },
+      { status: 500 },
+    );
+  }
 }

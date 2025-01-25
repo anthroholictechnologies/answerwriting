@@ -35,3 +35,9 @@ export const verifyEmailSchema = z.object({
   b: z.string().uuid(),
 });
 export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>;
+
+export const forgetPasswordSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }).trim(),
+});
+
+export type ForgetPasswordInput = z.infer<typeof forgetPasswordSchema>;
