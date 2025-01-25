@@ -43,11 +43,6 @@ export async function POST(
 ): Promise<NextResponse<ApiResponse>> {
   try {
     const { a: userId, b: token } = (await request.json()) as VerifyEmailInput;
-
-    if (!userId || !token) {
-      return NextResponse.json(ErrorResponses.TAMPERED_URL, { status: 400 });
-    }
-
     // Fetch user and the latest token in a single query
     const userWithToken = await prisma.user.findFirst({
       where: { id: userId },

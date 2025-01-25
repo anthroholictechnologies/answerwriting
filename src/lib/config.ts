@@ -1,6 +1,7 @@
 import {
   forgetPasswordSchema,
   registrationSchema,
+  resetPasswordSchema,
   verifyEmailSchema,
 } from "answerwriting/validations/authSchema";
 
@@ -8,18 +9,21 @@ export enum ApiRoutePaths {
   REGISTER = "/api/auth/register",
   VERIFY_EMAIL = "/api/auth/verify-email",
   FORGET_PASSWORD = "/api/auth/forget-password",
+  RESET_PASSWORD = "/api/auth/reset-password",
 }
 
 export const apiRoutesWhichRequiresValidations: ApiRoutePaths[] = [
   ApiRoutePaths.REGISTER,
   ApiRoutePaths.VERIFY_EMAIL,
   ApiRoutePaths.FORGET_PASSWORD,
+  ApiRoutePaths.RESET_PASSWORD,
 ];
 
 export const apiRoutesSchemaMapping = {
   [ApiRoutePaths.REGISTER]: registrationSchema,
   [ApiRoutePaths.VERIFY_EMAIL]: verifyEmailSchema,
   [ApiRoutePaths.FORGET_PASSWORD]: forgetPasswordSchema,
+  [ApiRoutePaths.RESET_PASSWORD]: resetPasswordSchema,
 };
 
 export enum ErrorCodes {
@@ -33,6 +37,8 @@ export enum ErrorCodes {
   USER_NOT_FOUND = "UserNotFound",
   TOO_MANY_RESET_PASSWORD_ATTEMPTS = "TooManyResetPasswordAttempts",
   RESET_PASSWORD_LINK_ALREADY_SENT = "ResetPasswordLinkAlreadySent",
+  TAMPERED_RESET_PASSWORD_URL = "TamperedResetPasswordUrl",
+  RESET_PASSWORD_LINK_EXPIRED = "ResetPasswordLinkExpired",
 }
 // Define the generic API response type
 export interface ApiResponse<T = unknown> {
