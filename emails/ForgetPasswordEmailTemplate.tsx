@@ -14,7 +14,7 @@ import {
   COMPANY_NAME,
   FORGET_PASSWORD_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_MINUTES,
   LOGO_BANNER_URI,
-} from "answerwriting/lib/config";
+} from "answerwriting/config";
 import * as React from "react";
 
 interface PasswordResetProps {

@@ -1,18 +1,18 @@
-import { v4 } from "uuid";
-import { prisma } from "../prisma";
-import { DateTime } from "luxon";
 import {
   COMPANY_NAME,
   FORGET_PASSWORD_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_MINUTES,
   MAX_FORGET_PASSWORD_REQUEST_ALLOWED_IN_A_DAY,
-} from "../config";
-import ForgetPasswordEmailTemplate from "../../../emails/ForgetPasswordEmailTemplate";
+} from "answerwriting/config";
+import { prisma } from "answerwriting/prisma";
+import { generateToken } from "answerwriting/lib/utils/token.utils";
+import { DateTime } from "luxon";
 import { Resend } from "resend";
+import ForgetPasswordEmailTemplate from "../../emails/ForgetPasswordEmailTemplate";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function createForgetPasswordToken(userId: string) {
-  const token = v4();
+  const token = generateToken();
   await prisma.forgetPasswordToken.create({
     data: {
       userId,
@@ -40,6 +40,9 @@ export const sendForgetPasswordMail = async ({
   userId: string;
   emailTo: string;
 }) => {
+  if (process.env.NODE_ENV === "development") {
+    return;
+  }
   await resend.emails.send({
     from: process.env.RESEND_EMAIL_FROM as string,
     to: [emailTo],

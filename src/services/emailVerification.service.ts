@@ -1,18 +1,18 @@
-import { v4 } from "uuid";
-import { prisma } from "../prisma";
-import { DateTime } from "luxon";
 import {
   COMPANY_NAME,
   EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_HOURS,
   MAX_EMAIL_VERIFICATION_REQUEST_ALLOWED_IN_A_DAY,
-} from "../config";
-import SendVerificationEmailTemplate from "../../../emails/VerificationEmailTemplate";
+} from "answerwriting/config";
+import { prisma } from "answerwriting/prisma";
+import { generateToken } from "answerwriting/lib/utils/token.utils";
+import { DateTime } from "luxon";
 import { Resend } from "resend";
+import SendVerificationEmailTemplate from "../../emails/VerificationEmailTemplate";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function createVerificationToken(userId: string) {
-  const token = v4();
+  const token = generateToken();
   await prisma.emailVerificationToken.create({
     data: {
       userId,
@@ -37,6 +37,9 @@ export const sendEmailVerificationMail = async ({
   userId: string;
   emailTo: string;
 }) => {
+  if (process.env.NODE_ENV === "development") {
+    return;
+  }
   await resend.emails.send({
     from: process.env.RESEND_EMAIL_FROM as string,
     to: [emailTo],

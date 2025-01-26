@@ -1,10 +1,10 @@
-import { ErrorCodes } from "answerwriting/lib/config";
-import { isTokenExpired } from "answerwriting/lib/helpers/resetPassword.helpers";
-import { prisma } from "answerwriting/lib/prisma";
+import { isTokenExpired } from "answerwriting/services/resetPassword.service";
+import { prisma } from "answerwriting/prisma";
 import { ResetPasswordInput } from "answerwriting/validations/authSchema";
-import { timingSafeEqual } from "crypto";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { compareToken } from "answerwriting/lib/utils/token.utils";
+import { ErrorCodes } from "answerwriting/types/general.types";
 
 const ErrorResponses = {
   TAMPERED_URL: {
@@ -45,10 +45,7 @@ export async function POST(req: Request) {
     return NextResponse.json(ErrorResponses.EMAIL_EXPIRED, { status: 400 });
   }
 
-  const isValidToken = timingSafeEqual(
-    Buffer.from(token),
-    Buffer.from(latestToken.token),
-  );
+  const isValidToken = compareToken(latestToken.token, token);
 
   if (!isValidToken) {
     return NextResponse.json(ErrorResponses.TAMPERED_URL, { status: 400 });

@@ -1,12 +1,12 @@
-import { ApiResponse, ErrorCodes } from "answerwriting/lib/config";
 import {
   createForgetPasswordToken,
   getLatestForgetPasswordToken,
   hasTooManyForgetPasswordAttempts,
   isTokenExpired,
   sendForgetPasswordMail,
-} from "answerwriting/lib/helpers/resetPassword.helpers";
-import { prisma } from "answerwriting/lib/prisma";
+} from "answerwriting/services/resetPassword.service";
+import { prisma } from "answerwriting/prisma";
+import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
 import { ForgetPasswordInput } from "answerwriting/validations/authSchema";
 import { NextRequest, NextResponse } from "next/server";
 

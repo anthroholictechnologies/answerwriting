@@ -1,4 +1,15 @@
-import { ApiRoutePaths, apiRoutesSchemaMapping } from "./config";
+import { apiRoutesSchemaMapping } from "answerwriting/config";
+import { ApiRoutePaths } from "answerwriting/types/general.types";
+
+import { ZodError } from "zod";
+
+export function formatZodErrors(error: ZodError) {
+  return error.issues.map((issue) => ({
+    field: issue.path.join("."), // Path to the field that caused the error
+    message: issue.message, // Error message
+    code: issue.code, // Zod-specific error code (e.g., "invalid_type")
+  }));
+}
 
 export function validateRequest({
   path,

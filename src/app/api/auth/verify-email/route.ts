@@ -1,8 +1,8 @@
-import { ApiResponse, ErrorCodes } from "answerwriting/lib/config";
-import { isTokenExpired } from "answerwriting/lib/helpers/emailVerification.helpers";
-import { prisma } from "answerwriting/lib/prisma";
+import { compareToken } from "answerwriting/lib/utils/token.utils";
+import { isTokenExpired } from "answerwriting/services/emailVerification.service";
+import { prisma } from "answerwriting/prisma";
+import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
 import { VerifyEmailInput } from "answerwriting/validations/authSchema";
-import { timingSafeEqual } from "crypto";
 import { DateTime } from "luxon";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -69,10 +69,7 @@ export async function POST(
     }
 
     // Timing-safe token comparison
-    const isValidToken = timingSafeEqual(
-      Buffer.from(token),
-      Buffer.from(latestToken.token),
-    );
+    const isValidToken = compareToken(latestToken.token, token);
 
     if (!isValidToken) {
       return NextResponse.json(ErrorResponses.TAMPERED_URL, { status: 400 });

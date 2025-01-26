@@ -14,7 +14,7 @@ import {
   COMPANY_NAME,
   EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_HOURS,
   LOGO_BANNER_URI,
-} from "answerwriting/lib/config";
+} from "answerwriting/config";
 import * as React from "react";
 
 interface EmailVerificationProps {

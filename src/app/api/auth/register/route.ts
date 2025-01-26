@@ -1,21 +1,18 @@
-import {
-  ApiResponse,
-  EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_HOURS,
-  ErrorCodes,
-} from "answerwriting/lib/config";
-import { prisma } from "answerwriting/lib/prisma";
+import { EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_HOURS } from "answerwriting/config";
+import { prisma } from "answerwriting/prisma";
 import { RegistrationInput } from "answerwriting/validations/authSchema";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import {
   createVerificationToken,
   getLatestVerificationToken,
   hasTooManyVerificationEmails,
   isTokenExpired,
   sendEmailVerificationMail,
-} from "answerwriting/lib/helpers/emailVerification.helpers";
-import { v4 } from "uuid";
+} from "answerwriting/services/emailVerification.service";
 import { DateTime } from "luxon";
+import { generateToken } from "answerwriting/lib/utils/token.utils";
+import { hashPassword } from "answerwriting/lib/utils/password.utils";
+import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
 
 /**
  * High-Level Logic:
@@ -115,7 +112,7 @@ export async function POST(
       }
     } else {
       // Step 3: Create a new user if the email does not exist
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = await hashPassword(password);
 
       // Creation of the user and token must be done in a prisma transaction.
       await prisma.$transaction(async (tx) => {
@@ -128,7 +125,7 @@ export async function POST(
         });
 
         // Send verification email
-        const token = v4();
+        const token = generateToken();
         await tx.emailVerificationToken.create({
           data: {
             userId: newUser.id,
