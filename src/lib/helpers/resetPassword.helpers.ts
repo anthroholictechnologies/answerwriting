@@ -30,12 +30,12 @@ export async function createForgetPasswordToken(userId: string) {
 
 // Helper function to send the verification email using Resened
 export const sendForgetPasswordMail = async ({
-  firstName,
+  name,
   token,
   userId,
   emailTo,
 }: {
-  firstName: string;
+  name: string;
   token: string;
   userId: string;
   emailTo: string;
@@ -45,7 +45,7 @@ export const sendForgetPasswordMail = async ({
     to: [emailTo],
     subject: `Reset your password for ${COMPANY_NAME}`,
     react: ForgetPasswordEmailTemplate({
-      firstName,
+      name,
       resetLink: `${process.env.APP_BASE_URI}/auth/reset-password?a=${userId}&b=${token}`,
     }),
   });

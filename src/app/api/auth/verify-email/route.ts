@@ -3,6 +3,7 @@ import { isTokenExpired } from "answerwriting/lib/helpers/emailVerification.help
 import { prisma } from "answerwriting/lib/prisma";
 import { VerifyEmailInput } from "answerwriting/validations/authSchema";
 import { timingSafeEqual } from "crypto";
+import { DateTime } from "luxon";
 import { NextRequest, NextResponse } from "next/server";
 
 const ErrorResponses = {
@@ -54,6 +55,8 @@ export async function POST(
       },
     });
 
+    console.log("userWithToken=====", userWithToken);
+
     if (!userWithToken || !userWithToken.emailVerificationTokens.length) {
       return NextResponse.json(ErrorResponses.TAMPERED_URL, { status: 400 });
     }
@@ -78,7 +81,7 @@ export async function POST(
     await prisma.$transaction(async (tx) => {
       await tx.user.update({
         where: { id: userId },
-        data: { emailVerified: true },
+        data: { emailVerified: DateTime.utc().toJSDate() },
       });
       await tx.emailVerificationToken.deleteMany({
         where: { userId },

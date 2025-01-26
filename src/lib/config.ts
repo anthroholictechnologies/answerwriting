@@ -4,12 +4,14 @@ import {
   resetPasswordSchema,
   verifyEmailSchema,
 } from "answerwriting/validations/authSchema";
+import { ZodSchema } from "zod";
 
 export enum ApiRoutePaths {
   REGISTER = "/api/auth/register",
   VERIFY_EMAIL = "/api/auth/verify-email",
   FORGET_PASSWORD = "/api/auth/forget-password",
   RESET_PASSWORD = "/api/auth/reset-password",
+  LOGIN = "/api/auth/signin/credentials",
 }
 
 export const apiRoutesWhichRequiresValidations: ApiRoutePaths[] = [
@@ -19,7 +21,9 @@ export const apiRoutesWhichRequiresValidations: ApiRoutePaths[] = [
   ApiRoutePaths.RESET_PASSWORD,
 ];
 
-export const apiRoutesSchemaMapping = {
+export const apiRoutesSchemaMapping: Partial<{
+  [key in ApiRoutePaths]: ZodSchema;
+}> = {
   [ApiRoutePaths.REGISTER]: registrationSchema,
   [ApiRoutePaths.VERIFY_EMAIL]: verifyEmailSchema,
   [ApiRoutePaths.FORGET_PASSWORD]: forgetPasswordSchema,

@@ -13,14 +13,6 @@ export async function middleware(request: NextRequest) {
 
   // Logic for only the api paths
   if (isAPIPath) {
-    // API paths must be registered in our backend
-    if (!Object.values(ApiRoutePaths).includes(pathName)) {
-      // Return a 404 Not Found response for routes not defined in the routes.types file
-      return new Response("The route path is not registered on the server", {
-        status: 404,
-      });
-    }
-
     // API validation logic
     if (apiRoutesWhichRequiresValidations.includes(pathName)) {
       const body = await request.json();

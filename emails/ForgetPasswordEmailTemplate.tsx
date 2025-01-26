@@ -18,12 +18,12 @@ import {
 import * as React from "react";
 
 interface PasswordResetProps {
-  firstName: string;
+  name: string;
   resetLink: string;
 }
 
 export const PasswordResetEmail = ({
-  firstName,
+  name: name,
   resetLink,
 }: PasswordResetProps) => (
   <Html>
@@ -44,7 +44,7 @@ export const PasswordResetEmail = ({
         <Section style={contentSection}>
           <Heading style={heading}>Reset Your Password</Heading>
 
-          <Text style={paragraphTop}>Hello {firstName},</Text>
+          <Text style={paragraphTop}>Hello {name},</Text>
 
           <Text style={paragraph}>
             We received a request to reset the password for your {COMPANY_NAME}{" "}

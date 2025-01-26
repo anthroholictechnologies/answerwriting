@@ -18,12 +18,12 @@ import {
 import * as React from "react";
 
 interface EmailVerificationProps {
-  firstName: string;
+  name: string;
   verificationLink: string;
 }
 
 export const VerificationEmail = ({
-  firstName,
+  name: firstName,
   verificationLink,
 }: EmailVerificationProps) => (
   <Html>

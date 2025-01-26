@@ -27,12 +27,12 @@ export async function createVerificationToken(userId: string) {
 
 // Helper function to send the verification email using Resened
 export const sendEmailVerificationMail = async ({
-  firstName,
+  name: name,
   token,
   userId,
   emailTo,
 }: {
-  firstName: string;
+  name: string;
   token: string;
   userId: string;
   emailTo: string;
@@ -42,7 +42,7 @@ export const sendEmailVerificationMail = async ({
     to: [emailTo],
     subject: `Welcome to ${COMPANY_NAME} Please Verify Your Email`,
     react: SendVerificationEmailTemplate({
-      firstName,
+      name: name,
       verificationLink: `${process.env.APP_BASE_URI}/auth/verify-email?a=${userId}&b=${token}`,
     }),
   });

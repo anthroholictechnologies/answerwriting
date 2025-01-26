@@ -38,7 +38,7 @@ export async function POST(
   try {
     // Step 1: Parse and validate the request body
     const body = (await request.json()) as RegistrationInput;
-    const { email, password, firstName, lastName } = body;
+    const { email, password, name } = body;
 
     // Step 2: Check if a user with the provided email already exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -77,7 +77,7 @@ export async function POST(
             const token = await createVerificationToken(existingUser.id);
             await sendEmailVerificationMail({
               emailTo: existingUser.email,
-              firstName: existingUser.firstName as string,
+              name: existingUser.name as string,
               userId: existingUser.id,
               token,
             });
@@ -103,7 +103,7 @@ export async function POST(
         const token = await createVerificationToken(existingUser.id);
         await sendEmailVerificationMail({
           emailTo: existingUser.email,
-          firstName: existingUser.firstName as string,
+          name: existingUser.name as string,
           userId: existingUser.id,
           token,
         });
@@ -123,8 +123,7 @@ export async function POST(
           data: {
             email,
             password: hashedPassword,
-            firstName,
-            lastName,
+            name,
           },
         });
 
@@ -143,7 +142,7 @@ export async function POST(
         });
         await sendEmailVerificationMail({
           emailTo: email,
-          firstName: firstName as string,
+          name: name as string,
           userId: newUser.id,
           token,
         });

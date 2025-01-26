@@ -1,15 +1,10 @@
 import { z } from "zod";
 
 export const registrationSchema = z.object({
-  firstName: z
+  name: z
     .string()
     .min(1, { message: "First name is required" })
     .max(50, { message: "First name must be less than 50 characters" })
-    .trim(),
-  lastName: z
-    .string()
-    .min(1, { message: "Last name is required" })
-    .max(50, { message: "Last name must be less than 50 characters" })
     .trim(),
   email: z.string().email({ message: "Invalid email address" }).trim(),
   password: z
@@ -31,8 +26,8 @@ export const registrationSchema = z.object({
 export type RegistrationInput = z.infer<typeof registrationSchema>;
 
 export const verifyEmailSchema = z.object({
-  a: z.string().uuid(),
-  b: z.string().uuid(),
+  a: z.string(),
+  b: z.string(),
 });
 export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>;
 
@@ -43,8 +38,8 @@ export const forgetPasswordSchema = z.object({
 export type ForgetPasswordInput = z.infer<typeof forgetPasswordSchema>;
 
 export const resetPasswordSchema = z.object({
-  a: z.string().uuid(),
-  b: z.string().uuid(),
+  a: z.string(),
+  b: z.string(),
   c: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" })

@@ -82,7 +82,7 @@ export async function POST(
           const token = await createForgetPasswordToken(userExistsWithEmail.id);
           await sendForgetPasswordMail({
             emailTo: userExistsWithEmail.email,
-            firstName: userExistsWithEmail.firstName as string,
+            name: userExistsWithEmail.name as string,
             userId: userExistsWithEmail.id,
             token,
           });
@@ -102,12 +102,12 @@ export async function POST(
           { status: 409 },
         );
       }
-    } 
+    }
 
     const token = await createForgetPasswordToken(userExistsWithEmail.id);
     await sendForgetPasswordMail({
       emailTo: userExistsWithEmail.email,
-      firstName: userExistsWithEmail.firstName as string,
+      name: userExistsWithEmail.name as string,
       userId: userExistsWithEmail.id,
       token,
     });
@@ -116,7 +116,7 @@ export async function POST(
       message: `We've sent you the password reset email.`,
       success: true,
     });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err: unknown) {
     return NextResponse.json({
       message: "Something went wrong!! Interal server error",

@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   } = (await req.json()) as ResetPasswordInput;
 
   const userWithToken = await prisma.user.findFirst({
-    where: { id: userId, emailVerified: true },
+    where: { id: userId, emailVerified: { not: { equals: null } } },
     include: {
       forgetPasswordTokens: {
         orderBy: { createdAt: "desc" },
