@@ -16,7 +16,7 @@ export default function LoginPage() {
             />
           </Link>
         </div>
-        <div className="flex flex-1 items-center justify-center md:-mt-8 -mt-32">
+        <div className="flex flex-1 items-center justify-center md:-mt-8 -mt-36">
           <div className="w-full max-w-xs">
             <LoginForm />
           </div>
