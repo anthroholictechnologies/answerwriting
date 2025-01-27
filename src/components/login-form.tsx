@@ -26,7 +26,7 @@ export function LoginForm({
           <Input
             id="email"
             type="email"
-            placeholder="msap2811@example.com"
+            placeholder="hello@example.com"
             required
             className="placeholder:text-xs md:placeholder:text-sm text-xs md:text-sm"
           />
