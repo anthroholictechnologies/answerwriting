@@ -16,7 +16,7 @@ export default function LoginPage() {
               className="w-[90%] h-[100%] lg:w-[80%] lg:h-[110%]"
             />
           </Link>
-          <div className="text-balance ml-[8%] md:ml-[4%] -mt-2 lg:hidden text-xs italic">
+          <div className="text-balance ml-[8%] md:ml-[1%] -mt-2 md:mt-0 xl:hidden text-xs italic">
             Craft <ImpactSpan text="Better Answers" /> with AI Precision
           </div>
         </div>
