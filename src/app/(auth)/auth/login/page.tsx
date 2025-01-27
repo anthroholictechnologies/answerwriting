@@ -12,11 +12,11 @@ export default function LoginPage() {
               src="/logos/3_resize.png"
               alt="answerwriting.com logo"
               height={50}
-              width={350}
-              className="w-[100%] h-[100%] lg:w-[60%] lg:h-[100%]"
+              width={250}
+              className="w-[90%] h-[100%] lg:w-[60%] lg:h-[100%]"
             />
           </Link>
-          <div className="text-left lg:hidden text-sm italic">
+          <div className="text-balance ml-[8%] md:ml-[4%] -mt-2 lg:hidden text-xs italic">
             Craft <ImpactSpan text="Better Answers" /> with AI Precision
           </div>
         </div>
