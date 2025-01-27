@@ -5,15 +5,15 @@ import Link from "next/link";
 export default function LoginPage() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
-      <div className="flex flex-col gap-12 p-6 md:p-10">
+      <div className="flex flex-col gap-8 md:gap-12 p-6 pt-10 md:p-10">
         <div className="flex flex-col items-center md:items-start gap-1">
           <Link href="/">
             <Image
               src="/logos/3_resize.png"
               alt="answerwriting.com logo"
               height={50}
-              width={300}
-              className="w-[300px] h-[50px] md:w-[200px] md:h-[40px]"
+              width={250}
+              className="w-[250px] h-[50px] md:w-[200px] md:h-[40px]"
             />
           </Link>
           <div className="text-center md:hidden text-xs italic">
