@@ -10,7 +10,7 @@ export function LoginForm({
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
   return (
-    <form className={cn("flex flex-col gap-6 md:shadow-xl md:p-8 bg-white", className)} {...props}>
+    <form className={cn("flex flex-col gap-6 shadow-xl p-8 bg-white", className)} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">
           {" "}
@@ -37,7 +37,7 @@ export function LoginForm({
             <AnswerWritingLink
               href="#"
               linkText="Forgot your password?"
-              overrideClasses="ml-auto text-xs md:text-sm"
+              overrideClasses="ml-auto text-xs"
             />
           </div>
           <Input id="password" type="password" required />
