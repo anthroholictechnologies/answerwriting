@@ -12,7 +12,7 @@ export function LoginForm({
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-xl md:text-2xl font-bold">
+        <h1 className="text-2xl font-bold">
           {" "}
           <ImpactSpan text="Login" /> to your account
         </h1>
