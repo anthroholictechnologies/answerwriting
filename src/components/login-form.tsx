@@ -12,14 +12,12 @@ export function LoginForm({
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-xl md:text-2xl font-bold">
           {" "}
           <ImpactSpan text="Login" /> to your account
         </h1>
         <p className="text-balance text-xs text-muted-foreground italic">
-          Craft{" "}
-          <ImpactSpan text="Better Answers" overrideClasses="text-black" /> with
-          AI Precision <ImpactSpan text="Score Higher" /> , Aim Bigger
+          Craft <ImpactSpan text="Better Answers" /> with AI Precision
         </p>
       </div>
       <div className="grid gap-6">
@@ -30,6 +28,7 @@ export function LoginForm({
             type="email"
             placeholder="msap2811@example.com"
             required
+            className="placeholder:text-xs md:placeholder:text-sm text-xs md:text-sm"
           />
         </div>
         <div className="grid gap-2">
@@ -38,7 +37,7 @@ export function LoginForm({
             <AnswerWritingLink
               href="#"
               linkText="Forgot your password?"
-              overrideClasses="ml-auto"
+              overrideClasses="ml-auto text-xs md:text-sm"
             />
           </div>
           <Input id="password" type="password" required />
@@ -77,12 +76,12 @@ export function LoginForm({
           Login with Google
         </Button>
       </div>
-      <div className="text-center text-sm">
+      <div className="text-center text-xs md:text-sm">
         Don&apos;t have an account?{" "}
         <AnswerWritingLink
           href="#"
           linkText="Sign up"
-          overrideClasses="underline underline-offset-4"
+          overrideClasses="underline underline-offset-4 text-xs md:text-sm"
         />
       </div>
     </form>

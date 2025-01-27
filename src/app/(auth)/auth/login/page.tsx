@@ -5,18 +5,18 @@ export default function LoginPage() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
-        <div className="flex justify-center gap-2 md:justify-start -mt-12">
+        <div className="flex justify-center gap-2 md:justify-start md:-mt-16 -mt-12">
           <Link href="/">
             <Image
               src="/logos/3.png"
               alt="answerwriting.com logo"
-              height={180}
-              width={180}
-              className="w-[180px] h-[180px]"
+              height={200}
+              width={200}
+              className="w-[200px] h-[200px]"
             />
           </Link>
         </div>
-        <div className="flex flex-1 items-center justify-center">
+        <div className="flex flex-1 items-center justify-center md:-mt-8 -mt-20">
           <div className="w-full max-w-xs">
             <LoginForm />
           </div>
