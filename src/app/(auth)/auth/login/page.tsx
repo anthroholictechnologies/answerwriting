@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function LoginPage() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
-      <div className="flex flex-col gap-2 md:gap-12 p-8 pt-10 md:p-10">
+      <div className="flex flex-col md:gap-12 p-8 pt-10 md:p-10">
         <div className="flex flex-col items-center md:items-start gap-1">
           <Link href="/">
             <Image
