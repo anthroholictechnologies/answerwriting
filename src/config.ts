@@ -36,4 +36,5 @@ export const MAX_FORGET_PASSWORD_REQUEST_ALLOWED_IN_A_DAY = 3;
 
 export const COMPANY_NAME = "answerwriting.com";
 
+// Asset paths
 export const LOGO_BANNER_URI = `https://res.cloudinary.com/dc36fxbog/image/upload/v1737793645/logo_dnei0q.png`;

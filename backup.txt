@@ -1,0 +1,36 @@
+import type { Config } from "tailwindcss";
+
+export default {
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        brightBlue: "var(--bright-blue)", 
+        deepBlue: "var(--deep-blue)",
+        slateBlueGrey: "var(--slate-blue-grey)",
+        darkBlueGrey: "var(--dark-blue-grey)",
+        lightGreyBlue: "var(--light-grey-blue)",
+        veryLightGreyBlue: "var(--very-light-grey-blue)",
+        nearWhite: "var(--near-white)",
+        black: "var(--black)",
+        white: "var(--white)",
+        background: "var(--nearWhite)",
+        foreground: "var(--black)",
+      },
+      fontFamily: {
+        sans: ['"Open Sans"', "sans-serif"],
+      },
+      maxWidth: {
+        frame: "1290px", 
+      },
+      borderRadius: {
+        cta: "12px", 
+      },
+    },
+  },
+  plugins: [],
+} satisfies Config;

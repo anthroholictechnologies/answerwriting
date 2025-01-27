@@ -7,7 +7,7 @@ import { prisma } from "answerwriting/prisma";
 import { generateToken } from "answerwriting/lib/utils/token.utils";
 import { DateTime } from "luxon";
 import { Resend } from "resend";
-import SendVerificationEmailTemplate from "../../emails/VerificationEmailTemplate";
+import SendVerificationEmailTemplate from "../../emails/email-verification.email.template";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
