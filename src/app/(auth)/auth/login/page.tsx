@@ -13,7 +13,7 @@ export default function LoginPage() {
               alt="answerwriting.com logo"
               height={50}
               width={250}
-              className="w-[90%] h-[100%] lg:w-[60%] lg:h-[100%]"
+              className="w-[90%] h-[100%] lg:w-[80%] lg:h-[140%]"
             />
           </Link>
           <div className="text-balance ml-[8%] md:ml-[4%] -mt-2 lg:hidden text-xs italic">
