@@ -5,22 +5,22 @@ import Link from "next/link";
 export default function LoginPage() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
-      <div className="flex flex-col md:gap-12 p-8 pb-4 pt-10 md:p-10">
-        <div className="flex flex-col items-center md:items-start gap-1">
+      <div className="flex flex-col justify-center gap-12 md:p-10">
+        <div className="flex flex-col items-center justify-center lg:items-start">
           <Link href="/">
             <Image
               src="/logos/3_resize.png"
               alt="answerwriting.com logo"
               height={50}
-              width={250}
-              className="w-[250px] h-[50px] md:w-[200px] md:h-[40px]"
+              width={350}
+              className="w-[90%] h-[100%] lg:w-[60%] lg:h-[100%]"
             />
           </Link>
-          <div className="text-center md:hidden text-xs italic">
+          <div className="text-left lg:hidden text-sm italic">
             Craft <ImpactSpan text="Better Answers" /> with AI Precision
           </div>
         </div>
-        <div className="flex flex-1 items-center justify-center">
+        <div className="flex lg:flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
             <LoginForm />
           </div>

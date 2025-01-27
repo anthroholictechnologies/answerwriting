@@ -16,7 +16,7 @@ export function LoginForm({
           {" "}
           <ImpactSpan text="Login" /> to your account
         </h1>
-        <p className="text-balance hidden md:block text-xs text-muted-foreground italic">
+        <p className="text-balance hidden lg:block text-xs text-muted-foreground italic">
           Craft <ImpactSpan text="Better Answers" /> with AI Precision
         </p>
       </div>
