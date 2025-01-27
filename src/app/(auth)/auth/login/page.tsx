@@ -4,16 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 export default function LoginPage() {
   return (
-    <div className="grid min-h-svh xl:grid-cols-2">
+    <div className="grid min-h-svh xl:grid-cols-2 ">
       <div className="flex flex-col justify-center p-8 gap-8 md:p-10">
-        <div className="flex flex-col items-center justify-center xl:items-start">
+        <div className="flex flex-col items-center justify-center">
           <Link href="/">
             <Image
               src="/logos/3_resize.png"
               alt="answerwriting.com logo"
               height={50}
-              width={250}
-              className="w-[90%] h-[100%] lg:w-[80%] lg:h-[110%]"
+              width={300}
+              className="w-[90%] h-[100%] lg:w-[80%] lg:h-[120%]"
             />
           </Link>
           <div className="text-balance ml-[8%] md:ml-[1%] -mt-2 md:mt-0 xl:hidden text-xs italic">
