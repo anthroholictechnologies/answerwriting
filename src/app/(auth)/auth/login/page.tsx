@@ -1,22 +1,26 @@
 import { LoginForm } from "answerwriting/components/login-form";
+import ImpactSpan from "answerwriting/components/react-common/impact-span";
 import Image from "next/image";
 import Link from "next/link";
 export default function LoginPage() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
-      <div className="flex flex-col gap-4 p-6 md:p-10">
-        <div className="flex justify-center gap-2 md:justify-start md:-mt-16 -mt-12">
+      <div className="flex flex-col gap-12 p-6 md:p-10">
+        <div className="flex flex-col items-center md:items-start gap-1">
           <Link href="/">
             <Image
-              src="/logos/3.png"
+              src="/logos/3_resize.png"
               alt="answerwriting.com logo"
-              height={200}
-              width={200}
-              className="w-[250px] h:[250px] md:w-[200px] md:h-[200px]"
+              height={50}
+              width={300}
+              className="w-[300px] h-[50px] md:w-[200px] md:h-[40px]"
             />
           </Link>
+          <div className="text-center md:hidden text-xs italic">
+            Craft <ImpactSpan text="Better Answers" /> with AI Precision
+          </div>
         </div>
-        <div className="flex flex-1 items-center justify-center md:-mt-8 -mt-36">
+        <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
             <LoginForm />
           </div>
