@@ -12,8 +12,8 @@ export default function LoginPage() {
               src="/logos/3_resize.png"
               alt="answerwriting.com logo"
               height={50}
-              width={300}
-              className="w-[90%] h-[100%] lg:w-[80%] lg:h-[120%]"
+              width={250}
+              className="w-[90%] h-[100%] lg:w-[80%] lg:h-[110%]"
             />
           </Link>
           <div className="text-balance ml-[8%] md:ml-[1%] -mt-2 md:mt-0 xl:hidden text-xs italic">
