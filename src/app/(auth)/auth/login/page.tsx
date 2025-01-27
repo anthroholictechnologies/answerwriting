@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function LoginPage() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
-      <div className="flex flex-col justify-center gap-12 md:p-10">
+      <div className="flex flex-col justify-center gap-8 md:p-10">
         <div className="flex flex-col items-center justify-center lg:items-start">
           <Link href="/">
             <Image
@@ -13,7 +13,7 @@ export default function LoginPage() {
               alt="answerwriting.com logo"
               height={50}
               width={350}
-              className="w-[90%] h-[100%] lg:w-[60%] lg:h-[100%]"
+              className="w-[100%] h-[100%] lg:w-[60%] lg:h-[100%]"
             />
           </Link>
           <div className="text-left lg:hidden text-sm italic">
