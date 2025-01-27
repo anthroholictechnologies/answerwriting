@@ -12,11 +12,11 @@ export default function LoginPage() {
               alt="answerwriting.com logo"
               height={200}
               width={200}
-              className="w-[200px] h-[200px]"
+              className="w-[250px] h:[250px] md:w-[200px] md:h-[200px]"
             />
           </Link>
         </div>
-        <div className="flex flex-1 items-center justify-center md:-mt-8 -mt-20">
+        <div className="flex flex-1 items-center justify-center md:-mt-8 -mt-32">
           <div className="w-full max-w-xs">
             <LoginForm />
           </div>
