@@ -4,10 +4,10 @@ import {
   hasTooManyForgetPasswordAttempts,
   isTokenExpired,
   sendForgetPasswordMail,
-} from "answerwriting/services/resetPassword.service";
+} from "answerwriting/services/reset-password.service";
 import { prisma } from "answerwriting/prisma";
 import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
-import { ForgetPasswordInput } from "answerwriting/validations/authSchema";
+import { ForgetPasswordInput } from "answerwriting/validations/auth.schema";
 import { NextRequest, NextResponse } from "next/server";
 
 /*

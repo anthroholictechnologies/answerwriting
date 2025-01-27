@@ -4,7 +4,7 @@ import {
   registrationSchema,
   resetPasswordSchema,
   verifyEmailSchema,
-} from "answerwriting/validations/authSchema";
+} from "answerwriting/validations/auth.schema";
 import { ZodSchema } from "zod";
 
 export const apiRoutesWhichRequiresAuthentication: ApiRoutePaths[] = [

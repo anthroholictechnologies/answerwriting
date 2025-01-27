@@ -1,6 +1,6 @@
 import { EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_HOURS } from "answerwriting/config";
 import { prisma } from "answerwriting/prisma";
-import { RegistrationInput } from "answerwriting/validations/authSchema";
+import { RegistrationInput } from "answerwriting/validations/auth.schema";
 import { NextRequest, NextResponse } from "next/server";
 import {
   createVerificationToken,
@@ -8,7 +8,7 @@ import {
   hasTooManyVerificationEmails,
   isTokenExpired,
   sendEmailVerificationMail,
-} from "answerwriting/services/emailVerification.service";
+} from "answerwriting/services/email-verification.service";
 import { DateTime } from "luxon";
 import { generateToken } from "answerwriting/lib/utils/token.utils";
 import { hashPassword } from "answerwriting/lib/utils/password.utils";

@@ -1,8 +1,8 @@
 import { compareToken } from "answerwriting/lib/utils/token.utils";
-import { isTokenExpired } from "answerwriting/services/emailVerification.service";
+import { isTokenExpired } from "answerwriting/services/email-verification.service";
 import { prisma } from "answerwriting/prisma";
 import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
-import { VerifyEmailInput } from "answerwriting/validations/authSchema";
+import { VerifyEmailInput } from "answerwriting/validations/auth.schema";
 import { DateTime } from "luxon";
 import { NextRequest, NextResponse } from "next/server";
 
