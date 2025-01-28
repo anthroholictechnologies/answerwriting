@@ -11,9 +11,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   adapter: PrismaAdapter(prisma),
   secret: process.env.AUTH_SECRET,
+  pages: {
+    signIn: "/auth/login",
+  },
   callbacks: {
     async jwt({ token, user }) {
-      if (!user.id || !user.email) {
+      if (!token) {
+        return token;
+      }
+
+      if (!user?.id || !user?.email) {
         return null;
       }
       if (user) {
@@ -27,6 +34,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     async session({ session, token }) {
+      if (!session) {
+        return session;
+      }
       if (token) {
         session.user = {
           id: token.id,

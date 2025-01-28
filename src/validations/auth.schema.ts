@@ -3,10 +3,13 @@ import { z } from "zod";
 export const registrationSchema = z.object({
   name: z
     .string()
-    .min(1, { message: "First name is required" })
-    .max(50, { message: "First name must be less than 50 characters" })
+    .min(1, { message: "Please enter your name." })
+    .max(50, { message: "Please enter a name shorter than 50 charecters" })
     .trim(),
-  email: z.string().email({ message: "Invalid email address" }).trim(),
+  email: z
+    .string({ message: "Please enter a valid email address" })
+    .email({ message: "Please enter a valid email address." })
+    .trim(),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" })
