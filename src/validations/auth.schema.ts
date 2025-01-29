@@ -28,6 +28,16 @@ export const registrationSchema = z.object({
 });
 export type RegistrationInput = z.infer<typeof registrationSchema>;
 
+export const loginSchema = z.object({
+  email: z
+    .string({ message: "Please enter a valid email address" })
+    .email({ message: "Please enter a valid email address." })
+    .trim(),
+  password: z.string({ message: "Please enter your password." }),
+});
+
+export type LoginInput = z.infer<typeof loginSchema>;
+
 export const verifyEmailSchema = z.object({
   a: z.string(),
   b: z.string(),

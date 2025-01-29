@@ -1,6 +1,9 @@
 import { prisma } from "answerwriting/prisma";
 import { comparePassword } from "answerwriting/lib/utils/password.utils";
-import { AuthenticatedUser } from "answerwriting/types/general.types";
+import {
+  AuthenticatedUser,
+  ErrorCodes,
+} from "answerwriting/types/general.types";
 
 export const authenticate = async (credentials: {
   email?: string;
@@ -13,7 +16,13 @@ export const authenticate = async (credentials: {
 
   const user = await prisma.user.findUnique({ where: { email: email } });
 
-  if (!user || !user.password || !user.emailVerified) return null;
+  if (!user) {
+    throw new Error(ErrorCodes.USER_NOT_FOUND);
+  } else if (!user?.password) {
+    throw new Error(ErrorCodes.ALREADY_REGISTERED_WITH_GOOGLE);
+  } else if (!user.emailVerified) {
+    throw new Error(ErrorCodes.VERIFICATION_EMAIL_PENDING);
+  }
 
   const isValidPassword = await comparePassword({
     password,

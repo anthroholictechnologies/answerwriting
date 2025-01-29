@@ -39,6 +39,14 @@ export async function POST(
       return NextResponse.json(ErrorResponses.TAMPERED_URL, { status: 400 });
     }
 
+    if (userWithToken.emailVerified) {
+      return NextResponse.json({
+        success: false,
+        errorCode: ErrorCodes.EMAIL_ALREADY_VERIFIED,
+        message: "Email is already verified.",
+      });
+    }
+
     const latestToken = userWithToken.emailVerificationTokens[0];
 
     // Check token expiry
@@ -57,9 +65,6 @@ export async function POST(
       await tx.user.update({
         where: { id: userId },
         data: { emailVerified: DateTime.utc().toJSDate() },
-      });
-      await tx.emailVerificationToken.deleteMany({
-        where: { userId },
       });
     });
 

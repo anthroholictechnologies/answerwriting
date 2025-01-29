@@ -194,10 +194,7 @@ export function RegisterForm({
             <Button
               type="submit"
               className="w-full max-w-[16rem] mx-auto mt-4"
-              disabled={
-                (form.formState.isDirty && !form.formState.isValid) ||
-                form.formState.isSubmitting
-              }
+              disabled={!form.formState.isValid || form.formState.isSubmitting}
               onClick={() => {
                 onSubmit(form.getValues());
               }}
@@ -228,5 +225,3 @@ export function RegisterForm({
     </div>
   );
 }
-
-// $2a$10$e97VJ9qeVQiwjfSoZVpNkunWf/O9HqDpj7GhowNHl4kIedaUiZFdK

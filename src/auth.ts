@@ -55,11 +55,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET! as string,
     }),
     CredentialsProvider({
-      authorize: async (credentials) =>
-        authenticate({
+      authorize: async (credentials) => {
+        const data = await authenticate({
           email: credentials.email as string | undefined,
           password: credentials.password as string | undefined,
-        }),
+        });
+
+        return data;
+      },
     }),
   ],
 });
