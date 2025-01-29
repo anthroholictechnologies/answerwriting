@@ -58,19 +58,6 @@ export function RegisterForm({
               description:
                 "You have already registered with us. Please login to continue.",
             });
-          } else if (
-            resp.errorCode === ErrorCodes.TOO_MANY_VERIFICATION_EMAILS_SENT
-          ) {
-            toast.error({
-              title: "Too many verification emails sent",
-              description: "Please try to register after 24 hours.",
-            });
-          } else if (resp.errorCode === ErrorCodes.VERIFICATION_EMAIL_PENDING) {
-            toast.info({
-              title: "Verification email pending.",
-              description:
-                "Please check your email address and verify your email.",
-            });
           }
         }
       } catch (err) {

@@ -12,7 +12,6 @@ export enum ErrorCodes {
   BAD_REQUEST_EXCEPTION = "BadRequestException",
   EMAIL_CONFLICT_EXCEPTION = "EmailConflictException",
   INTERNAL_SERVER_ERROR = "InternalServerError",
-  TOO_MANY_VERIFICATION_EMAILS_SENT = "TooManyVerificationEmailsSent",
   VERIFICATION_EMAIL_PENDING = "VerificationEmailPending",
   VERIFICATION_EMAIL_EXPIRED = "VerificationEmailExpired",
   TAMPERED_EMAIL_VERIFICATION_URL = "TamperedEmailVerificationUrl",

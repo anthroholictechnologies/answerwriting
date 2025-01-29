@@ -19,26 +19,6 @@ const ErrorResponses = {
   },
 };
 
-/*
- * get the token and the user id from the url
- * verify the user id check user exists
- *   - if user does not exist
- *       - throw invalid url error
- *   - else
- *      - check if token is valid
- *         - if token does not exist
- *             - throw invalid url error
- *         - else
- *             - grab the latest token for the user
- *             - check if the latest token is expired
- *                 - if token is expired
- *                      - throw email is expired
- *                 - else
- *                      - if token in url === latest token
- *                         - user verified
- *                      else
- *                         - throw invalid url
- */
 export async function POST(
   request: NextRequest,
 ): Promise<NextResponse<ApiResponse>> {
@@ -55,8 +35,6 @@ export async function POST(
       },
     });
 
-    console.log("userWithToken=====", userWithToken);
-
     if (!userWithToken || !userWithToken.emailVerificationTokens.length) {
       return NextResponse.json(ErrorResponses.TAMPERED_URL, { status: 400 });
     }
@@ -68,7 +46,7 @@ export async function POST(
       return NextResponse.json(ErrorResponses.EMAIL_EXPIRED, { status: 400 });
     }
 
-    // Timing-safe token comparison
+    // token comparison
     const isValidToken = compareToken(latestToken.token, token);
 
     if (!isValidToken) {
