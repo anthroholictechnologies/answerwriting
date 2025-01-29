@@ -29,11 +29,12 @@ import { ToastAction } from "../ui/toast";
 import { useCustomToast } from "../react-common/toast";
 import { ErrorCodes } from "answerwriting/types/general.types";
 import Spinner from "../react-common/spinner";
+import { useRouter } from "next/navigation";
 
 export function RegisterForm({
   className,
-  ...props
 }: React.ComponentPropsWithoutRef<"form">) {
+  const router = useRouter();
   const form = useForm<z.infer<typeof registrationSchema>>({
     resolver: zodResolver(registrationSchema),
     mode: "onChange",
@@ -53,10 +54,36 @@ export function RegisterForm({
           });
         } else {
           if (resp.errorCode === ErrorCodes.EMAIL_CONFLICT_EXCEPTION) {
-            toast.info({
+            toast.error({
               title: "Email already registered.",
               description:
-                "You have already registered with us. Please login to continue.",
+                "You have already registered with us. Please Sign in to continue.",
+              action: (
+                <ToastAction
+                  altText="Try again"
+                  className="
+                      px-4 py-2
+                      bg-white/10 
+                      hover:bg-white/20 
+                      text-white 
+                      rounded-lg
+                      border border-white/20 
+                      hover:border-white/30
+                      transition-all
+                      backdrop-blur-sm
+                      font-medium
+                      text-sm
+                    "
+                  onClick={() => router.push("/auth/login")}
+                >
+                  Sign in
+                </ToastAction>
+              ),
+            });
+          } else if (resp.errorCode === ErrorCodes.RESENT_VERIFICATION_EMAIL) {
+            toast.info({
+              title: "Re-sent the verification email",
+              description: "We've re-sent you a verification email again.",
             });
           }
         }
@@ -88,14 +115,14 @@ export function RegisterForm({
           ),
         });
       }
-    }
+    },
   );
 
   const renderFormField = (
     name: string,
     label: string,
     type = "text",
-    placeholder: string
+    placeholder: string,
   ) => (
     <FormField
       control={form.control}
@@ -126,16 +153,11 @@ export function RegisterForm({
         </div>
       )}
       <Form {...form}>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            form.handleSubmit(onSubmit);
-          }}
+        <div
           className={cn(
             "flex flex-col gap-4 lg:shadow-xl lg:p-8 bg-white",
-            className
+            className,
           )}
-          {...props}
         >
           {/* Header */}
           <div className="flex flex-col items-center gap-8 text-center">
@@ -166,7 +188,7 @@ export function RegisterForm({
               "password",
               "Password",
               "password",
-              "Enter a password"
+              "Enter a password",
             )}
 
             <Button
@@ -176,6 +198,9 @@ export function RegisterForm({
                 (form.formState.isDirty && !form.formState.isValid) ||
                 form.formState.isSubmitting
               }
+              onClick={() => {
+                onSubmit(form.getValues());
+              }}
             >
               Sign up
             </Button>
@@ -198,8 +223,10 @@ export function RegisterForm({
               overrideClasses="underline underline-offset-4 text-xs md:text-sm"
             />
           </p>
-        </form>
+        </div>
       </Form>
     </div>
   );
 }
+
+// $2a$10$e97VJ9qeVQiwjfSoZVpNkunWf/O9HqDpj7GhowNHl4kIedaUiZFdK

@@ -11,6 +11,7 @@ export enum ApiRoutePaths {
 export enum ErrorCodes {
   BAD_REQUEST_EXCEPTION = "BadRequestException",
   EMAIL_CONFLICT_EXCEPTION = "EmailConflictException",
+  RESENT_VERIFICATION_EMAIL = "ResendVerificationEmail",
   INTERNAL_SERVER_ERROR = "InternalServerError",
   VERIFICATION_EMAIL_PENDING = "VerificationEmailPending",
   VERIFICATION_EMAIL_EXPIRED = "VerificationEmailExpired",

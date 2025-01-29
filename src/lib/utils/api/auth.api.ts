@@ -2,7 +2,7 @@ import { ApiResponse, ApiRoutePaths } from "answerwriting/types/general.types";
 import { RegistrationInput } from "answerwriting/validations/auth.schema";
 
 export async function registerUser(
-  data: RegistrationInput
+  data: RegistrationInput,
 ): Promise<ApiResponse> {
   const response = await fetch(ApiRoutePaths.REGISTER, {
     method: "POST",
@@ -11,6 +11,6 @@ export async function registerUser(
     },
     body: JSON.stringify(data),
   });
-  
+
   return await response.json();
 }

@@ -1,13 +1,13 @@
 // utils/toast.tsx
-import { useToast } from 'answerwriting/hooks/use-toast'
+import { useToast } from "answerwriting/hooks/use-toast";
 
-type ToastType = 'success' | 'error' | 'warning' | 'info'
+type ToastType = "success" | "error" | "warning" | "info";
 
 interface ShowToastOptions {
-  title: string
-  description?: string
-  action?: React.ReactNode
-  duration?: number
+  title: string;
+  description?: string;
+  action?: React.ReactNode;
+  duration?: number;
 }
 
 const toastStyles: Record<ToastType, string> = {
@@ -34,7 +34,7 @@ const toastStyles: Record<ToastType, string> = {
     shadow-red-500/20
     backdrop-blur-sm
     rounded-xl
-    p-4
+    p-6
     transition-all
     hover:shadow-red-500/30
     dark:from-red-900/90 dark:to-red-950/90
@@ -67,19 +67,17 @@ const toastStyles: Record<ToastType, string> = {
     hover:shadow-blue-500/30
     dark:from-blue-900/90 dark:to-blue-950/90
   `,
-}
+};
 
 export const useCustomToast = () => {
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   const showToast = (type: ToastType, options: ShowToastOptions) => {
-    const { title, description, action, duration = 5000 } = options
+    const { title, description, action, duration = 5000 } = options;
 
     const defaultAction = action ? (
-      <div className="flex gap-2 items-center">
-        {action}
-      </div>
-    ) : null
+      <div className="flex gap-2 items-center">{action}</div>
+    ) : null;
 
     toast({
       title,
@@ -87,13 +85,13 @@ export const useCustomToast = () => {
       duration,
       className: toastStyles[type],
       action: defaultAction ?? undefined,
-    })
-  }
+    });
+  };
 
   return {
-    success: (options: ShowToastOptions) => showToast('success', options),
-    error: (options: ShowToastOptions) => showToast('error', options),
-    warning: (options: ShowToastOptions) => showToast('warning', options),
-    info: (options: ShowToastOptions) => showToast('info', options),
-  }
-}
+    success: (options: ShowToastOptions) => showToast("success", options),
+    error: (options: ShowToastOptions) => showToast("error", options),
+    warning: (options: ShowToastOptions) => showToast("warning", options),
+    info: (options: ShowToastOptions) => showToast("info", options),
+  };
+};

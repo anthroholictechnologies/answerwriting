@@ -1,6 +1,4 @@
-import {
-  COMPANY_NAME,
-} from "answerwriting/config";
+import { COMPANY_NAME } from "answerwriting/config";
 import { prisma } from "answerwriting/prisma";
 import { DateTime } from "luxon";
 import { Resend } from "resend";
@@ -20,9 +18,9 @@ export const sendEmailVerificationMail = async ({
   userId: string;
   emailTo: string;
 }) => {
-  if (process.env.NODE_ENV === "development") {
-    return;
-  }
+  // if (process.env.NODE_ENV === "development") {
+  //   return;
+  // }
   await resend.emails.send({
     from: process.env.RESEND_EMAIL_FROM as string,
     to: [emailTo],

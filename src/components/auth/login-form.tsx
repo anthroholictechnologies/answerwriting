@@ -39,7 +39,7 @@ export function LoginForm({
     name: string,
     label: string,
     type = "text",
-    placeholder: string
+    placeholder: string,
   ) => (
     <FormField
       control={form.control}
@@ -68,7 +68,7 @@ export function LoginForm({
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn(
           "flex flex-col gap-4 lg:shadow-xl lg:p-16 bg-white",
-          className
+          className,
         )}
         {...props}
       >
@@ -101,7 +101,7 @@ export function LoginForm({
             "password",
             "Password",
             "password",
-            "Enter a password"
+            "Enter a password",
           )}
 
           <Button

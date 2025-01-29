@@ -60,8 +60,8 @@ export const VerificationEmail = ({
 
           <Text style={cautionText}>
             This link will expire in{" "}
-            {EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_MINUTES} minutes for your
-            security.
+            {EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_MINUTES} minutes for
+            your security.
           </Text>
 
           <Text style={paragraph}>

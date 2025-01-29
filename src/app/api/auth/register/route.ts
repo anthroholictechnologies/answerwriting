@@ -9,7 +9,7 @@ import { hashPassword } from "answerwriting/lib/utils/password.utils";
 import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
 
 export async function POST(
-  request: NextRequest
+  request: NextRequest,
 ): Promise<NextResponse<ApiResponse>> {
   try {
     // Parse the request body the body is validated by zod
@@ -27,7 +27,7 @@ export async function POST(
             message: `User already exists with email ${email}`,
             errorCode: ErrorCodes.EMAIL_CONFLICT_EXCEPTION,
           },
-          { status: 409 }
+          { status: 409 },
         );
       } else {
         // If the user is unverfied and is again registering
@@ -61,8 +61,9 @@ export async function POST(
           });
         });
         return NextResponse.json({
+          errorCode: ErrorCodes.RESENT_VERIFICATION_EMAIL,
           message: "Successfully re-sent the verification email.",
-          success: true,
+          success: false,
         });
       }
     } else {
