@@ -50,9 +50,10 @@ export function LoginForm() {
 
     if (result.success) {
       toast.info({
-        title: "Successfull login!",
-        description: "Redirecting you to the dashboard...",
+        title: "Login Successful!",
+        description: "You're being redirected to your dashboard...",
       });
+
       setTimeout(() => {
         router.push("/dashboard");
       }, 2000);
@@ -84,8 +85,10 @@ export function LoginForm() {
         });
       } else if (result.errorCode === ErrorCodes.USER_NOT_FOUND) {
         toast.warning({
-          title: "No account with this email found!",
-          description: "Click on the button below to create an account.",
+          title: "No account found with this email",
+          description:
+            "It looks like you haven’t signed up yet. Click the button below to create an account.",
+
           action: (
             <ToastAction
               altText="Try again"
@@ -109,9 +112,10 @@ export function LoginForm() {
         });
       } else if (result.errorCode === ErrorCodes.VERIFICATION_EMAIL_PENDING) {
         toast.error({
-          title: "Please verify your email id first",
+          title: "Email Verification Required",
           description:
-            "Please verify your email id first to continue with login. Check your email or register to get a new verification email.",
+            "Please verify your email before logging in. Check your inbox for the verification email, or register again to receive a new one.",
+
           action: (
             <ToastAction
               altText="Try again"
@@ -149,7 +153,7 @@ export function LoginForm() {
     name: string,
     label: string,
     type = "text",
-    placeholder: string,
+    placeholder: string
   ) => (
     <FormField
       control={form.control}
@@ -210,7 +214,7 @@ export function LoginForm() {
               "password",
               "Password",
               "password",
-              "Enter a password",
+              "Enter a password"
             )}
 
             <Button

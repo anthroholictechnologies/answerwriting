@@ -48,16 +48,17 @@ export function RegisterForm({
         const resp = await registerUser(data);
         if (resp.success) {
           toast.info({
-            title: "Registration Successful",
+            title: "Registration Successful 🎉",
             description:
-              "We've sent you a verification email. Please check your inbox.",
+              "A verification email has been sent to your inbox. Please check your email and follow the instructions to activate your account.",
           });
         } else {
           if (resp.errorCode === ErrorCodes.EMAIL_CONFLICT_EXCEPTION) {
             toast.error({
-              title: "Email already registered.",
+              title: "Email Already Registered",
               description:
-                "You have already registered with us. Please Sign in to continue.",
+                "An account with this email already exists. Please sign in to continue.",
+
               action: (
                 <ToastAction
                   altText="Try again"
@@ -82,8 +83,9 @@ export function RegisterForm({
             });
           } else if (resp.errorCode === ErrorCodes.RESENT_VERIFICATION_EMAIL) {
             toast.info({
-              title: "Re-sent the verification email",
-              description: "We've re-sent you a verification email again.",
+              title: "Verification Email Sent Again",
+              description:
+                "We've sent you a new verification email. Please check your inbox.",
             });
           }
         }
@@ -115,14 +117,14 @@ export function RegisterForm({
           ),
         });
       }
-    },
+    }
   );
 
   const renderFormField = (
     name: string,
     label: string,
     type = "text",
-    placeholder: string,
+    placeholder: string
   ) => (
     <FormField
       control={form.control}
@@ -156,7 +158,7 @@ export function RegisterForm({
         <div
           className={cn(
             "flex flex-col gap-4 lg:shadow-xl lg:p-8 bg-white",
-            className,
+            className
           )}
         >
           {/* Header */}
@@ -188,7 +190,7 @@ export function RegisterForm({
               "password",
               "Password",
               "password",
-              "Enter a password",
+              "Enter a password"
             )}
 
             <Button
