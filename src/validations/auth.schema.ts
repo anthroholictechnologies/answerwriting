@@ -3,10 +3,13 @@ import { z } from "zod";
 export const registrationSchema = z.object({
   name: z
     .string()
-    .min(1, { message: "First name is required" })
-    .max(50, { message: "First name must be less than 50 characters" })
+    .min(1, { message: "Please enter your name." })
+    .max(50, { message: "Please enter a name shorter than 50 charecters" })
     .trim(),
-  email: z.string().email({ message: "Invalid email address" }).trim(),
+  email: z
+    .string({ message: "Please enter a valid email address" })
+    .email({ message: "Please enter a valid email address." })
+    .trim(),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" })
@@ -25,6 +28,16 @@ export const registrationSchema = z.object({
 });
 export type RegistrationInput = z.infer<typeof registrationSchema>;
 
+export const loginSchema = z.object({
+  email: z
+    .string({ message: "Please enter a valid email address" })
+    .email({ message: "Please enter a valid email address." })
+    .trim(),
+  password: z.string({ message: "Please enter your password." }),
+});
+
+export type LoginInput = z.infer<typeof loginSchema>;
+
 export const verifyEmailSchema = z.object({
   a: z.string(),
   b: z.string(),
@@ -32,7 +45,10 @@ export const verifyEmailSchema = z.object({
 export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>;
 
 export const forgetPasswordSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }).trim(),
+  email: z
+    .string()
+    .email({ message: "Please enter a valid email address." })
+    .trim(),
 });
 
 export type ForgetPasswordInput = z.infer<typeof forgetPasswordSchema>;

@@ -1,48 +1,26 @@
-import { EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_HOURS } from "answerwriting/config";
+import { EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_MINUTES } from "answerwriting/config";
 import { prisma } from "answerwriting/prisma";
-import { RegistrationInput } from "answerwriting/validations/authSchema";
+import { RegistrationInput } from "answerwriting/validations/auth.schema";
 import { NextRequest, NextResponse } from "next/server";
-import {
-  createVerificationToken,
-  getLatestVerificationToken,
-  hasTooManyVerificationEmails,
-  isTokenExpired,
-  sendEmailVerificationMail,
-} from "answerwriting/services/emailVerification.service";
+import { sendEmailVerificationMail } from "answerwriting/services/email-verification.service";
 import { DateTime } from "luxon";
 import { generateToken } from "answerwriting/lib/utils/token.utils";
 import { hashPassword } from "answerwriting/lib/utils/password.utils";
 import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
 
-/**
- * High-Level Logic:
- * 1. Parse and validate the registration request body.
- * 2. Check if a user with the provided email already exists:
- *    a. If the user exists and is verified, return a conflict response.
- *    b. If the user exists but is not verified:
- *       i. Check if a verification token already exists:
- *          - If expired, send a new verification email unless rate-limited.
- *          - If pending, inform the user to check their email.
- *       ii. If no token exists, generate a new token and send the email.
- *    c. If the user does not exist, create a new user, generate a token, and send a verification email.
- * 3. Handle errors and return appropriate responses.
- */
-
-// Main registration handler
 export async function POST(
   request: NextRequest,
 ): Promise<NextResponse<ApiResponse>> {
   try {
-    // Step 1: Parse and validate the request body
+    // Parse the request body the body is validated by zod
     const body = (await request.json()) as RegistrationInput;
     const { email, password, name } = body;
 
-    // Step 2: Check if a user with the provided email already exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
     if (existingUser) {
-      // Case 2a: User already exists and is verified
       if (existingUser.emailVerified) {
+        // If there is already a verified user with this email then return error.
         return NextResponse.json(
           {
             success: false,
@@ -51,67 +29,45 @@ export async function POST(
           },
           { status: 409 },
         );
-      }
-
-      // Case 2b: User exists but is not verified
-      const latestVerificationToken = await getLatestVerificationToken(
-        existingUser.id,
-      );
-      if (latestVerificationToken) {
-        if (isTokenExpired(latestVerificationToken.expirationDate)) {
-          // Case 2b-i: Expired verification token
-          if (await hasTooManyVerificationEmails(existingUser.id)) {
-            return NextResponse.json(
-              {
-                message:
-                  "Too many attempts to register. Please try again after 24 hours.",
-                success: false,
-                errorCode: ErrorCodes.TOO_MANY_VERIFICATION_EMAILS_SENT,
-              },
-              { status: 429 },
-            );
-          } else {
-            const token = await createVerificationToken(existingUser.id);
-            await sendEmailVerificationMail({
-              emailTo: existingUser.email,
-              name: existingUser.name as string,
+      } else {
+        // If the user is unverfied and is again registering
+        // Send a new verification email, and update his password or name.
+        const hashNewPassword = await hashPassword(password);
+        await prisma.$transaction(async (tx) => {
+          await tx.user.update({
+            where: { id: existingUser.id },
+            data: {
+              name: name,
+              password: hashNewPassword,
+            },
+          });
+          const token = generateToken();
+          await tx.emailVerificationToken.create({
+            data: {
               userId: existingUser.id,
               token,
-            });
-            return NextResponse.json({
-              message: "Successfully re-sent the verification email.",
-              success: true,
-            });
-          }
-        } else {
-          // Case 2b-ii: Pending verification email
-          return NextResponse.json(
-            {
-              success: false,
-              message:
-                "Verification email is pending. Please check your email for the verification link.",
-              errorCode: ErrorCodes.VERIFICATION_EMAIL_PENDING,
+              expirationDate: DateTime.utc()
+                .plus({
+                  minutes: EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_MINUTES,
+                })
+                .toJSDate(),
             },
-            { status: 409 },
-          );
-        }
-      } else {
-        // Case 2b-iii: No verification token exists
-        const token = await createVerificationToken(existingUser.id);
-        await sendEmailVerificationMail({
-          emailTo: existingUser.email,
-          name: existingUser.name as string,
-          userId: existingUser.id,
-          token,
+          });
+          await sendEmailVerificationMail({
+            emailTo: existingUser.email,
+            name: name as string,
+            userId: existingUser.id,
+            token,
+          });
         });
         return NextResponse.json({
-          message:
-            "Please verify your email. We've sent you a verification email.",
-          success: true,
+          errorCode: ErrorCodes.RESENT_VERIFICATION_EMAIL,
+          message: "Successfully re-sent the verification email.",
+          success: false,
         });
       }
     } else {
-      // Step 3: Create a new user if the email does not exist
+      // If the user does not exists in the system then create a new user and send the verification email.
       const hashedPassword = await hashPassword(password);
 
       // Creation of the user and token must be done in a prisma transaction.
@@ -132,7 +88,7 @@ export async function POST(
             token,
             expirationDate: DateTime.utc()
               .plus({
-                hours: EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_HOURS,
+                minutes: EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_MINUTES,
               })
               .toJSDate(),
           },
@@ -151,7 +107,6 @@ export async function POST(
       });
     }
   } catch (err) {
-    // Step 4: Handle errors
     console.error("Error in registering user", err);
     return NextResponse.json({
       success: false,

@@ -7,7 +7,7 @@ import { prisma } from "answerwriting/prisma";
 import { generateToken } from "answerwriting/lib/utils/token.utils";
 import { DateTime } from "luxon";
 import { Resend } from "resend";
-import ForgetPasswordEmailTemplate from "../../emails/ForgetPasswordEmailTemplate";
+import ForgetPasswordEmailTemplate from "../../emails/forgetpassword.email.template";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -40,9 +40,6 @@ export const sendForgetPasswordMail = async ({
   userId: string;
   emailTo: string;
 }) => {
-  if (process.env.NODE_ENV === "development") {
-    return;
-  }
   await resend.emails.send({
     from: process.env.RESEND_EMAIL_FROM as string,
     to: [emailTo],

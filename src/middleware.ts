@@ -6,26 +6,22 @@ import {
 import { validateRequest } from "./lib/utils/validation.utils";
 import { formatZodErrors } from "./lib/utils/validation.utils";
 import { ApiRoutePaths, ErrorCodes } from "./types/general.types";
-import { getToken } from "next-auth/jwt";
+import { auth } from "./auth";
 
 export async function middleware(request: NextRequest) {
   const pathName = request.nextUrl.pathname as ApiRoutePaths;
-  // Middleware 1: Authentication Middleware
+  const session = await auth();
+  console.log("=====session", session);
+
   if (apiRoutesWhichRequiresAuthentication.includes(pathName)) {
-    const token = await getToken({
-      req: request,
-      secret: process.env.AUTH_SECRET,
-    });
-    console.log("=====token====", token);
-    if (!token) {
+    if (!session?.user) {
       return NextResponse.redirect(new URL("/auth/login", request.url));
-    } else if (!token.emailVerified) {
-      return NextResponse.redirect(new URL("/auth/register", request.url));
+    }
+
+    if (session.user.password && !session.user.emailVerified) {
+      return NextResponse.redirect(new URL("/auth/login", request.url));
     }
   }
-
-  // Middleware 2: Validation Middleware
-
   // API validation logic
   if (apiRoutesWhichRequiresValidations.includes(pathName)) {
     const body = await request.json();
@@ -62,3 +58,7 @@ export async function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+};

@@ -11,11 +11,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   adapter: PrismaAdapter(prisma),
   secret: process.env.AUTH_SECRET,
+  pages: {
+    signIn: "/auth/login",
+  },
   callbacks: {
     async jwt({ token, user }) {
-      if (!user.id || !user.email) {
-        return null;
-      }
+      // When user logs in, update token
       if (user) {
         token.id = user.id;
         token.email = user.email;
@@ -27,6 +28,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     async session({ session, token }) {
+      if (!session) {
+        return session;
+      }
       if (token) {
         session.user = {
           id: token.id,
@@ -45,11 +49,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET! as string,
     }),
     CredentialsProvider({
-      authorize: async (credentials) =>
-        authenticate({
+      authorize: async (credentials) => {
+        const data = await authenticate({
           email: credentials.email as string | undefined,
           password: credentials.password as string | undefined,
-        }),
+        });
+
+        return data;
+      },
     }),
   ],
 });

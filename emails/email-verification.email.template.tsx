@@ -12,7 +12,7 @@ import {
 } from "@react-email/components";
 import {
   COMPANY_NAME,
-  EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_HOURS,
+  EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_MINUTES,
   LOGO_BANNER_URI,
 } from "answerwriting/config";
 import * as React from "react";
@@ -60,8 +60,8 @@ export const VerificationEmail = ({
 
           <Text style={cautionText}>
             This link will expire in{" "}
-            {EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_HOURS} hours for your
-            security.
+            {EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_MINUTES} minutes for
+            your security.
           </Text>
 
           <Text style={paragraph}>

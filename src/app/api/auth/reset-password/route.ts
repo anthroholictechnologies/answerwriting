@@ -1,6 +1,6 @@
-import { isTokenExpired } from "answerwriting/services/resetPassword.service";
+import { isTokenExpired } from "answerwriting/services/reset-password.service";
 import { prisma } from "answerwriting/prisma";
-import { ResetPasswordInput } from "answerwriting/validations/authSchema";
+import { ResetPasswordInput } from "answerwriting/validations/auth.schema";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { compareToken } from "answerwriting/lib/utils/token.utils";
