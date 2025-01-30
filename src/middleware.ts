@@ -1,11 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import { apiRoutesWhichRequiresValidations } from "./config";
+import {
+  apiRoutesWhichRequiresAuthentication,
+  apiRoutesWhichRequiresValidations,
+} from "./config";
 import { validateRequest } from "./lib/utils/validation.utils";
 import { formatZodErrors } from "./lib/utils/validation.utils";
 import { ApiRoutePaths, ErrorCodes } from "./types/general.types";
+import { auth } from "./auth";
 
 export async function middleware(request: NextRequest) {
   const pathName = request.nextUrl.pathname as ApiRoutePaths;
+  const session = await auth();
+  console.log("=====session", session);
+
+  if (apiRoutesWhichRequiresAuthentication.includes(pathName)) {
+    if (!session?.user) {
+      return NextResponse.redirect(new URL("/auth/login", request.url));
+    }
+
+    if (session.user.password && !session.user.emailVerified) {
+      return NextResponse.redirect(new URL("/auth/login", request.url));
+    }
+  }
   // API validation logic
   if (apiRoutesWhichRequiresValidations.includes(pathName)) {
     const body = await request.json();
@@ -42,3 +58,7 @@ export async function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+};

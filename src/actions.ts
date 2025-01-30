@@ -1,10 +1,14 @@
 "use server";
 
 import { AuthError } from "next-auth";
-import { signIn } from "./auth";
+import { signIn, signOut } from "./auth";
 import { LoginInput } from "./validations/auth.schema";
 import { ApiResponse, ErrorCodes } from "./types/general.types";
 
+export const logout = async () => {
+  console.log("User loggin out of the universe");
+  return signOut({ redirectTo: "/auth/login" });
+};
 export const signInWithGoogle = async () => {
   return signIn("google", { redirectTo: "/dashboard" });
 };
