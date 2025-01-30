@@ -1,7 +1,4 @@
 "use client";
-
-import Link from "next/link";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAsyncFn } from "react-use";
@@ -11,7 +8,8 @@ import { useCustomToast } from "../react-common/toast";
 import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
 import Spinner from "../react-common/spinner";
 import { Button } from "../ui/button";
-import ImpactSpan from "../react-common/impact-span";
+import AuthContainer from "./auth-container";
+import AuthHeader from "./auth-header";
 
 // Type Definitions
 interface VerifyEmailProps {
@@ -111,42 +109,31 @@ const VerifyEmail = ({ userId, token }: VerifyEmailProps) => {
       )}
 
       {state && (
-        <div className="flex flex-col justify-center lg:shadow-xl lg:p-8 bg-white">
-          <div className="flex flex-col items-center gap-8 text-center">
-            {/* Logo */}
-            <div className="flex flex-col items-center">
-              <Link href="/">
-                <Image
-                  src="/logos/3_resize.png"
-                  alt="answerwriting.com logo"
-                  height={50}
-                  width={250}
-                  className="w-[90%] h-[100%] lg:h-[120%]"
-                />
-              </Link>
-              <p className="text-balance ml-[13%] -mt-2 text-[0.7rem] italic">
-                Craft <ImpactSpan text="Better Answers" /> with AI Precision
-              </p>
-            </div>
+        <>
+          <AuthContainer classNames="lg:p-8">
+            <div className="flex flex-col items-center gap-8 text-center">
+              <AuthHeader />
+              {/* Message & Button */}
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
+                  <h1 className="text-xl font-bold">{state.message}</h1>
+                  <p className="text-sm text-secondary text-center">
+                    {state.explanation}
+                  </p>
+                </div>
 
-            {/* Message & Button */}
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-2">
-                <h1 className="text-xl font-bold">{state.message}</h1>
-                <p className="text-sm text-secondary text-center">
-                  {state.explanation}
-                </p>
+                <div className="flex justify-center">
+                  <Button
+                    className="w-[8rem] p-4 mt-4"
+                    onClick={() => router.push(state.redirectUrl)}
+                  >
+                    {state.redirectText}
+                  </Button>
+                </div>
               </div>
-
-              <Button
-                className="max-w-xs mx-auto p-4 mt-4"
-                onClick={() => router.push(state.redirectUrl)}
-              >
-                {state.redirectText}
-              </Button>
             </div>
-          </div>
-        </div>
+          </AuthContainer>
+        </>
       )}
     </div>
   );

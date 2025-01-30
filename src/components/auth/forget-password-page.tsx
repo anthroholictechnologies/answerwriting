@@ -1,14 +1,10 @@
 "use client";
-
 import { useAsyncFn } from "react-use";
 import { forgetPassword } from "answerwriting/lib/utils/api/auth.api";
 import { useCustomToast } from "../react-common/toast";
 import { Button } from "../ui/button";
 import Spinner from "../react-common/spinner";
 import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
-import Link from "next/link";
-import Image from "next/image";
-import ImpactSpan from "../react-common/impact-span";
 import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -27,6 +23,8 @@ import {
 } from "../ui/form";
 import { ToastAction } from "../ui/toast";
 import { useRouter } from "next/navigation";
+import AuthContainer from "./auth-container";
+import AuthHeader from "./auth-header";
 
 const ForgotPassword = () => {
   const form = useForm<z.infer<typeof forgetPasswordSchema>>({
@@ -69,7 +67,7 @@ const ForgotPassword = () => {
         });
       }
     },
-    [],
+    []
   );
 
   const handleError = (resp: ApiResponse) => {
@@ -151,22 +149,8 @@ const ForgotPassword = () => {
       )}
 
       <Form {...form}>
-        <div className="flex flex-col gap-4 justify-center lg:shadow-xl lg:px-16 lg:py-8 bg-white">
-          <div className="flex flex-col items-center">
-            <Link href="/">
-              <Image
-                src="/logos/3_resize.png"
-                alt="answerwriting.com logo"
-                height={50}
-                width={250}
-                className="w-[90%] h-[100%] lg:h-[120%]"
-              />
-            </Link>
-            <p className="text-balance ml-[13%] -mt-2 text-[0.7rem] italic">
-              Craft <ImpactSpan text="Better Answers" /> with AI Precision
-            </p>
-          </div>
-
+        <AuthContainer classNames="lg:py-8">
+          <AuthHeader />
           <div className="grid gap-4">
             <FormField
               control={form.control}
@@ -198,7 +182,8 @@ const ForgotPassword = () => {
               </Button>
 
               <Button
-                className="w-[8rem] bg-transparent text-primary border hover:bg-transparent border-primary-dark shadow-none"
+                variant="outline"
+                className="w-[8rem]"
                 disabled={loading}
                 onClick={() => {
                   router.push("/auth/login");
@@ -208,7 +193,7 @@ const ForgotPassword = () => {
               </Button>
             </div>
           </div>
-        </div>
+        </AuthContainer>
       </Form>
     </div>
   );

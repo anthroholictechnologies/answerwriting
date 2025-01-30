@@ -3,12 +3,10 @@ import { Button } from "answerwriting/components/ui/button";
 import { Input } from "answerwriting/components/ui/input";
 import AnswerWritingLink from "../react-common/link";
 import ImpactSpan from "../react-common/impact-span";
-import LoginWithGoogleButton from "../react-common/login-with-google";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginInput } from "answerwriting/validations/auth.schema";
-import Link from "next/link";
-import Image from "next/image";
+
 import {
   Form,
   FormControl,
@@ -26,9 +24,11 @@ import Spinner from "../react-common/spinner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardDescription, CardTitle } from "../ui/card";
+import AuthContainer from "./auth-container";
+import AuthHeader from "./auth-header";
+import AuthFooter from "./auth-footer";
 
 export function LoginForm({ urlError }: { urlError: string }) {
-  console.log("======urlError", urlError);
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
@@ -152,7 +152,7 @@ export function LoginForm({ urlError }: { urlError: string }) {
     name: string,
     label: string,
     type = "text",
-    placeholder: string,
+    placeholder: string
   ) => (
     <FormField
       control={form.control}
@@ -193,7 +193,7 @@ export function LoginForm({ urlError }: { urlError: string }) {
       )}
       {urlError === "OAuthAccountNotLinked" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/50 backdrop-blur-md p-4">
-          <Card className="p-4 shadow-lg">
+          <Card className="p-4">
             <CardTitle> Account already registered. </CardTitle>
             <CardDescription className="mt-4 flex gap-4 flex-col">
               {` It looks like you've already registered with this email and password.
@@ -212,29 +212,14 @@ export function LoginForm({ urlError }: { urlError: string }) {
         </div>
       )}
       <Form {...form}>
-        <div className="flex flex-col gap-4 lg:shadow-xl lg:p-16 bg-white">
-          <div className="flex flex-col items-center gap-8 text-center">
-            {/* Logo and tagline */}
-            <div className="flex flex-col items-center">
-              <Link href="/">
-                <Image
-                  src="/logos/3_resize.png"
-                  alt="answerwriting.com logo"
-                  height={50}
-                  width={250}
-                  className="w-[90%] h-[100%] lg:h-[120%]"
-                />
-              </Link>
-              <p className="text-balance ml-[13%] -mt-2 text-[0.7rem] italic">
-                Craft <ImpactSpan text="Better Answers" /> with AI Precision
-              </p>
-            </div>
-            {/* Heading */}
-            <h1 className="text-2xl font-bold">
-              <ImpactSpan text="Login" /> to your account
-            </h1>
-          </div>
-
+        <AuthContainer>
+          <AuthHeader
+            heading={
+              <h1 className="text-2xl font-bold">
+                <ImpactSpan text="Login" /> to your account
+              </h1>
+            }
+          />
           {/* Form fields */}
           <div className="grid gap-6">
             {renderFormField("email", "Email", "email", "jane@example.com")}
@@ -242,45 +227,22 @@ export function LoginForm({ urlError }: { urlError: string }) {
               "password",
               "Password",
               "password",
-              "Enter a password",
+              "Enter a password"
             )}
           </div>
-
-          <div className="grid gap-2">
-            <Button
-              type="submit"
-              className="w-full md:max-w-[16rem] mx-auto mt-4"
-              disabled={!form.formState.isValid || form.formState.isSubmitting}
-              onClick={async () => {
-                await loginWithCreds({
-                  email: form.getValues().email,
-                  password: form.getValues().password,
-                });
-              }}
-            >
-              Sign in
-            </Button>
-
-            {/* Divider */}
-            <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:flex after:items-center after:border-t after:border-border p-2">
-              <span className="relative z-10 bg-background px-2 text-muted-foreground">
-                Or continue with
-              </span>
-            </div>
-            {/* Social login button */}
-            <LoginWithGoogleButton />
-          </div>
-
-          {/* Footer */}
-          <p className="text-center text-xs text-muted-foreground">
-            {`Don't have an account? `}
-            <AnswerWritingLink
-              href="/auth/register"
-              linkText="register"
-              overrideClasses="underline underline-offset-4 text-xs md:text-sm"
-            />
-          </p>
-        </div>
+          <AuthFooter
+            btnText="Sign in"
+            disabled={!form.formState.isValid || form.formState.isSubmitting}
+            onClick={async () => {
+              await loginWithCreds({
+                email: form.getValues().email,
+                password: form.getValues().password,
+              });
+            }}
+            linkText="register"
+            href="/auth/register"
+          />
+        </AuthContainer>
       </Form>
     </div>
   );

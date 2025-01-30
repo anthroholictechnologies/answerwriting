@@ -25,6 +25,8 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+import AuthContainer from "./auth-container";
+import AuthHeader from "./auth-header";
 
 export default function ResetPasswordForm({
   token,
@@ -84,7 +86,7 @@ export default function ResetPasswordForm({
           ),
         });
       }
-    },
+    }
   );
 
   const form = useForm<ResetPasswordInput>({
@@ -103,21 +105,8 @@ export default function ResetPasswordForm({
       )}
 
       <Form {...form}>
-        <div className="flex flex-col gap-4 justify-center lg:shadow-xl lg:px-16 lg:py-8 bg-white">
-          <div className="flex flex-col items-center">
-            <Link href="/">
-              <Image
-                src="/logos/3_resize.png"
-                alt="answerwriting.com logo"
-                height={50}
-                width={250}
-                className="w-[90%] h-[100%] lg:h-[120%]"
-              />
-            </Link>
-            <p className="text-balance ml-[13%] -mt-2 text-[0.7rem] italic">
-              Craft <ImpactSpan text="Better Answers" /> with AI Precision
-            </p>
-          </div>
+        <AuthContainer classNames="lg:py-8">
+          <AuthHeader />
 
           <div className="grid gap-4">
             <FormField
@@ -150,7 +139,8 @@ export default function ResetPasswordForm({
               </Button>
 
               <Button
-                className="w-[8rem] bg-transparent text-primary border hover:bg-transparent border-primary-dark shadow-none"
+                variant="outline"
+                className="w-[8rem]"
                 disabled={loading}
                 onClick={() => {
                   router.push("/auth/login");
@@ -160,7 +150,7 @@ export default function ResetPasswordForm({
               </Button>
             </div>
           </div>
-        </div>
+        </AuthContainer>
       </Form>
     </div>
   );
