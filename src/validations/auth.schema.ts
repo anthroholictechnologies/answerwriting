@@ -45,7 +45,10 @@ export const verifyEmailSchema = z.object({
 export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>;
 
 export const forgetPasswordSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }).trim(),
+  email: z
+    .string()
+    .email({ message: "Please enter a valid email address." })
+    .trim(),
 });
 
 export type ForgetPasswordInput = z.infer<typeof forgetPasswordSchema>;

@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "answerwriting/components/ui/button";
 import { Input } from "answerwriting/components/ui/input";
 import AnswerWritingLink from "../react-common/link";
@@ -54,9 +53,7 @@ export function LoginForm() {
         description: "You're being redirected to your dashboard...",
       });
 
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 2000);
+      router.push("/dashboard");
     } else {
       if (result?.errorCode === ErrorCodes.INVALID_CREDENTIALS) {
         toast.error({
@@ -153,14 +150,23 @@ export function LoginForm() {
     name: string,
     label: string,
     type = "text",
-    placeholder: string
+    placeholder: string,
   ) => (
     <FormField
       control={form.control}
       name={name as keyof z.infer<typeof loginSchema>}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <div className="flex justify-between">
+            <FormLabel>{label}</FormLabel>
+            {name === "password" && (
+              <AnswerWritingLink
+                href="/auth/forget-password"
+                linkText="Forgot your password?"
+                overrideClasses="ml-auto text-xs md:text-sm p-0 m-0 h-1"
+              />
+            )}
+          </div>
           <FormControl>
             <Input
               id={name}
@@ -208,18 +214,20 @@ export function LoginForm() {
           </div>
 
           {/* Form fields */}
-          <div className="grid gap-4">
+          <div className="grid gap-6">
             {renderFormField("email", "Email", "email", "jane@example.com")}
             {renderFormField(
               "password",
               "Password",
               "password",
-              "Enter a password"
+              "Enter a password",
             )}
+          </div>
 
+          <div className="grid gap-2">
             <Button
               type="submit"
-              className="w-full max-w-[16rem] mx-auto mt-4"
+              className="w-full md:max-w-[16rem] mx-auto mt-4"
               disabled={!form.formState.isValid || form.formState.isSubmitting}
               onClick={async () => {
                 await loginWithCreds({
@@ -237,17 +245,16 @@ export function LoginForm() {
                 Or continue with
               </span>
             </div>
-
             {/* Social login button */}
             <LoginWithGoogleButton />
           </div>
 
           {/* Footer */}
-          <p className="text-center text-xs md:text-sm mt-3">
-            Already have an account?{" "}
+          <p className="text-center text-xs text-muted-foreground">
+            {`Don't have an account? `}
             <AnswerWritingLink
               href="/auth/register"
-              linkText="Sign up"
+              linkText="register"
               overrideClasses="underline underline-offset-4 text-xs md:text-sm"
             />
           </p>

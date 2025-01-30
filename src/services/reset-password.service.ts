@@ -40,9 +40,6 @@ export const sendForgetPasswordMail = async ({
   userId: string;
   emailTo: string;
 }) => {
-  if (process.env.NODE_ENV === "development") {
-    return;
-  }
   await resend.emails.send({
     from: process.env.RESEND_EMAIL_FROM as string,
     to: [emailTo],

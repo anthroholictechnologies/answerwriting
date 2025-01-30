@@ -25,7 +25,6 @@ export const signInWithCredentials = async ({
       message: "Logged in successfully",
     };
   } catch (err: unknown) {
-    console.log("err=============", (err as AuthError).cause?.err);
     if (err instanceof AuthError) {
       if (err.type === "CredentialsSignin") {
         return {
@@ -55,8 +54,6 @@ export const signInWithCredentials = async ({
         };
       }
     } else {
-      // const castedError = err as Error;
-
       return {
         success: false,
         errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,

@@ -6,7 +6,7 @@ const LoginWithGoogleButton = () => {
     <Button
       role="button"
       variant="outline"
-      className="w-full max-w-[16rem] mx-auto"
+      className="w-full md:max-w-[16rem] mx-auto"
       onClick={() => {
         signInWithGoogle();
       }}

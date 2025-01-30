@@ -117,14 +117,14 @@ export function RegisterForm({
           ),
         });
       }
-    }
+    },
   );
 
   const renderFormField = (
     name: string,
     label: string,
     type = "text",
-    placeholder: string
+    placeholder: string,
   ) => (
     <FormField
       control={form.control}
@@ -157,8 +157,8 @@ export function RegisterForm({
       <Form {...form}>
         <div
           className={cn(
-            "flex flex-col gap-4 lg:shadow-xl lg:p-8 bg-white",
-            className
+            "flex flex-col gap-4 lg:shadow-xl lg:p-8 lg:px-16 bg-white",
+            className,
           )}
         >
           {/* Header */}
@@ -190,12 +190,12 @@ export function RegisterForm({
               "password",
               "Password",
               "password",
-              "Enter a password"
+              "Enter a password",
             )}
 
             <Button
               type="submit"
-              className="w-full max-w-[16rem] mx-auto mt-4"
+              className="w-full md:max-w-[16rem] mx-auto mt-4 py-5"
               disabled={!form.formState.isValid || form.formState.isSubmitting}
               onClick={() => {
                 onSubmit(form.getValues());
@@ -214,11 +214,11 @@ export function RegisterForm({
           </div>
 
           {/* Footer */}
-          <p className="text-center text-xs md:text-sm">
+          <p className="text-center text-xs text-mu">
             Already have an account?{" "}
             <AnswerWritingLink
               href="/auth/login"
-              linkText="Sign in"
+              linkText="Login"
               overrideClasses="underline underline-offset-4 text-xs md:text-sm"
             />
           </p>
