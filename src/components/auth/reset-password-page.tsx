@@ -14,9 +14,6 @@ import { ToastAction } from "../ui/toast";
 import { ErrorCodes } from "answerwriting/types/general.types";
 import Spinner from "../react-common/spinner";
 import { useAsyncFn } from "react-use";
-import Link from "next/link";
-import Image from "next/image";
-import ImpactSpan from "../react-common/impact-span";
 import {
   Form,
   FormControl,
