@@ -50,7 +50,7 @@ export default function ResetPasswordForm({
             description: "Your password has been reset. You can now log in.",
           });
 
-          router.push("/login");
+          router.push("/auth/login");
         } else if (
           result.errorCode === ErrorCodes.RESET_PASSWORD_LINK_EXPIRED
         ) {
