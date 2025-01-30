@@ -25,8 +25,10 @@ import { useCustomToast } from "../react-common/toast";
 import Spinner from "../react-common/spinner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Card, CardDescription, CardTitle } from "../ui/card";
 
 export function LoginForm({ urlError }: { urlError: string }) {
+  console.log("======urlError", urlError);
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
@@ -142,12 +144,6 @@ export function LoginForm({ urlError }: { urlError: string }) {
           description:
             "Please continue with google or try a different email account.",
         });
-      } else if (urlError === "OAuthAccountNotLinked") {
-        toast.error({
-          title: "You have already registered using email and password.",
-          description:
-            "Please use a different email to continue with google or try login using email and password.",
-        });
       }
     }
   };
@@ -156,7 +152,7 @@ export function LoginForm({ urlError }: { urlError: string }) {
     name: string,
     label: string,
     type = "text",
-    placeholder: string
+    placeholder: string,
   ) => (
     <FormField
       control={form.control}
@@ -195,6 +191,26 @@ export function LoginForm({ urlError }: { urlError: string }) {
           <Spinner />
         </div>
       )}
+      {urlError === "OAuthAccountNotLinked" && (
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/50 backdrop-blur-md p-4">
+          <Card className="p-4 shadow-lg">
+            <CardTitle> Account already registered. </CardTitle>
+            <CardDescription className="mt-4 flex gap-4 flex-col">
+              {` It looks like you've already registered with this email and password.
+          Please use your credentials to log in, or try signing in with a
+          different Google account.`}
+
+              <Button
+                className="max-w-[8rem] mx-auto"
+                onClick={() => router.push("/auth/login")}
+              >
+                {" "}
+                Try Again{" "}
+              </Button>
+            </CardDescription>
+          </Card>
+        </div>
+      )}
       <Form {...form}>
         <div className="flex flex-col gap-4 lg:shadow-xl lg:p-16 bg-white">
           <div className="flex flex-col items-center gap-8 text-center">
@@ -226,7 +242,7 @@ export function LoginForm({ urlError }: { urlError: string }) {
               "password",
               "Password",
               "password",
-              "Enter a password"
+              "Enter a password",
             )}
           </div>
 

@@ -7,5 +7,5 @@ export default async function LoginPage({
   searchParams: Promise<Record<any, any>>;
 }) {
   const params = await searchParams;
-  return <LoginForm urlError={params.error}/>;
+  return <LoginForm urlError={params.error} />;
 }
