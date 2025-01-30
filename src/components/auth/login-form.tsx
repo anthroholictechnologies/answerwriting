@@ -26,7 +26,7 @@ import Spinner from "../react-common/spinner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export function LoginForm() {
+export function LoginForm({ urlError }: { urlError: string }) {
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
@@ -142,6 +142,12 @@ export function LoginForm() {
           description:
             "Please continue with google or try a different email account.",
         });
+      } else if (urlError === "OAuthAccountNotLinked") {
+        toast.error({
+          title: "You have already registered using email and password.",
+          description:
+            "Please use a different email to continue with google or try login using email and password.",
+        });
       }
     }
   };
@@ -150,7 +156,7 @@ export function LoginForm() {
     name: string,
     label: string,
     type = "text",
-    placeholder: string,
+    placeholder: string
   ) => (
     <FormField
       control={form.control}
@@ -220,7 +226,7 @@ export function LoginForm() {
               "password",
               "Password",
               "password",
-              "Enter a password",
+              "Enter a password"
             )}
           </div>
 
