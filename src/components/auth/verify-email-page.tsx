@@ -111,7 +111,7 @@ const VerifyEmail = ({ userId, token }: VerifyEmailProps) => {
       )}
 
       {state && (
-        <div className="flex flex-col lg:shadow-xl lg:p-8 bg-white">
+        <div className="flex flex-col justify-center lg:shadow-xl lg:p-8 bg-white">
           <div className="flex flex-col items-center gap-8 text-center">
             {/* Logo */}
             <div className="flex flex-col items-center">

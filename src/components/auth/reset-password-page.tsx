@@ -103,7 +103,7 @@ export default function ResetPasswordForm({
       )}
 
       <Form {...form}>
-        <div className="flex flex-col gap-4 lg:shadow-xl lg:px-16 lg:py-8 bg-white">
+        <div className="flex flex-col gap-4 justify-center lg:shadow-xl lg:px-16 lg:py-8 bg-white">
           <div className="flex flex-col items-center">
             <Link href="/">
               <Image
@@ -151,7 +151,7 @@ export default function ResetPasswordForm({
 
               <Button
                 className="w-[8rem] bg-transparent text-primary border hover:bg-transparent border-primary-dark shadow-none"
-                disabled={loading || !form.formState.isValid}
+                disabled={loading}
                 onClick={() => {
                   router.push("/auth/login");
                 }}
