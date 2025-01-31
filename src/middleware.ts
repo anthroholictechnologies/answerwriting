@@ -15,11 +15,15 @@ export async function middleware(request: NextRequest) {
 
   if (apiRoutesWhichRequiresAuthentication.includes(pathName)) {
     if (!session?.user) {
-      return NextResponse.redirect(new URL("/auth/login", request.url));
+      return NextResponse.redirect(
+        new URL(ApiRoutePaths.PAGE_LOGIN, request.url)
+      );
     }
 
     if (session.user.password && !session.user.emailVerified) {
-      return NextResponse.redirect(new URL("/auth/login", request.url));
+      return NextResponse.redirect(
+        new URL(ApiRoutePaths.PAGE_LOGIN, request.url)
+      );
     }
   }
   // API validation logic
@@ -34,7 +38,7 @@ export async function middleware(request: NextRequest) {
       const formattedError = formatZodErrors(validations.error);
       console.error(
         `validation error in middleware for path: ${pathName}`,
-        formattedError,
+        formattedError
       );
       /*
        * Follow response format
@@ -51,7 +55,7 @@ export async function middleware(request: NextRequest) {
           errorCode: ErrorCodes.BAD_REQUEST_EXCEPTION,
           message: formattedError,
         },
-        { status: 400 },
+        { status: 400 }
       );
     }
   }

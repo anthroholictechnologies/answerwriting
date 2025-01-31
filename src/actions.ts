@@ -3,14 +3,13 @@
 import { AuthError } from "next-auth";
 import { signIn, signOut } from "./auth";
 import { LoginInput } from "./validations/auth.schema";
-import { ApiResponse, ErrorCodes } from "./types/general.types";
+import { ApiResponse, ApiRoutePaths, ErrorCodes } from "./types/general.types";
 
 export const logout = async () => {
-  console.log("User loggin out of the universe");
-  return signOut({ redirectTo: "/auth/login" });
+  return signOut({ redirectTo: ApiRoutePaths.PAGE_LOGIN });
 };
 export const signInWithGoogle = async () => {
-  return signIn("google", { redirectTo: "/dashboard" });
+  return signIn("google", { redirectTo: ApiRoutePaths.PAGE_DASHBOARD });
 };
 
 export const signInWithCredentials = async ({

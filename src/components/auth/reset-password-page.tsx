@@ -11,7 +11,7 @@ import {
 import { useCustomToast } from "../react-common/toast";
 import { resetPassword } from "answerwriting/lib/utils/api/auth.api";
 import { ToastAction } from "../ui/toast";
-import { ErrorCodes } from "answerwriting/types/general.types";
+import { ApiRoutePaths, ErrorCodes } from "answerwriting/types/general.types";
 import Spinner from "../react-common/spinner";
 import { useAsyncFn } from "react-use";
 import {
@@ -49,7 +49,7 @@ export default function ResetPasswordForm({
             description: "Your password has been reset. You can now log in.",
           });
 
-          router.push("/auth/login");
+          router.push(ApiRoutePaths.PAGE_LOGIN);
         } else if (
           result.errorCode === ErrorCodes.RESET_PASSWORD_LINK_EXPIRED
         ) {
@@ -140,7 +140,7 @@ export default function ResetPasswordForm({
                 className="w-[8rem]"
                 disabled={loading}
                 onClick={() => {
-                  router.push("/auth/login");
+                  router.push(ApiRoutePaths.PAGE_LOGIN);
                 }}
               >
                 Back

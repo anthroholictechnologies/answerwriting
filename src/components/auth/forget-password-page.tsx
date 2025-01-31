@@ -4,7 +4,7 @@ import { forgetPassword } from "answerwriting/lib/utils/api/auth.api";
 import { useCustomToast } from "../react-common/toast";
 import { Button } from "../ui/button";
 import Spinner from "../react-common/spinner";
-import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
+import { ApiResponse, ApiRoutePaths, ErrorCodes } from "answerwriting/types/general.types";
 import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -92,7 +92,7 @@ const ForgotPassword = () => {
                     backdrop-blur-sm
                     font-medium
                     text-sm"
-              onClick={() => router.push("/auth/register")}
+              onClick={() => router.push(ApiRoutePaths.PAGE_REGISTER)}
             >
               Register
             </ToastAction>
@@ -186,7 +186,7 @@ const ForgotPassword = () => {
                 className="w-[8rem]"
                 disabled={loading}
                 onClick={() => {
-                  router.push("/auth/login");
+                  router.push(ApiRoutePaths.PAGE_LOGIN);
                 }}
               >
                 Back

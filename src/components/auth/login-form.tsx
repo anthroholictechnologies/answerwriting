@@ -17,7 +17,7 @@ import {
 } from "../ui/form";
 import { z } from "zod";
 import { signInWithCredentials } from "answerwriting/actions";
-import { ErrorCodes } from "answerwriting/types/general.types";
+import { ApiRoutePaths, ErrorCodes } from "answerwriting/types/general.types";
 import { ToastAction } from "../ui/toast";
 import { useCustomToast } from "../react-common/toast";
 import Spinner from "../react-common/spinner";
@@ -55,7 +55,7 @@ export function LoginForm({ urlError }: { urlError: string }) {
         description: "You're being redirected to your dashboard...",
       });
 
-      router.push("/dashboard");
+      router.push(ApiRoutePaths.PAGE_DASHBOARD);
     } else {
       if (result?.errorCode === ErrorCodes.INVALID_CREDENTIALS) {
         toast.error({
@@ -103,7 +103,7 @@ export function LoginForm({ urlError }: { urlError: string }) {
                   backdrop-blur-sm
                   font-medium
                   text-sm"
-              onClick={() => router.push("/auth/register")}
+              onClick={() => router.push(ApiRoutePaths.PAGE_REGISTER)}
             >
               Register
             </ToastAction>
@@ -130,7 +130,7 @@ export function LoginForm({ urlError }: { urlError: string }) {
                   backdrop-blur-sm
                   font-medium
                   text-sm"
-              onClick={() => router.push("/auth/register")}
+              onClick={() => router.push(ApiRoutePaths.PAGE_REGISTER)}
             >
               Register
             </ToastAction>
@@ -202,7 +202,7 @@ export function LoginForm({ urlError }: { urlError: string }) {
 
               <Button
                 className="max-w-[8rem] mx-auto"
-                onClick={() => router.push("/auth/login")}
+                onClick={() => router.push(ApiRoutePaths.PAGE_LOGIN)}
               >
                 {" "}
                 Try Again{" "}
@@ -240,7 +240,7 @@ export function LoginForm({ urlError }: { urlError: string }) {
               });
             }}
             linkText="register"
-            href="/auth/register"
+            href={ApiRoutePaths.PAGE_REGISTER}
           />
         </AuthContainer>
       </Form>

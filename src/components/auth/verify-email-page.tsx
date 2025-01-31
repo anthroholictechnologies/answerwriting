@@ -5,7 +5,7 @@ import { useAsyncFn } from "react-use";
 import { verifyEmail } from "answerwriting/lib/utils/api/auth.api";
 import { ToastAction } from "../ui/toast";
 import { useCustomToast } from "../react-common/toast";
-import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
+import { ApiResponse, ApiRoutePaths, ErrorCodes } from "answerwriting/types/general.types";
 import Spinner from "../react-common/spinner";
 import { Button } from "../ui/button";
 import AuthContainer from "./auth-container";
@@ -58,7 +58,7 @@ const VerifyEmail = ({ userId, token }: VerifyEmailProps) => {
         message: "Email verification successful",
         explanation:
           "Email verified! 🚀 You're now ready to dive in. Log in and take your answer-writing journey to the next level!",
-        redirectUrl: "/auth/login",
+        redirectUrl: ApiRoutePaths.PAGE_LOGIN,
         redirectText: "Login",
       });
       return;
@@ -70,7 +70,7 @@ const VerifyEmail = ({ userId, token }: VerifyEmailProps) => {
           message: "Verification email expired",
           explanation:
             "Oops! Your email verification link has expired. 😕 Please request a new verification email to complete your registration.",
-          redirectUrl: "/auth/register",
+          redirectUrl: ApiRoutePaths.PAGE_REGISTER,
           redirectText: "Register Again",
         });
         break;
@@ -80,7 +80,7 @@ const VerifyEmail = ({ userId, token }: VerifyEmailProps) => {
           message: "Email already verified",
           explanation:
             "You have already verified your email. Please login to continue.",
-          redirectUrl: "/auth/login",
+          redirectUrl: ApiRoutePaths.PAGE_LOGIN,
           redirectText: "Login",
         });
         break;
@@ -90,7 +90,7 @@ const VerifyEmail = ({ userId, token }: VerifyEmailProps) => {
           message: "Invalid verification link",
           explanation:
             "Invalid or broken verification link! 😕 It looks like the link is incorrect or has been tampered with. Please request a new verification email to continue.",
-          redirectUrl: "/auth/register",
+          redirectUrl: ApiRoutePaths.PAGE_REGISTER,
           redirectText: "Register Again",
         });
     }

@@ -21,7 +21,7 @@ import { registerUser } from "answerwriting/lib/utils/api/auth.api";
 import { useAsyncFn } from "react-use";
 import { ToastAction } from "../ui/toast";
 import { useCustomToast } from "../react-common/toast";
-import { ErrorCodes } from "answerwriting/types/general.types";
+import { ApiRoutePaths, ErrorCodes } from "answerwriting/types/general.types";
 import Spinner from "../react-common/spinner";
 import { useRouter } from "next/navigation";
 import AuthContainer from "./auth-container";
@@ -70,7 +70,7 @@ export function RegisterForm() {
                       font-medium
                       text-sm
                     "
-                  onClick={() => router.push("/auth/login")}
+                  onClick={() => router.push(ApiRoutePaths.PAGE_LOGIN)}
                 >
                   Sign in
                 </ToastAction>
@@ -175,7 +175,7 @@ export function RegisterForm() {
               onClick={() => {
                 onSubmit(form.getValues());
               }}
-              href="/auth/login"
+              href={ApiRoutePaths.PAGE_LOGIN}
               linkText="Login"
             />
           </div>
