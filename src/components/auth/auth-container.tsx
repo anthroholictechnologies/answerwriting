@@ -10,7 +10,7 @@ const AuthContainer = ({
   return (
     <div
       className={cn(
-        "flex flex-col gap-4 lg:p-16 lg:shadow lg:border lg:border-[#2c3e50] lg:border-radius-[12px] -bg-white",
+        "flex flex-col gap-4 lg:p-16 lg:shadow-[darkBlue] lg:border rounded-standard bg-white",
         classNames
       )}
     >
