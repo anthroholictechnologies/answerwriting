@@ -29,8 +29,8 @@ const footerData = {
 
 const Footer = () => {
   return (
-    <footer className="flex flex-col  gap-0 fixed bottom-0 left-0">
-      <div className="flex flex-col lg:flex-row lg:gap-8 px-8 py-8 lg:px-24 lg:py-16 lg:justify-around gap-4 bg-accent w-full text-black border border-b shadow-b-[darkBlue]">
+    <footer>
+      <div className="flex flex-col  lg:flex-row lg:gap-8 px-8 py-8 lg:px-24 lg:py-16 lg:justify-around gap-4 bg-accent w-full text-black border border-b shadow-b-[darkBlue]">
         <div className="flex-1 flex justify-center">
           <div className="flex flex-col gap-2">
             <h1 className="font-bold text-lg"> {footerData.brandName} </h1>
