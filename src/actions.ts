@@ -4,6 +4,9 @@ import { AuthError } from "next-auth";
 import { signIn, signOut } from "./auth";
 import { LoginInput } from "./validations/auth.schema";
 import { ApiResponse, ApiRoutePaths, ErrorCodes } from "./types/general.types";
+import { ContactInput } from "./validations/general.schema";
+import { Resend } from "resend";
+import ContactEmail from "../emails/contactus.email.template";
 
 export const logout = async () => {
   return signOut({ redirectTo: ApiRoutePaths.PAGE_LOGIN });
@@ -63,5 +66,29 @@ export const signInWithCredentials = async ({
         message: "Internal server error.",
       };
     }
+  }
+};
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+export const SendContactUsEmail = async (data: ContactInput) => {
+  try {
+    await resend.emails.send({
+      from: process.env.RESEND_EMAIL_FROM as string,
+      to: process.env.RESEND_EMAIL_FROM as string,
+      subject: `📩 New Contact Form Submission from ${data.name}`,
+      react: ContactEmail({
+        email: data.email,
+        message: data.message,
+        name: data.name,
+        phone: data.phone,
+      }),
+    });
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,
+      message: "Error sending contact us email",
+    };
   }
 };

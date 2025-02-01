@@ -13,4 +13,4 @@ const Telegram = () => {
   );
 };
 
-export default Telegram
+export default Telegram;

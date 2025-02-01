@@ -19,7 +19,7 @@ export enum ApiRoutePaths {
   PAGE_REGISTER = "/auth/register",
 
   //pricing
-  PAGE_PRICING = "/pricing"
+  PAGE_PRICING = "/pricing",
 }
 
 export enum ErrorCodes {

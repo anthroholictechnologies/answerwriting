@@ -13,4 +13,4 @@ const Youtube = () => {
   );
 };
 
-export default Youtube
+export default Youtube;

@@ -11,7 +11,7 @@ const AuthContainer = ({
     <div
       className={cn(
         "flex flex-col gap-4 lg:p-16 lg:shadow-[darkBlue] lg:border rounded-standard bg-white",
-        classNames
+        classNames,
       )}
     >
       {children}

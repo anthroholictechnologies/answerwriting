@@ -4,7 +4,11 @@ import { forgetPassword } from "answerwriting/lib/utils/api/auth.api";
 import { useCustomToast } from "../react-common/toast";
 import { Button } from "../ui/button";
 import Spinner from "../react-common/spinner";
-import { ApiResponse, ApiRoutePaths, ErrorCodes } from "answerwriting/types/general.types";
+import {
+  ApiResponse,
+  ApiRoutePaths,
+  ErrorCodes,
+} from "answerwriting/types/general.types";
 import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -67,7 +71,7 @@ const ForgotPassword = () => {
         });
       }
     },
-    []
+    [],
   );
 
   const handleError = (resp: ApiResponse) => {

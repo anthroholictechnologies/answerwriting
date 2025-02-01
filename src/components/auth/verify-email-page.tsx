@@ -5,7 +5,11 @@ import { useAsyncFn } from "react-use";
 import { verifyEmail } from "answerwriting/lib/utils/api/auth.api";
 import { ToastAction } from "../ui/toast";
 import { useCustomToast } from "../react-common/toast";
-import { ApiResponse, ApiRoutePaths, ErrorCodes } from "answerwriting/types/general.types";
+import {
+  ApiResponse,
+  ApiRoutePaths,
+  ErrorCodes,
+} from "answerwriting/types/general.types";
 import Spinner from "../react-common/spinner";
 import { Button } from "../ui/button";
 import AuthContainer from "./auth-container";

@@ -14,7 +14,7 @@ const AuthFooter = ({
   btnText: string;
   href?: string;
   linkText?: string;
-  disableContinueWithGoogle?: boolean
+  disableContinueWithGoogle?: boolean;
 }) => {
   return (
     <>

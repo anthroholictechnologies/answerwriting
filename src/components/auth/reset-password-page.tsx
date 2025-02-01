@@ -83,7 +83,7 @@ export default function ResetPasswordForm({
           ),
         });
       }
-    }
+    },
   );
 
   const form = useForm<ResetPasswordInput>({

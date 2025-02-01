@@ -29,7 +29,7 @@ const config = {
         foreground: "hsl(var(--foreground))",
         darkBlue: "#2c3e50",
         lightGray: "#dddddd",
-        tertiary:"#192a3d",
+        tertiary: "#192a3d",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           dark: "hsl(var(--primary-dark))",
@@ -74,7 +74,7 @@ const config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-        standard: "12px"
+        standard: "12px",
       },
       keyframes: {
         "accordion-down": {
