@@ -36,7 +36,7 @@ const Header = () => {
             alt="answerwriting logo"
             width={60}
             height={60}
-            className="xl:hidden h-[60px] w-[60px] ml-4"
+            className="xl:hidden h-[60px] w-[60px]"
           />
         </div>
         <div className="justify-end gap-1 flex xl:hidden items-center">
