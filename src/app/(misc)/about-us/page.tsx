@@ -11,7 +11,7 @@ export default function AboutUs() {
       <div className="flex flex-col items-center gap-8 py-4 px-2 xl:px-24">
         <Container>
           <>
-            <h1 className="text-[3rem] tracking-tighter font-bold mb-4">
+            <h1 className="text-center text-[3rem] tracking-tighter font-bold xl:mb-6 mb-2">
               {" "}
               About <ImpactSpan text="Us" />{" "}
             </h1>
@@ -21,7 +21,7 @@ export default function AboutUs() {
               width={300}
               height={300}
             />
-            <div className="mt-4 flex flex-col gap-6 text-center">
+            <div className="flex flex-col gap-6 text-left">
               <p>
                 Welcome to Anthroholic, a platform dedicated to the fascinating
                 discipline of Anthropology! We are a team of passionate

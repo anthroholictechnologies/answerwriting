@@ -29,7 +29,7 @@ export default async function PrivacyPolicy() {
       <Header />
       <Container>
         <>
-          <h1 className="text-[3rem] tracking-tighter font-bold mb-4">
+          <h1 className="text-center text-[3rem] tracking-tighter font-bold leading-none xl:mb-6 mb-2">
             {" "}
             Privacy <ImpactSpan text="Policy" />{" "}
           </h1>

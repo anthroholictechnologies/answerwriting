@@ -29,7 +29,7 @@ export default async function TermsOfServices() {
       <Header />
       <Container>
         <>
-          <h1 className="text-center text-[3rem] tracking-tighter font-bold mb-4">
+          <h1 className="text-center text-[3rem] leading-none tracking-tighter font-bold xl:mb-6 mb-2">
             {" "}
             Terms and <ImpactSpan text="Conditions" />{" "}
           </h1>
