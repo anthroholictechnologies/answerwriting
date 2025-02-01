@@ -6,7 +6,7 @@ import { ApiRoutePaths } from "answerwriting/types/general.types";
 const Header = () => {
   return (
     <header>
-      <nav className="flex w-full justify-around py-8 xl:px-24">
+      <nav className="flex w-full xl:justify-around py-8 xl:px-24">
         <Link href={ApiRoutePaths.PAGE_HOME} passHref>
           <div className="flex-1 hidden xl:block hover:cursor-pointer">
             <Image
@@ -30,7 +30,7 @@ const Header = () => {
         </div>
 
         {/* for phone */}
-        <div className="xl:hidden hover:cursor-pointer">
+        <div className="flex-1 xl:hidden hover:cursor-pointer px-4 md:px-12">
           <Image
             src="/logos/1.png"
             alt="answerwriting logo"
@@ -39,7 +39,7 @@ const Header = () => {
             className="xl:hidden h-[60px] w-[60px]"
           />
         </div>
-        <div className="justify-end gap-1 flex xl:hidden items-center">
+        <div className="flex-1 gap-1 flex xl:hidden items-center justify-end px-4 md:px-12">
           <Button size="sm" className="hover:cursor-pointer">
             {" "}
             Learn More{" "}
