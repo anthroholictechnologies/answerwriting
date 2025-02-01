@@ -4,7 +4,7 @@ import Image from "next/image";
 const LandingHero = () => {
   return (
     <>
-      <div className="flex flex-col items-center gap-8 p-4 px-4 xl:px-24">
+      <div className="flex flex-col items-center gap-8 py-4 px-2 xl:px-24">
         <h1 className="text-center text-[2.5rem] lg:text-[4rem] font-bold max-w-4xl tracking-tighter leading-tight">
           Master UPSC Mains Answer Writing with{" "}
           <span className="text-primary"> AI Precision. </span>
@@ -53,11 +53,11 @@ const LandingHero = () => {
 
         {/* Right: Content */}
         <div className="flex flex-col justify-center gap-4 xl:px-12 xl:py-8 w-full xl:w-[60%] text-center xl:text-left">
-          <h1 className="text-[1rem] xl:text-[2.5rem] text-white font-bold tracking-tighter leading-tight">
+          <h1 className="text-[1.8rem] xl:text-[2.5rem] text-left text-white font-bold tracking-tighter leading-tight">
             Tired of waiting for Teachers to Evaluate Your Answers?{" "}
             <span className="text-primary">Everyone Is.</span>
           </h1>
-          <p className="text-white">
+          <p className="text-white text-left">
             {`With AnswerWriting, we’ve created an all-in-one AI-powered platform that doesn’t just assist—it assesses, analyzes, and enhances. By leveraging cutting-edge AI, we streamline the evaluation process, providing accurate and insightful feedback across your entire learning journey.`}
           </p>
 
@@ -71,7 +71,7 @@ const LandingHero = () => {
               size="lg"
               className="hover:cursor-pointer"
             >
-              <i>Eliminate the waiting time</i>
+              <i>Eliminate waiting time</i>
             </Button>
           </div>
         </div>

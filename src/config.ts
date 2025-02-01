@@ -35,5 +35,11 @@ export const MAX_FORGET_PASSWORD_REQUEST_ALLOWED_IN_A_DAY = 3;
 
 export const COMPANY_NAME = "answerwriting.com";
 
+export const COMPANY_EMAIL = "info@answerwriting.com";
+
+export const TELEGRAM_URL = "https://www.telegram.com"
+export const YOUTUBE_URL = "https://www.youtube.com"
+export const IG_URL = "https://www.instagram.com"
+
 // Asset paths
 export const LOGO_BANNER_URI = `https://res.cloudinary.com/dc36fxbog/image/upload/v1737793645/logo_dnei0q.png`;

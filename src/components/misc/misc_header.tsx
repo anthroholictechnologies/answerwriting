@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <header>
       <nav className="flex w-full justify-around py-8 xl:px-24">
-        <Link href={ApiRoutePaths.PAGE_HOME}>
+        <Link href={ApiRoutePaths.PAGE_HOME} passHref>
           <div className="flex-1 hidden xl:block hover:cursor-pointer">
             <Image
               src="/logos/3_resize.png"

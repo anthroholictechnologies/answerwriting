@@ -8,7 +8,7 @@ const AuthHeader = ({ heading }: { heading?: React.ReactElement }) => {
     <div className="flex flex-col items-center gap-8 text-center">
       {/* Logo and tagline */}
       <div className="flex flex-col items-center">
-        <Link href="/">
+        <Link href="/" passHref>
           <Image
             src="/logos/3_resize.png"
             alt="answerwriting.com logo"

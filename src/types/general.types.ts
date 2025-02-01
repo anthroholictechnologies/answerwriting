@@ -4,10 +4,22 @@ export enum ApiRoutePaths {
   FORGET_PASSWORD = "/api/auth/forget-password",
   RESET_PASSWORD = "/api/auth/reset-password",
 
+  // misc
   PAGE_HOME = "/",
+  PAGE_ABOUT_US = "/about-us",
+  PAGE_CONTACT_US = "/contact-us",
+  PAGE_PRIVACY_POLICY = "/privacy-policy",
+  PAGE_TERMS_OF_SERVICE = "/terms-of-service",
+
+  // auth user pages
   PAGE_DASHBOARD = "/dashboard",
+
+  // auth
   PAGE_LOGIN = "/auth/login",
   PAGE_REGISTER = "/auth/register",
+
+  //pricing
+  PAGE_PRICING = "/pricing"
 }
 
 export enum ErrorCodes {
