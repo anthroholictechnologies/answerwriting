@@ -96,7 +96,7 @@ export default function ContactPage() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 xl:space-y-8 p-4">
             <FormField
               control={form.control}
               name="name"
