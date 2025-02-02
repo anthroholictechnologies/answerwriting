@@ -5,7 +5,7 @@ const LandingHero = () => {
   return (
     <>
       <div className="flex flex-col items-center gap-8 py-4 px-2 xl:px-24">
-        <h1 className="text-center text-[2.5rem] lg:text-[4rem] font-bold max-w-4xl tracking-tighter leading-tight">
+        <h1 className="text-center text-[2rem] lg:text-[4rem] font-bold max-w-4xl tracking-tighter leading-tight">
           Master UPSC Mains Answer Writing with{" "}
           <span className="text-primary"> AI Precision. </span>
         </h1>
