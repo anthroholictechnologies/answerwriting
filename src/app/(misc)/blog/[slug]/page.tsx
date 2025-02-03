@@ -121,10 +121,13 @@ const fetchPostBySlug = async (slug: string) => {
   };
 };
 
-export async function generateMetadata(params: {
-  slug: string;
+export async function generateMetadata({
+  params,
+}: {
+  params: any;
 }): Promise<Metadata> {
-  const post = await fetchPostBySlug(params.slug);
+  const dynamicParams = await params;
+  const post = await fetchPostBySlug(dynamicParams.slug);
   return {
     title: post.title,
     description: stripHtmlTags(post.excerpt),
