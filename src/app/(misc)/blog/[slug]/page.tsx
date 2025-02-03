@@ -5,7 +5,8 @@ import { stripHtmlTags } from "answerwriting/lib/utils";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const BlogStylesContainer = tw.div<any>`
-  px-8
+  px-4 max-w-full md:max-w-4xl
+
   [&_ul]:flex
   [&_ul]:flex-col
   [&_ul]:gap-4
@@ -64,9 +65,12 @@ const BlogStylesContainer = tw.div<any>`
   [&_img]:max-w-full
   [&_img]:h-auto
   [&_img]:object-cover
+  [&_img]:block
+  [&_img]:mx-auto
 
   [&_a]:text-primary-dark
 
+  /* Table Responsiveness */
   [&_table]:mt-8
   [&_table]:mb-8
   [&_table]:w-full 
@@ -76,36 +80,31 @@ const BlogStylesContainer = tw.div<any>`
   [&_table]:text-left 
   [&_table]:text-sm
   [&_table]:p-4
+  overflow-x-auto
 
-  [&_thead]:bg-gray-100 
-  [&_thead]:text-gray-700 
-  [&_thead]:uppercase 
-  [&_tbody]:text-xs 
-  [&_thead]:font-medium
+  /* Table responsiveness on mobile */
+  @media (max-width: 640px) {
+    /* Scrollable table container */
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
 
-  [&_tbody]:divide-y 
-  [&_tbody]:divide-gray-200
+    /* Adjusting the table to wrap content nicely */
+    [&_table]:min-width: 320px; /* Ensures table content wraps properly on small screens */
+    [&_td], [&_th] {
+      padding: 10px; /* Adjust padding for better touch interaction */
+    }
 
-  [&_tr]:hover:bg-gray-50 
-  [&_tr]:transition
+    /* Reduce font size for smaller screens */
+    [&_table]:text-xs;
+  }
 
-  [&_th]:px-4 
-  [&_th]:py-3 
-  [&_th]:border
-  [&_th]:border-black-300 
-  [&_th]:text-left
-  [&_th]:text-xl
-
-  [&_td]:px-4 
-  [&_td]:py-3 
-  [&_td]:border
-  [&_td]:border-black-200
-  [&_td]:text-lg
 `;
 
 const fetchPostBySlug = async (slug: string) => {
   const resp = await fetch(
-    `${process.env.HEADLESS_CME_BASE_URI}/wp-json/wp/v2/posts?slug=${slug}`
+    `${process.env.HEADLESS_CME_BASE_URI}/wp-json/wp/v2/posts?slug=${slug}`,
   );
 
   const data = await resp.json();
@@ -145,6 +144,7 @@ export default async function SingleBlog({ params }: { params: any }) {
       </h1>
       <BlogStylesContainer>
         <div
+          className="table-container" /* Add the scrollable container for the table */
           dangerouslySetInnerHTML={{
             __html: post.content,
           }}

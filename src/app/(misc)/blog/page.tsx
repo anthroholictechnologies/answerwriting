@@ -15,7 +15,7 @@ import {
   getAllBlogsPaginated,
   Post,
 } from "answerwriting/lib/utils/api/blog.api";
-import { calculateReadingTime } from "answerwriting/lib/utils";
+import { calculateReadingTime, stripHtmlTags } from "answerwriting/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "answerwriting/lib/utils";
@@ -91,7 +91,7 @@ const BlogPage = () => {
         });
       }
     },
-    [page]
+    [page],
   );
 
   useEffect(() => {
@@ -118,14 +118,16 @@ const BlogPage = () => {
       {/* Blog Grid */}
       {loading && (
         <div className="sm:hidden">
-          <Spinner />{" "}
+          <Spinner classNames="w-24 h-24" />{" "}
         </div>
       )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
         {loading && posts.length === 0 ? (
           Array(6)
             .fill(0)
-            .map((_, i) => <Skeleton key={i} className="h-64 w-full" />)
+            .map((_, i) => (
+              <Skeleton key={i} className="h-64 w-full hidden sm:block" />
+            ))
         ) : posts.length === 0 ? (
           <div className="col-span-full text-center py-16 h-full">
             <BookOpen className="mx-auto h-16 w-16 text-gray-400 mb-4" />
@@ -171,7 +173,10 @@ const BlogPage = () => {
                 </Link>
 
                 {/* Excerpt */}
-                <p className="text-gray-600 line-clamp-2">{post.excerpt}</p>
+                <p
+                  dangerouslySetInnerHTML={{ __html: post.excerpt }}
+                  className="text-gray-600 line-clamp-2"
+                ></p>
 
                 {/* Read More */}
                 <Link href={`/blog/${post.slug}`} passHref>
@@ -194,7 +199,7 @@ const BlogPage = () => {
             disabled={loading}
             className={cn(
               "px-8 py-3 text-base group",
-              loading && "cursor-not-allowed opacity-50"
+              loading && "cursor-not-allowed opacity-50",
             )}
           >
             {loading ? (

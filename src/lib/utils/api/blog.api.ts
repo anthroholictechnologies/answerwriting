@@ -1,5 +1,4 @@
 "use server";
-import { stripHtmlTags } from "answerwriting/lib/utils";
 import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
 import { DateTime } from "luxon";
 
@@ -41,7 +40,7 @@ export const getAllBlogsPaginated = async (
       data: posts.map((post: any) => {
         return {
           title: post.title.rendered,
-          excerpt: stripHtmlTags(post.excerpt.rendered),
+          excerpt: post.excerpt.rendered,
           slug: post.slug,
           featured_image: post._embedded["wp:featuredmedia"][0]["source_url"],
           author: post._embedded.author[0].name,
