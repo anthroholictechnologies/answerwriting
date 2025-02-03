@@ -3,7 +3,7 @@ import tw from "tailwind-styled-components";
 import { stripHtmlTags } from "answerwriting/lib/utils";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const BlogStylesContainer = tw.div<any>`
+const BlogStylesContainer = tw.div<any>`
   px-8
   [&_ul]:flex
   [&_ul]:flex-col
