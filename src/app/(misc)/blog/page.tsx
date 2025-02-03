@@ -23,6 +23,7 @@ import { Skeleton } from "answerwriting/components/ui/skeleton";
 import { useCustomToast } from "answerwriting/components/react-common/toast";
 import { useAsyncFn } from "react-use";
 import { ToastAction } from "answerwriting/components/ui/toast";
+import Spinner from "answerwriting/components/react-common/spinner";
 
 const BlogPage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -90,7 +91,7 @@ const BlogPage = () => {
         });
       }
     },
-    [page],
+    [page]
   );
 
   useEffect(() => {
@@ -113,8 +114,13 @@ const BlogPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-16">
+    <div className="container mx-auto py-4 px-4 md:py-16">
       {/* Blog Grid */}
+      {loading && (
+        <div className="sm:hidden">
+          <Spinner />{" "}
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
         {loading && posts.length === 0 ? (
           Array(6)
@@ -188,7 +194,7 @@ const BlogPage = () => {
             disabled={loading}
             className={cn(
               "px-8 py-3 text-base group",
-              loading && "cursor-not-allowed opacity-50",
+              loading && "cursor-not-allowed opacity-50"
             )}
           >
             {loading ? (
