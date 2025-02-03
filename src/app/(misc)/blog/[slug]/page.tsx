@@ -4,102 +4,100 @@ import tw from "tailwind-styled-components";
 import { stripHtmlTags } from "answerwriting/lib/utils";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const BlogStylesContainer = tw.div<any>`
-  px-4 max-w-full md:max-w-4xl
+export const BlogStylesContainer = tw.div<any>`
+[&_ul]:flex
+[&_ul]:flex-col
+[&_ul]:gap-4
+[&_ul]:list-[circle]
+[&_ul]:pl-8
+[&_ul_strong]:text-lg
+[&_ul]:mb-4
+[&_ul]:mt-4
 
-  [&_ul]:flex
-  [&_ul]:flex-col
-  [&_ul]:gap-4
-  [&_ul]:list-[circle]
-  [&_ul]:pl-8
-  [&_ul_strong]:text-lg
-  [&_ul]:mb-4
-  [&_ul]:mt-4
+[&_h2]:md:text-3xl
+[&_h2]:leading-1
+[&_h2]:tracking-tighter
+[&_h2]:md:mb-4
+[&_h2]:md:mt-4
+[&_h2]:md:mb-8
+[&_h2]:md:mt-8
+[&_h2]:text-2xl
+[&_h2]:font-bold
 
-  [&_h2]:md:text-3xl
-  [&_h2]:leading-1
-  [&_h2]:tracking-tighter
-  [&_h2]:mb-4
-  [&_h2]:mt-4
-  [&_h2]:md:mb-8
-  [&_h2]:md:mt-8
-  [&_h2]:text-2xl
-  [&_h2]:font-bold
+[&_h3]:md:text-md
+[&_h3]:leading-1
+[&_h3]:tracking-tighter
+[&_h3]:md:mb-2
+[&_h3]:md:mt-2
+[&_h3]:md:mb-4
+[&_h3]:md:mt-4
+[&_h3]:text-xl
+[&_h3]:font-bold
 
-  [&_h3]:md:text-md
-  [&_h3]:leading-1
-  [&_h3]:tracking-tighter
-  [&_h3]:md:mb-2
-  [&_h3]:md:mt-2
-  [&_h3]:md:mb-4
-  [&_h3]:md:mt-4
-  [&_h3]:text-xl
-  [&_h3]:font-bold
+[&_h4]:md:text-md
+[&_h4]:leading-1
+[&_h4]:tracking-tighter
+[&_h4]:md:mb-2
+[&_h4]:md:mt-2
+[&_h4]:md:mb-4
+[&_h4]:md:mt-4
+[&_h4]:text-xl
+[&_h4]:font-bold
 
-  [&_h4]:md:text-md
-  [&_h4]:leading-1
-  [&_h4]:tracking-tighter
-  [&_h4]:md:mb-2
-  [&_h4]:md:mt-2
-  [&_h4]:md:mb-4
-  [&_h4]:md:mt-4
-  [&_h4]:text-xl
-  [&_h4]:font-bold
+[&_h5]:md:text-md
+[&_h5]:leading-1
+[&_h5]:tracking-tighter
+[&_h5]:md:mb-2
+[&_h5]:md:mt-2
+[&_h5]:md:mb-4
+[&_h5]:md:mt-4
+[&_h5]:text-md
+[&_h5]:font-bold
 
-  [&_h5]:md:text-md
-  [&_h5]:leading-1
-  [&_h5]:tracking-tighter
-  [&_h5]:md:mb-2
-  [&_h5]:md:mt-2
-  [&_h5]:md:mb-4
-  [&_h5]:md:mt-4
-  [&_h5]:text-md
-  [&_h5]:font-bold
+[&_p]:mt-4
+[&_p]:mb-4
 
-  [&_p]:mt-4
-  [&_p]:mb-4
 
-  [&_img]:mt-8
-  [&_img]:mb-8
-  [&_img]:w-full
-  [&_img]:max-w-full
-  [&_img]:h-auto
-  [&_img]:object-cover
-  [&_img]:block
-  [&_img]:mx-auto
+[&_img]:mt-8
+[&_img]:mb-8
 
-  [&_a]:text-primary-dark
+[&_a]:text-primary-dark
 
-  /* Table Responsiveness */
-  [&_table]:mt-8
-  [&_table]:mb-8
-  [&_table]:w-full 
-  [&_table]:border-collapse 
-  [&_table]:border
-  [&_table]:border-gray-300 
-  [&_table]:text-left 
-  [&_table]:text-sm
-  [&_table]:p-4
-  overflow-x-auto
+[&_table]:mt-8
+[&_table]:mb-8
+[&_table]:w-full 
+[&_table]:border-collapse 
+[&_table]:border
+[&_table]:border-gray-300 
+[&_table]:text-left 
+[&_table]:text-sm
+[&_table]:p-4
 
-  /* Table responsiveness on mobile */
-  @media (max-width: 640px) {
-    /* Scrollable table container */
-    .table-container {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
+[&_thead]:bg-gray-100 
+[&_thead]:text-gray-700 
+[&_thead]:uppercase 
+[&_tbody]:text-xs 
+[&_thead]:font-medium
 
-    /* Adjusting the table to wrap content nicely */
-    [&_table]:min-width: 320px; /* Ensures table content wraps properly on small screens */
-    [&_td], [&_th] {
-      padding: 10px; /* Adjust padding for better touch interaction */
-    }
+[&_tbody]:divide-y 
+[&_tbody]:divide-gray-200
 
-    /* Reduce font size for smaller screens */
-    [&_table]:text-xs;
-  }
+[&_tr]:hover:bg-gray-50 
+[&_tr]:transition
 
+
+[&_th]:px-4 
+[&_th]:py-3 
+[&_th]:border
+[&_th]:border-black-300 
+[&_th]:text-left
+[&_th]:text-xl
+
+[&_td]:px-4 
+[&_td]:py-3 
+[&_td]:border
+[&_td]:border-black-200
+[&_td]:text-lg
 `;
 
 const fetchPostBySlug = async (slug: string) => {
