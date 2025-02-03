@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Metadata } from "next";
 import tw from "tailwind-styled-components";
 import { stripHtmlTags } from "answerwriting/lib/utils";
@@ -102,13 +103,9 @@ const BlogStylesContainer = tw.div<any>`
   [&_td]:text-lg
 `;
 
-interface SingleBlogPageProps {
-  slug: string;
-}
-
 const fetchPostBySlug = async (slug: string) => {
   const resp = await fetch(
-    `${process.env.HEADLESS_CME_BASE_URI}/wp-json/wp/v2/posts?slug=${slug}`,
+    `${process.env.HEADLESS_CME_BASE_URI}/wp-json/wp/v2/posts?slug=${slug}`
   );
 
   const data = await resp.json();
@@ -124,10 +121,8 @@ const fetchPostBySlug = async (slug: string) => {
   };
 };
 
-export async function generateMetadata({
-  params,
-}: {
-  params: SingleBlogPageProps;
+export async function generateMetadata(params: {
+  slug: string;
 }): Promise<Metadata> {
   const post = await fetchPostBySlug(params.slug);
   return {
@@ -136,11 +131,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function SingleBlog({
-  params,
-}: {
-  params: SingleBlogPageProps;
-}) {
+export default async function SingleBlog({ params }: { params: any }) {
   const dynamicParams = await params;
   const post = await fetchPostBySlug(dynamicParams.slug);
 
