@@ -6,10 +6,11 @@ export enum ApiRoutePaths {
 
   // misc
   PAGE_HOME = "/",
-  PAGE_ABOUT_US = "/about-us",
-  PAGE_CONTACT_US = "/contact-us",
+  PAGE_ABOUT_US = "/about",
+  PAGE_CONTACT_US = "/contact",
   PAGE_PRIVACY_POLICY = "/privacy-policy",
-  PAGE_TERMS_OF_SERVICE = "/terms-of-service",
+  PAGE_TERMS_OF_SERVICE = "/terms",
+  PAGE_BLOGS = "/blog",
 
   // auth user pages
   PAGE_DASHBOARD = "/dashboard",

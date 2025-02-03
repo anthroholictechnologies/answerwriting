@@ -6,7 +6,7 @@ import { ApiRoutePaths } from "answerwriting/types/general.types";
 const Header = () => {
   return (
     <header>
-      <nav className="flex w-full lg:justify-around py-8 lg:px-24">
+      <nav className="flex w-full lg:justify-around pt-8 pb-4 lg:px-24">
         <Link href={ApiRoutePaths.PAGE_HOME} passHref>
           <div className="flex-1 hidden lg:block hover:cursor-pointer">
             <Image
@@ -22,8 +22,15 @@ const Header = () => {
           <div className="hidden hover:cursor-pointer h-8 w-8 lg:flex justify-center items-center rounded-full shadow border border-[lightGray]">
             <Gift className="text-primary-dark" />
           </div>
-          <Button size="lg" className="py-5 hover:cursor-pointer"> Learn More </Button>
-          <Button size="lg" variant="transparent" className="py-5 hover:cursor-pointer">
+          <Button size="lg" className="py-5 hover:cursor-pointer">
+            {" "}
+            Learn More{" "}
+          </Button>
+          <Button
+            size="lg"
+            variant="transparent"
+            className="py-5 hover:cursor-pointer"
+          >
             {" "}
             View Timetable{" "}
           </Button>

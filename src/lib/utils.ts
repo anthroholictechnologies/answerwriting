@@ -4,3 +4,16 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export function stripHtmlTags(input: string): string {
+  // Using regular expression to remove HTML tags
+  return input.replace(/<[^>]*>/g, "");
+}
+
+export const calculateReadingTime = (content: string) => {
+  const wordsPerMinute = 200; // Average reading speed
+  const words = content.split(/\s+/).length; // Count words by splitting on whitespace
+  const minutes = Math.ceil(words / wordsPerMinute); // Round up to nearest minute
+
+  return minutes;
+};

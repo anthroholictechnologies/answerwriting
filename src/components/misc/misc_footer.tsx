@@ -19,6 +19,7 @@ const footerData = {
     { label: "About Us", href: ApiRoutePaths.PAGE_ABOUT_US },
     { label: "Contact Us", href: ApiRoutePaths.PAGE_CONTACT_US },
     { label: "Pricing", href: ApiRoutePaths.PAGE_PRICING },
+    { label: "Blogs", href: ApiRoutePaths.PAGE_BLOGS },
   ],
   contact: {
     email: COMPANY_EMAIL,
