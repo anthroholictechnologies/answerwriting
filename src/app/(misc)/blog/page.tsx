@@ -115,18 +115,12 @@ const BlogPage = () => {
 
   return (
     <div className="container mx-auto py-4 px-4 md:py-16">
-      {/* Blog Grid */}
-      {loading && (
-        <div className="sm:hidden">
-          <Spinner classNames="w-24 h-24" />{" "}
-        </div>
-      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
         {loading && posts.length === 0 ? (
           Array(6)
             .fill(0)
             .map((_, i) => (
-              <Skeleton key={i} className="h-64 w-full hidden sm:block" />
+              <Skeleton key={i} className="h-64 w-full" />
             ))
         ) : posts.length === 0 ? (
           <div className="col-span-full text-center py-16 h-full">
