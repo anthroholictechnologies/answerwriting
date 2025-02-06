@@ -57,7 +57,6 @@ const BlogStylesContainer = tw.div<any>`
 [&_p]:mt-4
 [&_p]:mb-4
 
-
 [&_img]:mt-8
 [&_img]:mb-8
 

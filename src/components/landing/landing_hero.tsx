@@ -4,8 +4,8 @@ import Image from "next/image";
 const LandingHero = () => {
   return (
     <>
-      <div className="flex flex-col items-center gap-8 py-4 px-2 xl:px-24">
-        <h1 className="text-center text-[2.5rem] lg:text-[4rem] font-bold max-w-4xl tracking-tighter leading-tight">
+      <div className="flex flex-col items-center gap-8 px-2 pt-16 md:px-24 md:pt-24">
+        <h1 className="text-center text-[2.5rem] lg:text-[4rem] font-bold md:max-w-4xl tracking-tighter leading-tight">
           Master UPSC Mains Answer Writing with{" "}
           <span className="text-primary"> AI Precision. </span>
         </h1>
@@ -23,7 +23,7 @@ const LandingHero = () => {
           <Button size="lg"> How it works ? </Button>
         </div>
       </div>
-      <div className="w-full max-w-6xl mx-auto mt-8 mb-8 lg:mb-48 p-4">
+      <div className="w-full max-w-6xl mx-auto mt-8 mb-16 lg:mb-40 p-4">
         <div className="relative w-full aspect-video border-8 border-primary drop-shadow-[0_0_12px_rgba(45,128,246,0.8)] rounded-3xl overflow-hidden shadow-lg">
           <iframe
             className="w-full h-full"
@@ -37,9 +37,9 @@ const LandingHero = () => {
         </div>
       </div>
 
-      <div className="py-24 p-8  flex flex-col xl:flex-row items-center gap-16 xl:gap-0 bg-[#16011b]">
+      <div className="lg:py-32 p-8 py-20 flex flex-col xl:flex-row items-center gap-16 xl:gap-0 bg-[#16011b]">
         {/* Left: Smaller Image Card */}
-        <div className="w-full xl:w-[40%] flex justify-center">
+        <div className="w-full xl:w-[40%] flex justify-center items-center">
           <div className="w-[500px] h-[350px] bg-gray-800 shadow-lg rounded-lg overflow-hidden">
             <Image
               src="https://images.unsplash.com/photo-1521747116042-5a810fda9664?auto=format&fit=crop&w=300&q=80"
@@ -53,11 +53,11 @@ const LandingHero = () => {
 
         {/* Right: Content */}
         <div className="flex flex-col justify-center gap-4 xl:px-12 xl:py-8 w-full xl:w-[60%] text-center xl:text-left">
-          <h1 className="text-[1.8rem] xl:text-[2.5rem] text-left text-white font-bold tracking-tighter leading-tight">
+          <h1 className="text-[1.8rem] xl:text-[2.5rem] text-center text-white font-bold tracking-tighter leading-tight">
             Tired of waiting for Teachers to Evaluate Your Answers?{" "}
             <span className="text-primary">Everyone Is.</span>
           </h1>
-          <p className="text-white text-left">
+          <p className="text-white text-center">
             {`With AnswerWriting, we’ve created an all-in-one AI-powered platform that doesn’t just assist—it assesses, analyzes, and enhances. By leveraging cutting-edge AI, we streamline the evaluation process, providing accurate and insightful feedback across your entire learning journey.`}
           </p>
 

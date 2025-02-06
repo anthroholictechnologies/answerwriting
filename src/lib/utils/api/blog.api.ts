@@ -22,7 +22,7 @@ export const getAllBlogsPaginated = async (
     const posts = await response.json();
     console.log(
       "====posts",
-      posts[0]._embedded["wp:featuredmedia"][0]["source_url"],
+      posts[0]._embedded?.["wp:featuredmedia"]?.[0]?.["source_url"],
     );
 
     if (!posts || !posts.length) {
@@ -42,7 +42,7 @@ export const getAllBlogsPaginated = async (
           title: post.title.rendered,
           excerpt: post.excerpt.rendered,
           slug: post.slug,
-          featured_image: post._embedded["wp:featuredmedia"][0]["source_url"],
+          featured_image: posts[0]._embedded?.["wp:featuredmedia"]?.[0]?.["source_url"],
           author: post._embedded.author[0].name,
           data: DateTime.fromISO(post.date).toFormat("yyyy-MM-dd"),
           content: post.content.rendered,

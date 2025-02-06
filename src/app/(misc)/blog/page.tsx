@@ -91,7 +91,7 @@ const BlogPage = () => {
         });
       }
     },
-    [page],
+    [page]
   );
 
   useEffect(() => {
@@ -119,9 +119,7 @@ const BlogPage = () => {
         {loading && posts.length === 0 ? (
           Array(6)
             .fill(0)
-            .map((_, i) => (
-              <Skeleton key={i} className="h-64 w-full" />
-            ))
+            .map((_, i) => <Skeleton key={i} className="h-64 w-full" />)
         ) : posts.length === 0 ? (
           <div className="col-span-full text-center py-16 h-full">
             <BookOpen className="mx-auto h-16 w-16 text-gray-400 mb-4" />
@@ -136,7 +134,10 @@ const BlogPage = () => {
               {/* Featured Image */}
               <div className="relative aspect-video overflow-hidden rounded-t-lg">
                 <Image
-                  src={post.featured_image}
+                  src={
+                    post?.featured_image ??
+                    "https://plus.unsplash.com/premium_photo-1679870686437-2c3eb1de46d0?q=80&w=1856&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  }
                   alt={post.title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -193,7 +194,7 @@ const BlogPage = () => {
             disabled={loading}
             className={cn(
               "px-8 py-3 text-base group",
-              loading && "cursor-not-allowed opacity-50",
+              loading && "cursor-not-allowed opacity-50"
             )}
           >
             {loading ? (
