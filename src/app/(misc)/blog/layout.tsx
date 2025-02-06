@@ -1,4 +1,3 @@
-import Footer from "answerwriting/components/misc/misc_footer";
 import Header from "answerwriting/components/misc/misc_header";
 import { AppSidebar } from "answerwriting/components/react-common/app-sidebar";
 import {
@@ -23,7 +22,7 @@ export default async function BlogsLayout({
         <div className="flex flex-col items-center gap-8 py-4 px-2 xl:px-24">
           {children}
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </SidebarProvider>
   );

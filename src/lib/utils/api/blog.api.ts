@@ -20,10 +20,6 @@ export const getAllBlogsPaginated = async (
       `${process.env.HEADLESS_CME_BASE_URI}/wp-json/wp/v2/posts?_embed=true&page=${page}&per_page=9`,
     );
     const posts = await response.json();
-    console.log(
-      "====posts",
-      posts[0]._embedded?.["wp:featuredmedia"]?.[0]?.["source_url"],
-    );
 
     if (!posts || !posts.length) {
       return {
@@ -37,15 +33,18 @@ export const getAllBlogsPaginated = async (
       success: true,
       message: "Blogs fetched successfully",
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      data: posts.map((post: any) => {
+      data: (posts ?? []).map((post: any) => {
         return {
-          title: post.title.rendered,
-          excerpt: post.excerpt.rendered,
-          slug: post.slug,
-          featured_image: posts[0]._embedded?.["wp:featuredmedia"]?.[0]?.["source_url"],
-          author: post._embedded.author[0].name,
-          data: DateTime.fromISO(post.date).toFormat("yyyy-MM-dd"),
-          content: post.content.rendered,
+          title: post?.title?.rendered,
+          excerpt: post?.excerpt?.rendered,
+          slug: post?.slug,
+          featured_image:
+            posts?.[0]?._embedded?.["wp:featuredmedia"]?.[0]?.["source_url"],
+          author: post?._embedded?.author?.[0]?.name,
+          data: post?.date
+            ? DateTime.fromISO(post.date).toFormat("yyyy-MM-dd")
+            : "",
+          content: post?.content?.rendered,
         };
       }),
     };

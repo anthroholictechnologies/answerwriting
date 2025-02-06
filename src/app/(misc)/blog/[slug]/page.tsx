@@ -1,7 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Metadata } from "next";
 import tw from "tailwind-styled-components";
 import { stripHtmlTags } from "answerwriting/lib/utils";
+import { Button } from "answerwriting/components/ui/button";
+import Link from "next/link";
+import { ApiRoutePaths } from "answerwriting/types/general.types";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const BlogStylesContainer = tw.div<any>`
@@ -120,6 +122,7 @@ const fetchPostBySlug = async (slug: string) => {
 export async function generateMetadata({
   params,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: any;
 }): Promise<Metadata> {
   const dynamicParams = await params;
@@ -130,6 +133,7 @@ export async function generateMetadata({
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function SingleBlog({ params }: { params: any }) {
   const dynamicParams = await params;
   const post = await fetchPostBySlug(dynamicParams.slug);
@@ -147,6 +151,14 @@ export default async function SingleBlog({ params }: { params: any }) {
           }}
         ></div>
       </BlogStylesContainer>
+      <div className="flex flex-col items-center mt-8">
+        <Link href={ApiRoutePaths.PAGE_BLOGS} passHref>
+          <Button size={"lg"} className="min-w-48">
+            {" "}
+            Back{" "}
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }
