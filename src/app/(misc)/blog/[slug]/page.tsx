@@ -135,7 +135,7 @@ export default async function SingleBlog({ params }: { params: any }) {
   const post = await fetchPostBySlug(dynamicParams.slug);
 
   return (
-    <div className="max-w-md md:max-w-4xl p-4 lg:p-8">
+    <div className="max-w-4xl p-4 lg:p-8">
       <h1 className="text-center text-3xl px-4 lg:text-5xl lg:leading-none tracking-tighter bg-gradient-to-r from-primary via-blue-500 to-blue-700 text-transparent bg-clip-text mb-6 lg:mb-8">
         {post.title}
       </h1>

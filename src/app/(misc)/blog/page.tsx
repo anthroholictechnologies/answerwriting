@@ -23,7 +23,6 @@ import { Skeleton } from "answerwriting/components/ui/skeleton";
 import { useCustomToast } from "answerwriting/components/react-common/toast";
 import { useAsyncFn } from "react-use";
 import { ToastAction } from "answerwriting/components/ui/toast";
-import Spinner from "answerwriting/components/react-common/spinner";
 
 const BlogPage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
