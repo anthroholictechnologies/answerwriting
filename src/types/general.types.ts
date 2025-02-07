@@ -3,6 +3,7 @@ export enum ApiRoutePaths {
   VERIFY_EMAIL = "/api/auth/verify-email",
   FORGET_PASSWORD = "/api/auth/forget-password",
   RESET_PASSWORD = "/api/auth/reset-password",
+  EVALUATE_ANSWER = "/api/ai/evaluate-answer",
 
   // misc
   PAGE_HOME = "/",

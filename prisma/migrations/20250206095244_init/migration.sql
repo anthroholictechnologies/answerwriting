@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "exams" AS ENUM ('GS1', 'GS2', 'GS3', 'GS4');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
@@ -87,6 +90,41 @@ CREATE TABLE "forget_password_tokens" (
     CONSTRAINT "forget_password_tokens_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "subjects" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "exam" "exams" NOT NULL,
+    "topics" TEXT[],
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "subjects_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "base_criteria" (
+    "id" TEXT NOT NULL,
+    "parameter" TEXT NOT NULL,
+    "logic" TEXT[],
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "base_criteria_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "subject_criteria" (
+    "id" TEXT NOT NULL,
+    "subject_id" TEXT NOT NULL,
+    "parameter" TEXT NOT NULL,
+    "logic" TEXT[],
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "subject_criteria_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
@@ -102,6 +140,12 @@ CREATE UNIQUE INDEX "email_verification_tokens_token_key" ON "email_verification
 -- CreateIndex
 CREATE UNIQUE INDEX "forget_password_tokens_token_key" ON "forget_password_tokens"("token");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "subjects_name_key" ON "subjects"("name");
+
+-- CreateIndex
+CREATE INDEX "subjects_exam_idx" ON "subjects"("exam");
+
 -- AddForeignKey
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -116,3 +160,6 @@ ALTER TABLE "email_verification_tokens" ADD CONSTRAINT "email_verification_token
 
 -- AddForeignKey
 ALTER TABLE "forget_password_tokens" ADD CONSTRAINT "forget_password_tokens_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "subject_criteria" ADD CONSTRAINT "subject_criteria_subject_id_fkey" FOREIGN KEY ("subject_id") REFERENCES "subjects"("id") ON DELETE CASCADE ON UPDATE CASCADE;

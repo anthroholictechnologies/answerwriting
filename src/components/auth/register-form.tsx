@@ -16,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { z } from "zod";
 import { registerUser } from "answerwriting/lib/utils/api/auth.api";
 import { useAsyncFn } from "react-use";
 import { ToastAction } from "../ui/toast";
@@ -30,7 +29,7 @@ import AuthFooter from "./auth-footer";
 
 export function RegisterForm() {
   const router = useRouter();
-  const form = useForm<z.infer<typeof registrationSchema>>({
+  const form = useForm<RegistrationInput>({
     resolver: zodResolver(registrationSchema),
     mode: "onChange",
     defaultValues: { email: "", password: "", name: "" },
@@ -123,7 +122,7 @@ export function RegisterForm() {
   ) => (
     <FormField
       control={form.control}
-      name={name as keyof z.infer<typeof registrationSchema>}
+      name={name as keyof RegistrationInput}
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>

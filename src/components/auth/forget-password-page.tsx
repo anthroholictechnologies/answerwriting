@@ -11,7 +11,6 @@ import {
 } from "answerwriting/types/general.types";
 import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import {
   ForgetPasswordInput,
   forgetPasswordSchema,
@@ -31,7 +30,7 @@ import AuthContainer from "./auth-container";
 import AuthHeader from "./auth-header";
 
 const ForgotPassword = () => {
-  const form = useForm<z.infer<typeof forgetPasswordSchema>>({
+  const form = useForm<ForgetPasswordInput>({
     resolver: zodResolver(forgetPasswordSchema),
     mode: "onChange",
     defaultValues: { email: "" },
