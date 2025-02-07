@@ -41,8 +41,6 @@ const BlogPage = () => {
       try {
         const resp = await getAllBlogsPaginated(currentPage);
         const newPosts = resp.data as Post[];
-        console.log("======newPosts=======", newPosts);
-
         if (resp.success) {
           setPosts((prev) => {
             const updatedPosts = reset ? newPosts : [...prev, ...newPosts];

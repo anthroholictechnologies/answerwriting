@@ -35,7 +35,6 @@ export async function POST(
   try {
     // Parse form data from the request
     const formData = await request.formData();
-    console.log("=========formData========", formData);
     const exam = formData.get("exam") as Exams;
     const question = formData.get("question") as string;
     const marks = formData.get("marks") as Marks;
@@ -50,8 +49,7 @@ export async function POST(
 
     // Convert images to base64 format
     const imagesBase64 = await Promise.all(imageFiles.map(convertFileToBase64));
-    console.log("imagesBase");
-
+    
     // Predict subjects related to the given question
     const predictedSubjects = await predictSubject({ exam, question });
 

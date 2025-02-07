@@ -11,7 +11,6 @@ import { auth } from "./auth";
 export async function middleware(request: NextRequest) {
   const pathName = request.nextUrl.pathname as ApiRoutePaths;
   const session = await auth();
-  console.log("=====session", session);
 
   if (apiRoutesWhichRequiresAuthentication.includes(pathName)) {
     if (!session?.user) {

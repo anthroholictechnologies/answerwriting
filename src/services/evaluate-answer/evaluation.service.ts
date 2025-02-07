@@ -51,8 +51,6 @@ ${output_format}
   });
 
   const response = await model.invoke([message]);
-  console.log("response====", response)
-
   return JSON.parse(
     (response.content as string).replace(/```json|```/g, "").trim()
   );
