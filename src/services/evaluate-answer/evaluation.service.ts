@@ -19,28 +19,26 @@ async function evaluate({
   output_format: any;
 }) {
   const prompt = `
-  You are a strict UPSC exam teacher who is an expert in evaluating the answers of UPSC mains exam.
-  You are provided with the answer in the images. The order of the images matters; the answer is in continuation.
-  You are also provided with a question, answer word limit, and the detailed evaluation parameters with logic.
-  
-  Instructions to Calculate the Score of the Answer:
-  1. You are given a list of evaluation parameters in the format [{parameter: "", logic: ["", ""]}].
-  2. Assess the answer against each parameter and provide a score out of 10 for every parameter.
-  3. Ensure that each parameter is included in the output, even if the answer does not satisfy it.
-  4. If an answer lacks elements required by a parameter, give a low score and clearly state why.
-
-  Question:  
-  ${question}
-
-  Answer Word Limit:  
-  ${answer_word_limit}
-  
-  Evaluation Parameters:  
-  ${JSON.stringify(evaluation_parameters, null, 2)}
-  
-  Output Format (Strictly Follow This):  
-  ${output_format}
-  `;
+You are a strict UPSC exam teacher who is an expert in evaluating the answers of UPSC Mains exam.
+You are provided with the answer in the images. The order of the images matters; the answer is in continuation.
+You are also provided with a question, answer word limit, and the detailed evaluation parameters with logic.
+Instructions to Calculate the Score of the Answer:
+1. You are given a list of evaluation parameters in the format [{parameter: "", logic: [""], category: ""}].
+2. Assess the answer against each parameter and provide a score out of 10 for every parameter.
+3. Ensure that each parameter is included in the output, even if the answer does not satisfy it.
+4. If an answer lacks elements required by a parameter, give a low score and clearly state why.
+5. Only provide suggestions for improvement based on subject-specific parameters. 
+   - Do not provide any suggestions based on base parameters.
+   - If a base parameter is not satisfied, simply assign a score and state the reason, but do not offer suggestions.
+Question:  
+${question}
+Answer Word Limit:  
+${answer_word_limit}
+Evaluation Parameters:  
+${JSON.stringify(evaluation_parameters, null, 2)}
+Output Format (Strictly Follow This):  
+${output_format}
+`;
 
   const message = new HumanMessage({
     content: [
@@ -53,9 +51,10 @@ async function evaluate({
   });
 
   const response = await model.invoke([message]);
+  console.log("response====", response)
 
   return JSON.parse(
-    (response.content as string).replace(/```json|```/g, "").trim(),
+    (response.content as string).replace(/```json|```/g, "").trim()
   );
 }
 

@@ -19,6 +19,8 @@ import { NextRequest, NextResponse } from "next/server";
 async function convertFileToBase64(file: Blob): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
   const base64String = Buffer.from(arrayBuffer).toString("base64");
+  // const sizeMB = Buffer.byteLength(base64String, "utf8") / (1024 * 1024);
+  // console.log("size in mb==========", sizeMB);
   return `data:${file.type};base64,${base64String}`;
 }
 
@@ -28,11 +30,12 @@ async function convertFileToBase64(file: Blob): Promise<string> {
  * @returns A JSON response with the evaluation results.
  */
 export async function POST(
-  request: NextRequest,
+  request: NextRequest
 ): Promise<NextResponse<ApiResponse<Evaluation>>> {
   try {
     // Parse form data from the request
     const formData = await request.formData();
+    console.log("=========formData========", formData);
     const exam = formData.get("exam") as Exams;
     const question = formData.get("question") as string;
     const marks = formData.get("marks") as Marks;
@@ -47,6 +50,7 @@ export async function POST(
 
     // Convert images to base64 format
     const imagesBase64 = await Promise.all(imageFiles.map(convertFileToBase64));
+    console.log("imagesBase");
 
     // Predict subjects related to the given question
     const predictedSubjects = await predictSubject({ exam, question });
@@ -80,10 +84,12 @@ export async function POST(
       ...baseCriterias.map((criteria) => ({
         parameter: criteria.parameter,
         logic: criteria.logic,
+        category: "base_parameter",
       })),
       ...subjectSpecificCriterias.map((criteria) => ({
         parameter: criteria.parameter,
         logic: criteria.logic,
+        category: "subject_specific_parameter",
       })),
     ];
 
@@ -94,7 +100,7 @@ export async function POST(
       answer_word_limit: answerWordLimit,
       output_format:
         StructuredOutputParser.fromZodSchema(
-          evaluationSchema,
+          evaluationSchema
         ).getFormatInstructions(),
       evaluation_parameters: evaluationParameters,
     })) as Evaluation;
@@ -113,7 +119,7 @@ export async function POST(
         success: false,
         message: "Error processing Evaluate Answer Request",
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

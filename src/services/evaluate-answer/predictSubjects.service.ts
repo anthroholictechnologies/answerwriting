@@ -7,7 +7,6 @@ import { prisma } from "answerwriting/prisma";
 
 export const predictSubjectsPromptTemplate = `You are an expert in categorizing UPSC questions based on the official syllabus.  
 Your task is to identify the most relevant subjects for the given question, ensuring that only directly related subjects are chosen.  
-
 Guidelines for Selection:
 1. Minimal & Precise Selection: Choose the fewest possible subjects that directly match the core theme of the question. Avoid selecting multiple subjects unless absolutely necessary.  
 2. Contextual Understanding: Do not select a subject just because of keyword matches. Instead, focus on the question’s intent, scope, and thematic relevance to the syllabus.  
@@ -15,10 +14,8 @@ Guidelines for Selection:
 4. No Marginal Connections:Reject peripheral or weak associations. A subject should only be included if it is strongly relevant.  
    - Example: If a question discusses "urban development" but is primarily about "Indian architecture," select the most relevant subject, not loosely connected ones. 
 5. Strict Syllabus Adherence: Only choose subjects that are explicitly covered in the provided UPSC syllabus. Do not infer subjects that are not listed.  
-
 The question is: {question} 
 The list of available subject with their syllabus (topics): {availableSubjectsWithSyllabus}
-
 Provide your output in the following format: {output_format}
 `;
 
