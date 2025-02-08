@@ -27,6 +27,8 @@ model User {
   emailVerificationTokens EmailVerificationToken[]
   forgetPasswordTokens    ForgetPasswordToken[]
 
+  answers Answer[]
+
   @@map("users")
 }
 
@@ -49,7 +51,6 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
-
   @@map("accounts")
 }
 
@@ -71,7 +72,6 @@ model VerificationToken {
   expires    DateTime
 
   @@id([identifier, token])
-
   @@map("verification_tokens")
 }
 
@@ -82,14 +82,13 @@ model Authenticator {
   providerAccountId    String
   credentialPublicKey  String
   counter              Int
-  credentialDeviceType String   
-  credentialBackedUp   Boolean 
+  credentialDeviceType String
+  credentialBackedUp   Boolean
   transports           String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
-
   @@map("authenticators")
 }
 
@@ -118,4 +117,66 @@ model ForgetPasswordToken {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("forget_password_tokens")
+}
+
+enum Exam {
+  GS1
+  GS2
+  GS3
+  GS4
+
+  @@map("exams")
+}
+
+model Subject {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  exam      Exam
+  topics    String[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  subjectCriterias SubjectCriteria[]
+
+  @@index([exam])
+  @@map("subjects")
+}
+
+// Applies to every subject and is static 
+
+model BaseCriteria {
+  id        String   @id @default(cuid())
+  parameter String
+  logic     String[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("base_criteria")
+}
+
+model SubjectCriteria {
+  id        String   @id @default(cuid())
+  subjectId String   @map("subject_id")
+  parameter String
+  logic     String[]
+  subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("subject_criteria")
+}
+
+model Answer {
+  id             String   @id @default(cuid())
+  question       String
+  marks          String
+  exam           Exam
+  evaluationJson Json     @map("evaluation_json")
+  userId         String   @map("user_id")
+  imagesPath     String[] @map("images_path")
+  pdfPath        String   @map("pdf_path")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("answers")
 }

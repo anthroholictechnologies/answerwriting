@@ -10,11 +10,21 @@ import { auth } from "./auth";
 
 export async function middleware(request: NextRequest) {
   const pathName = request.nextUrl.pathname as ApiRoutePaths;
+  const isApiCall = pathName.includes("/api");
   const session = await auth();
-  console.log("=====session", session);
 
   if (apiRoutesWhichRequiresAuthentication.includes(pathName)) {
     if (!session?.user) {
+      if (isApiCall) {
+        return NextResponse.json(
+          {
+            success: false,
+            errorCode: ErrorCodes.UNAUTHORIZED,
+            message: "User not authenticated",
+          },
+          { status: 401 },
+        );
+      }
       return NextResponse.redirect(
         new URL(ApiRoutePaths.PAGE_LOGIN, request.url),
       );
@@ -62,7 +72,3 @@ export async function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
-
-export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
-};

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Button } from "answerwriting/components/ui/button";
 import {
   Form,
@@ -24,7 +23,10 @@ import {
 } from "answerwriting/components/ui/card";
 
 import ImpactSpan from "../react-common/impact-span";
-import { contactSchema } from "answerwriting/validations/general.schema";
+import {
+  ContactInput,
+  contactSchema,
+} from "answerwriting/validations/general.schema";
 import { SendContactUsEmail } from "answerwriting/actions";
 import { useCustomToast } from "../react-common/toast";
 import { ErrorCodes } from "answerwriting/types/general.types";
@@ -35,7 +37,7 @@ export default function ContactPage() {
 
   const toast = useCustomToast();
 
-  const form = useForm<z.infer<typeof contactSchema>>({
+  const form = useForm<ContactInput>({
     mode: "onChange",
     resolver: zodResolver(contactSchema),
     defaultValues: {
@@ -47,7 +49,7 @@ export default function ContactPage() {
     shouldFocusError: true,
   });
 
-  async function onSubmit(values: z.infer<typeof contactSchema>) {
+  async function onSubmit(values: ContactInput) {
     setIsSubmitting(true);
     const data = await SendContactUsEmail(values);
     if (data?.errorCode === ErrorCodes.INTERNAL_SERVER_ERROR) {

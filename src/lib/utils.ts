@@ -1,3 +1,4 @@
+import { Marks, Words } from "answerwriting/types/ai.types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -16,4 +17,15 @@ export const calculateReadingTime = (content: string) => {
   const minutes = Math.ceil(words / wordsPerMinute); // Round up to nearest minute
 
   return minutes;
+};
+
+export const getWordsFromMarks = (marks: Marks): Words => {
+  switch (marks) {
+    case Marks.TEN:
+      return Words.ONE_FIFTY;
+    case Marks.FIFTEEN:
+      return Words.TWO_FIFTY;
+    case Marks.TWENTY:
+      return Words.THREE_HUNDERED;
+  }
 };

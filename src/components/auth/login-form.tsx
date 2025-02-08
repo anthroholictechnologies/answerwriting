@@ -15,7 +15,6 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { z } from "zod";
 import { signInWithCredentials } from "answerwriting/actions";
 import { ApiRoutePaths, ErrorCodes } from "answerwriting/types/general.types";
 import { ToastAction } from "../ui/toast";
@@ -29,7 +28,7 @@ import AuthHeader from "./auth-header";
 import AuthFooter from "./auth-footer";
 
 export function LoginForm({ urlError }: { urlError: string }) {
-  const form = useForm<z.infer<typeof loginSchema>>({
+  const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
     defaultValues: { email: "", password: "" },
@@ -156,7 +155,7 @@ export function LoginForm({ urlError }: { urlError: string }) {
   ) => (
     <FormField
       control={form.control}
-      name={name as keyof z.infer<typeof loginSchema>}
+      name={name as keyof LoginInput}
       render={({ field }) => (
         <FormItem>
           <div className="flex justify-between">
