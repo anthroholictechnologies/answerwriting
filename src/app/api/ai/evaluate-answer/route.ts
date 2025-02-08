@@ -14,6 +14,8 @@ import { StructuredOutputParser } from "langchain/output_parsers";
 import { NextRequest, NextResponse } from "next/server";
 import cuid from "cuid";
 
+export const maxDuration = 60;
+
 /**
  * Converts a file to a base64 string.
  * @param file - The file to be converted.
