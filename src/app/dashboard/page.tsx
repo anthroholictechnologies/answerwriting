@@ -1,10 +1,5 @@
-import React from "react";
-import DashboardClient from "answerwriting/components/dashboard";
-import { auth } from "answerwriting/auth";
+import { redirect } from "next/navigation";
 
 export default async function Dashboard() {
-  const session = await auth();
-  const user = session?.user;
-
-  return <DashboardClient user={user} />;
+  redirect("/dashboard/profile");
 }

@@ -1,5 +1,5 @@
 import Header from "answerwriting/components/misc/misc_header";
-import { AppSidebar } from "answerwriting/components/react-common/app-sidebar";
+import { BlogSidebar } from "answerwriting/components/react-common/blog-sidebar";
 import {
   SidebarProvider,
   SidebarTrigger,
@@ -13,7 +13,7 @@ export default async function BlogsLayout({
 }) {
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <BlogSidebar />
       <div className="h-screen w-screen">
         <Header />
         <div className="md:hidden flex justify-center p-0 m-0">

@@ -2,7 +2,9 @@ import { Exams, Marks } from "answerwriting/types/ai.types";
 import { z } from "zod";
 
 export const evaluateAnswerSchema = z.object({
-  question: z.string({ message: "Please enter a valid question." }),
+  question: z
+    .string({ message: "Please enter a valid question." })
+    .min(10, { message: "Please enter a valid question" }),
   exam: z.nativeEnum(Exams, {
     message: `Please select an exam from the following values: ${Object.values(Exams).join(", ")}.`,
   }),

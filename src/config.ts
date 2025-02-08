@@ -42,5 +42,9 @@ export const TELEGRAM_URL = "https://www.telegram.com";
 export const YOUTUBE_URL = "https://www.youtube.com";
 export const IG_URL = "https://www.instagram.com";
 
+export const MAX_PDF_UPLOAD_SIZE_BYTES = 2 * 1024 * 1024;
+export const SINGLE_IMAGE_UPLOAD_SIZE_BYTES = 1 * 1024 * 1024;
+export const MAX_IMAGES_ALLOWED = 5;
+
 // Asset paths
 export const LOGO_BANNER_URI = `https://res.cloudinary.com/dc36fxbog/image/upload/v1737793645/logo_dnei0q.png`;

@@ -15,6 +15,8 @@ export enum ApiRoutePaths {
 
   // auth user pages
   PAGE_DASHBOARD = "/dashboard",
+  PAGE_DASHBOARD_USER_PROFILE = "/dashboard/user/profile",
+  PAGE_DASHBOARD_TOOLS_EVALUATOR = "/dashboard/tools/answer-evaluator",
 
   // auth
   PAGE_LOGIN = "/auth/login",
