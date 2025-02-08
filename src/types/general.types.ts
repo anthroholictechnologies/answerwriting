@@ -41,6 +41,8 @@ export enum ErrorCodes {
 
   INVALID_CREDENTIALS = "InvalidCredentials",
   ALREADY_REGISTERED_WITH_GOOGLE = "AlreadyRegisteredWithGoogle",
+
+  UNAUTHORIZED = "Unauthorized",
 }
 
 export interface ApiResponse<T = unknown> {

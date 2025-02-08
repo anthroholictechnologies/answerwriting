@@ -27,6 +27,8 @@ model User {
   emailVerificationTokens EmailVerificationToken[]
   forgetPasswordTokens    ForgetPasswordToken[]
 
+  answers Answer[]
+
   @@map("users")
 }
 
@@ -125,6 +127,7 @@ enum Exam {
 
   @@map("exams")
 }
+
 model Subject {
   id        String   @id @default(cuid())
   name      String   @unique
@@ -161,4 +164,19 @@ model SubjectCriteria {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   @@map("subject_criteria")
+}
+
+model Answer {
+  id             String   @id @default(cuid())
+  question       String
+  marks          String
+  exam           Exam
+  evaluationJson Json     @map("evaluation_json")
+  userId         String   @map("user_id")
+  imagesPath     String[] @map("images_path")
+  pdfPath        String   @map("pdf_path")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("answers")
 }

@@ -125,6 +125,20 @@ CREATE TABLE "subject_criteria" (
     CONSTRAINT "subject_criteria_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "answers" (
+    "id" TEXT NOT NULL,
+    "question" TEXT NOT NULL,
+    "marks" TEXT NOT NULL,
+    "exam" "exams" NOT NULL,
+    "evaluation_json" JSONB NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "images_path" TEXT[],
+    "pdf_path" TEXT NOT NULL,
+
+    CONSTRAINT "answers_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
@@ -163,3 +177,6 @@ ALTER TABLE "forget_password_tokens" ADD CONSTRAINT "forget_password_tokens_user
 
 -- AddForeignKey
 ALTER TABLE "subject_criteria" ADD CONSTRAINT "subject_criteria_subject_id_fkey" FOREIGN KEY ("subject_id") REFERENCES "subjects"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "answers" ADD CONSTRAINT "answers_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
