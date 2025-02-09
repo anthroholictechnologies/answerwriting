@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack -p 8080",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "now-build": "node build.js"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
