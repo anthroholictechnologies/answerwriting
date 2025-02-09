@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack -p 8080",
-    "build": "prisma generate && apt-get update && apt-get install -y libpixman-1-dev libcairo2-dev && next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -28,6 +28,7 @@
     "@react-email/components": "0.0.32",
     "bcrpyt": "^2.0.0",
     "bcryptjs": "^2.4.3",
+    "canvas": "^3.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.4",
