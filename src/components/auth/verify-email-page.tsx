@@ -121,7 +121,7 @@ const VerifyEmail = ({ userId, token }: VerifyEmailProps) => {
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2">
                   <h1 className="text-xl font-bold">{state.message}</h1>
-                  <p className="text-sm text-secondary text-center">
+                  <p className="text-sm text-tertiary text-center">
                     {state.explanation}
                   </p>
                 </div>

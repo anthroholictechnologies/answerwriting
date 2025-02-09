@@ -24,6 +24,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  EvaluateAnswerAPIResponse,
   EvaluateAnswerInput,
   evaluateAnswerSchema,
 } from "answerwriting/validations/ai.schema";
@@ -35,7 +36,23 @@ import {
   FormMessage,
 } from "answerwriting/components/ui/form";
 
-export const AnswerEvaluatorForm = () => {
+export const AnswerEvaluatorForm = ({
+  makeRequest,
+}: {
+  makeRequest: ({
+    pdfFile,
+    images,
+    question,
+    marks,
+    exam,
+  }: {
+    pdfFile?: File;
+    images?: File[];
+    question: string;
+    marks: Marks;
+    exam: Exams;
+  }) => Promise<EvaluateAnswerAPIResponse | null | undefined>;
+}) => {
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [images, setImages] = useState<File[]>([]);
 
@@ -47,17 +64,21 @@ export const AnswerEvaluatorForm = () => {
   });
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6 p-2 md:p-6">
+    <div className="max-w-3xl mx-auto space-y-6 p-2 md:p-6 h-[100vh] overflow-auto">
       <Form {...form}>
         {/* Exam Selection Card */}
-        <Card className="md:shadow-sm md:hover:shadow-md md:transition-shadow">
+        <Card>
           <CardHeader>
             <div className="flex gap-2">
               <CardTitle className="text-xl text-primary-dark">
                 Select GS
               </CardTitle>
+
               <SelectGSToolTip />
             </div>
+            <CardDescription>
+              Select the most appropriate GS paper for the question.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <FormField
@@ -156,7 +177,17 @@ export const AnswerEvaluatorForm = () => {
             size="lg"
             type="submit"
             className="flex gap-2"
-            disabled={!form.formState.isValid}
+            disabled={!(form.formState.isValid && (pdfFile || images.length))}
+            onClick={() => {
+              const { exam, marks, question } = form.getValues();
+              makeRequest({
+                exam,
+                marks,
+                question,
+                pdfFile: pdfFile ?? undefined,
+                images: images.length ? images : undefined,
+              });
+            }}
           >
             <Image
               src="/logos/1.png"

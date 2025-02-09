@@ -31,7 +31,7 @@ export const UploadAnswerToolTip = () => {
           <li>
             Maximum file size for each image is{" "}
             <strong> {MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024} MB </strong>, max{" "}
-            {MAX_IMAGES_ALLOWED} are allowed.
+            {MAX_IMAGES_ALLOWED} images are allowed.
           </li>
           <li>
             {" "}

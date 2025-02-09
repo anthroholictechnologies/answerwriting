@@ -7,12 +7,14 @@ import { uploadFile } from "answerwriting/services/misc/s3.service";
 import { Exams, Marks } from "answerwriting/types/ai.types";
 import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
 import {
+  EvaluateAnswerAPIResponse,
   Evaluation,
   evaluationSchema,
 } from "answerwriting/validations/ai.schema";
 import { StructuredOutputParser } from "langchain/output_parsers";
 import { NextRequest, NextResponse } from "next/server";
 import cuid from "cuid";
+import { sumBy } from "lodash";
 
 export const maxDuration = 60;
 
@@ -56,7 +58,7 @@ async function uploadFiles(
  */
 export async function POST(
   request: NextRequest,
-): Promise<NextResponse<ApiResponse<Evaluation>>> {
+): Promise<NextResponse<ApiResponse<EvaluateAnswerAPIResponse>>> {
   try {
     // Authenticate user
     const session = await auth();
@@ -141,6 +143,7 @@ export async function POST(
         ).getFormatInstructions(),
       evaluation_parameters: evaluationParameters,
     })) as Evaluation;
+    console.log("evaluation====", evaluation);
 
     // Save evaluation result to the database
     await prisma.answer.create({
@@ -156,10 +159,70 @@ export async function POST(
       },
     });
 
+    // Total score calculation logic
+    const baseParamsWeightage = 0.3 * Number(marks);
+    const subjectSpecificParamsWeightage = 0.5 * Number(marks);
+    const baseParamScores = evaluation.parameter_scores.filter(
+      (ps) => ps.category === "base_parameter",
+    );
+    const subjectSpecificParamScores = evaluation.parameter_scores.filter(
+      (ps) => ps.category === "subject_specific_parameter",
+    );
+
+    const marksScoredBaseParams =
+      (sumBy(baseParamScores, (ps) => ps.score) /
+        (baseParamScores.length * 10)) *
+      baseParamsWeightage;
+    const marksScoredSubjectSpecificParams =
+      (sumBy(subjectSpecificParamScores, (ps) => ps.score) /
+        (subjectSpecificParamScores.length * 10)) *
+      subjectSpecificParamsWeightage;
+
+    let totalScore = marksScoredBaseParams + marksScoredSubjectSpecificParams;
+
+    if (
+      totalScore >= 0.45 * Number(marks) &&
+      totalScore <= 0.65 * Number(marks)
+    ) {
+      if (evaluation.current_relevance) {
+        totalScore += 1;
+      } else if (evaluation.visual_aid) {
+        totalScore += 1;
+      }
+    }
+
+    console.log(
+      JSON.stringify(
+        {
+          current_relevance: evaluation.current_relevance,
+          summary: evaluation.summary,
+          exam,
+          improved_answer: evaluation.improved_answer,
+          marks,
+          overall_feedback: evaluation.overall_feedback,
+          question,
+          visual_aid: evaluation.visual_aid,
+          marksScored: Math.round(totalScore),
+        },
+        null,
+        2,
+      ),
+    );
+
     return NextResponse.json({
       success: true,
       message: "Evaluation request processed successfully.",
-      data: evaluation,
+      data: {
+        current_relevance: evaluation.current_relevance,
+        summary: evaluation.summary,
+        exam,
+        improved_answer: evaluation.improved_answer,
+        marks,
+        overall_feedback: evaluation.overall_feedback,
+        question,
+        visual_aid: evaluation.visual_aid,
+        marksScored: Math.round(totalScore),
+      },
     });
   } catch (error) {
     console.error("Error processing Evaluate Answer Request", error);
