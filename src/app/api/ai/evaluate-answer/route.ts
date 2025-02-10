@@ -79,7 +79,7 @@ export async function POST(
     const exam = formData.get("exam") as Exams;
     const question = formData.get("question") as string;
     const marks = formData.get("marks") as Marks;
-    const answerPDF = formData.get("answerPDF") as File;
+    const answerPDF = formData.get("answerPDF") as File | undefined;
     const imageFiles: File[] = Array.from(formData.entries())
       .filter(
         ([key, value]) => key.startsWith("image-") && value instanceof File,
@@ -88,13 +88,14 @@ export async function POST(
 
     const userId = user.id;
     const answerId = cuid();
-
     // Upload files to S3
     const [pdfPath, imagesPath] = await Promise.all([
-      uploadFile({
-        file: answerPDF,
-        filePath: `answers/${userId}/${answerId}/${cuid()}.pdf`,
-      }),
+      answerPDF
+        ? uploadFile({
+            file: answerPDF,
+            filePath: `answers/${userId}/${answerId}/${cuid()}.pdf`,
+          })
+        : Promise.resolve(null),
       uploadFiles(userId, answerId, imageFiles),
     ]);
 
@@ -143,7 +144,6 @@ export async function POST(
         ).getFormatInstructions(),
       evaluation_parameters: evaluationParameters,
     })) as Evaluation;
-    console.log("evaluation====", evaluation);
 
     // Save evaluation result to the database
     await prisma.answer.create({
@@ -154,7 +154,7 @@ export async function POST(
         question,
         marks,
         evaluationJson: JSON.stringify(evaluation),
-        pdfPath,
+        pdfPath: pdfPath ?? "",
         imagesPath,
       },
     });
@@ -190,24 +190,6 @@ export async function POST(
         totalScore += 1;
       }
     }
-
-    console.log(
-      JSON.stringify(
-        {
-          current_relevance: evaluation.current_relevance,
-          summary: evaluation.summary,
-          exam,
-          improved_answer: evaluation.improved_answer,
-          marks,
-          overall_feedback: evaluation.overall_feedback,
-          question,
-          visual_aid: evaluation.visual_aid,
-          marksScored: Math.round(totalScore),
-        },
-        null,
-        2,
-      ),
-    );
 
     return NextResponse.json({
       success: true,

@@ -16,11 +16,10 @@ export const evaluateAnswerSchema = z.object({
 export type EvaluateAnswerInput = z.infer<typeof evaluateAnswerSchema>;
 
 export const evaluationSchema = z.object({
-  summary: z
-    .string()
-    .describe(
-      "Summary of the evaluation feedback on the answer. Please do not expose any internal marking scheme or parameters",
-    ),
+  summary: z.string().describe(
+    `Summary of the evaluation feedback on the answer. 
+       - Please do not expose any internal marking scheme or parameters`,
+  ),
   overall_feedback: z
     .object({
       suggestions: z
@@ -54,11 +53,11 @@ export const evaluationSchema = z.object({
   parameter_scores: z
     .array(
       z.object({
-        // parameter: z
-        //   .string()
-        //   .describe(
-        //     "The name of the evaluation parameter being assessed. Examples: 'Understanding & Interpretation', 'Content Quality', 'Language & Expression', 'Structure & Organization'. This provides context for the specific aspect of the answer being scored."
-        //   ),
+        parameter: z
+          .string()
+          .describe(
+            "The name of the evaluation parameter being assessed. Examples: 'Understanding & Interpretation', 'Content Quality', 'Language & Expression', 'Structure & Organization'. This provides context for the specific aspect of the answer being scored.",
+          ),
         category: z
           .enum(["base_parameter", "subject_specific_parameter"])
           .describe(
@@ -79,7 +78,7 @@ export const evaluationSchema = z.object({
       }),
     )
     .describe(
-      "An array containing evaluation scores for each parameter. Each item in this array corresponds to a parameter being evaluated, along with the score awarded, the maximum possible score, and a justification for the result.",
+      "An array containing evaluation scores for each parameter. Each item in this array corresponds to a parameter being evaluated, along with the score awarded, the maximum possible score.",
     ),
   current_relevance: z.object({
     present: z.boolean().describe(

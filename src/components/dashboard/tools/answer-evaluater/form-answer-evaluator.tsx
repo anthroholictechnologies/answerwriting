@@ -64,7 +64,7 @@ export const AnswerEvaluatorForm = ({
   });
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6 p-2 md:p-6 h-[100vh] overflow-auto">
+    <div className="max-w-3xl mx-auto space-y-6 p-2 md:p-6 lg:h-[100vh] overflow-auto">
       <Form {...form}>
         {/* Exam Selection Card */}
         <Card>

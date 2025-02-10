@@ -1,5 +1,4 @@
 "use client";
-
 import { AnswerEvaluatorResult } from "answerwriting/components/dashboard/tools/answer-evaluater/result-answer-evaluator";
 import { AnswerEvaluatorForm } from "answerwriting/components/dashboard/tools/answer-evaluater/form-answer-evaluator";
 import Image from "next/image";
@@ -7,26 +6,45 @@ import { ToastAction } from "answerwriting/components/ui/toast";
 import { ApiRoutePaths, ErrorCodes } from "answerwriting/types/general.types";
 import { useRouter } from "next/navigation";
 import { useCustomToast } from "answerwriting/components/react-common/toast";
-import "pdfjs-dist/web/pdf_viewer.css";
-import { GlobalWorkerOptions, getDocument } from "pdfjs-dist";
 import { Marks, Exams } from "answerwriting/types/ai.types";
 import { evaluateAnswer } from "answerwriting/lib/utils/api/ai.api";
 import { useAsyncFn } from "react-use";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "answerwriting/components/ui/tabs";
+import { CheckCircle, PenIcon } from "lucide-react";
+import { useState } from "react";
+import "pdfjs-dist/web/pdf_viewer.css";
+import { GlobalWorkerOptions, getDocument } from "pdfjs-dist";
 
 const convertPDFToImages = async (pdfFile: File): Promise<File[]> => {
   if (typeof window !== "undefined") {
     GlobalWorkerOptions.workerSrc =
       "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.0.279/pdf.worker.min.js";
+  } else {
+    throw new Error("This function must be run in a browser environment.");
   }
 
-  const pdfBuffer = await pdfFile.arrayBuffer();
-  const loadingTask = getDocument({ data: pdfBuffer });
-  const pdf = await loadingTask.promise;
+  const pdfBuffer = new Uint8Array(await pdfFile.arrayBuffer());
+
+  let pdf;
+  try {
+    const loadingTask = getDocument({ data: pdfBuffer });
+    pdf = await loadingTask.promise;
+  } catch (error) {
+    console.error("Error loading PDF:", error);
+    return [];
+  }
+
   const imageFiles: File[] = [];
 
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
     const viewport = page.getViewport({ scale: 3.0 });
+
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
 
@@ -51,11 +69,11 @@ const convertPDFToImages = async (pdfFile: File): Promise<File[]> => {
       console.error("Failed to get canvas context");
     }
   }
-
   return imageFiles;
 };
 
 export default function AnswerEvalTool() {
+  const [activeTab, setActiveTab] = useState<string>("form");
   const router = useRouter();
   const toast = useCustomToast();
   const [{ loading, value }, makeRequest] = useAsyncFn(
@@ -72,6 +90,7 @@ export default function AnswerEvalTool() {
       marks: Marks;
       exam: Exams;
     }) => {
+      setActiveTab("results");
       const formData = new FormData();
       formData.append("question", question);
       formData.append("marks", marks);
@@ -89,7 +108,6 @@ export default function AnswerEvalTool() {
       answerImages.forEach((answerImage, index) => {
         formData.append(`image-${index}`, answerImage);
       });
-
       try {
         const result = await evaluateAnswer(formData);
         if (result.success) {
@@ -129,30 +147,76 @@ export default function AnswerEvalTool() {
   );
 
   return (
-    <div className="">
-      <div className="flex flex-col md:flex-row justify-center items-center gap-2">
-        <Image
-          src="/logos/1.png"
-          height={100}
-          width={100}
-          alt="answerwriting logo"
-          className="w-16 h-16"
-        />
-        <h1 className="text-primary-dark font-semibold text-3xl tracking-tighter leading-none">
-          {" "}
-          Answer Evaluator{" "}
-        </h1>
-      </div>
-      <hr className="mt-4" />
+    <>
+      <div className="hidden lg:block">
+        <div className="flex justify-center items-center gap-2">
+          <Image
+            src="/logos/1.png"
+            height={100}
+            width={100}
+            alt="answerwriting logo"
+            className="w-16 h-16"
+          />
+          <h1 className="text-primary-dark font-semibold text-3xl tracking-tighter leading-none">
+            {" "}
+            Answer Evaluator{" "}
+          </h1>
+        </div>
+        <hr className="mt-4" />
 
-      <div className="flex flex-col xl:flex-row">
-        <div className="flex-1 border-r pt-4">
-          <AnswerEvaluatorForm makeRequest={makeRequest} />
-        </div>
-        <div className="flex-1">
-          <AnswerEvaluatorResult evaluationResults={value} loading={loading} />
+        <div className="flex">
+          <div className="flex-1 border-r pt-4">
+            <AnswerEvaluatorForm makeRequest={makeRequest} />
+          </div>
+          <div className="flex-1">
+            <AnswerEvaluatorResult
+              evaluationResults={value}
+              loading={loading}
+            />
+          </div>
         </div>
       </div>
-    </div>
+
+      <div className="lg:hidden p-2 md:py-8">
+        <div className="flex justify-center items-center gap-2">
+          <Image
+            src="/logos/1.png"
+            height={100}
+            width={100}
+            alt="answerwriting logo"
+            className="w-16 h-16"
+          />
+          <h1 className="text-primary-dark font-semibold text-3xl tracking-tighter leading-none">
+            {" "}
+            Answer Evaluator{" "}
+          </h1>
+        </div>
+        <hr className="mt-4" />
+        <Tabs
+          defaultValue={activeTab}
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="w-full mt-4"
+        >
+          <TabsList className="grid w-full grid-cols-2 mb-4">
+            <TabsTrigger value="form" className="flex items-center gap-2">
+              <PenIcon className="h-4 w-4" /> Form
+            </TabsTrigger>
+            <TabsTrigger value="results" className="flex items-center gap-2">
+              <CheckCircle className="h-4 w-4" /> Results
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="form">
+            <AnswerEvaluatorForm makeRequest={makeRequest} />
+          </TabsContent>
+          <TabsContent value="results">
+            <AnswerEvaluatorResult
+              evaluationResults={value}
+              loading={loading}
+            />
+          </TabsContent>
+        </Tabs>
+      </div>
+    </>
   );
 }

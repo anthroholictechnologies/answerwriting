@@ -98,7 +98,7 @@ export const FileUploader = ({
 
           {/* PDF Upload */}
           <TabsContent value="pdf">
-            <div className="w-full border-2 border-dashed rounded-lg p-8 text-center bg-muted/50">
+            <div className="w-full border-2 border-dashed rounded-lg p-4 md:p-8 text-center bg-muted/50">
               <div className="flex flex-col items-center gap-4">
                 <FileText className="h-12 w-12 text-primary-dark" />
                 <div className="space-y-2">
@@ -113,7 +113,7 @@ export const FileUploader = ({
                 <Input
                   type="file"
                   accept=".pdf"
-                  className="hidden"
+                  className="absolute opacity-0 w-1 h-1"
                   id="pdf-upload"
                   onChange={handlePdfUpload}
                 />
@@ -130,7 +130,7 @@ export const FileUploader = ({
                   </span>
                 )}
               </div>
-              {pdfFile && (
+              {pdfFile !== null && (
                 <div className="mt-4 p-4 bg-background rounded-lg">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium truncate">
@@ -169,7 +169,7 @@ export const FileUploader = ({
                   type="file"
                   accept="image/*"
                   multiple
-                  className="hidden"
+                  className="absolute opacity-0 w-1 h-1"
                   id="image-upload"
                   onChange={handleImagesUpload}
                 />
