@@ -11,7 +11,6 @@ import {
   TabsContent,
   Tabs,
 } from "answerwriting/components/ui/tabs";
-import { Input } from "answerwriting/components/ui/input";
 import { Button } from "answerwriting/components/ui/button";
 import { FileText, ImageIcon, Upload, X } from "lucide-react";
 import Image from "next/image";
@@ -21,6 +20,8 @@ import {
   MAX_PDF_UPLOAD_SIZE_BYTES,
   SINGLE_IMAGE_UPLOAD_SIZE_BYTES,
 } from "answerwriting/config";
+import { useRef } from "react";
+
 export const FileUploader = ({
   pdfFile,
   setPdfFile,
@@ -33,40 +34,43 @@ export const FileUploader = ({
   setImages: (files: File[]) => void;
 }) => {
   const toast = useCustomToast();
+  const pdfInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   const handlePdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {
-      if (pdfFile && pdfFile.size > MAX_PDF_UPLOAD_SIZE_BYTES) {
+      const selectedFile = event.target.files[0];
+
+      if (selectedFile.size > MAX_PDF_UPLOAD_SIZE_BYTES) {
         toast.error({
           title: "PDF file too large",
-          description: `Please make sure your PDF file is less than ${MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024}MB in size.`,
+          description: `Max size is ${MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`,
         });
-      } else {
-        setPdfFile(event.target.files[0]);
+        return;
       }
+
+      setPdfFile(selectedFile);
     }
   };
 
   const handleImagesUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {
-      setImages([...images, ...Array.from(event.target.files)].slice(0, 5));
-    }
+      const newImages = Array.from(event.target.files).slice(
+        0,
+        MAX_IMAGES_ALLOWED,
+      );
 
-    if (images.some((img) => img.size > SINGLE_IMAGE_UPLOAD_SIZE_BYTES)) {
-      toast.error({
-        title: "Image file too large",
-        description: `Please make sure your image files are less than ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB in size.`,
-      });
-      setImages([]);
-    }
+      if (newImages.some((img) => img.size > SINGLE_IMAGE_UPLOAD_SIZE_BYTES)) {
+        toast.error({
+          title: "Image too large",
+          description: `Each image must be under ${
+            SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024
+          }MB.`,
+        });
+        return;
+      }
 
-    if (images.length > MAX_IMAGES_ALLOWED) {
-      toast.error({
-        title: "Too many images",
-        description: `You can only upload a maximum of ${MAX_IMAGES_ALLOWED} images.`,
-      });
-
-      setImages([]);
+      setImages([...images, ...newImages]);
     }
   };
 
@@ -88,49 +92,51 @@ export const FileUploader = ({
       <CardContent>
         <Tabs defaultValue="pdf" className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-4">
-            <TabsTrigger value="pdf" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" /> PDF Upload
+            <TabsTrigger
+              value="pdf"
+              className="flex items-center gap-2"
+              disabled={images.length > 0}
+            >
+              <FileText className="h-4 w-4" /> PDF
             </TabsTrigger>
-            <TabsTrigger value="images" className="flex items-center gap-2">
-              <ImageIcon className="h-4 w-4" /> Images Upload
+            <TabsTrigger
+              value="images"
+              className="flex items-center gap-2"
+              disabled={!!pdfFile}
+            >
+              <ImageIcon className="h-4 w-4" /> Images
             </TabsTrigger>
           </TabsList>
 
-          {/* PDF Upload */}
+          {/* PDF Upload Section */}
           <TabsContent value="pdf">
             <div className="w-full border-2 border-dashed rounded-lg p-4 md:p-8 text-center bg-muted/50">
               <div className="flex flex-col items-center gap-4">
                 <FileText className="h-12 w-12 text-primary-dark" />
-                <div className="space-y-2">
-                  <h3 className="font-semibold text-primary-dark">
-                    {" "}
-                    Drop your PDF here
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    or click to browse files
-                  </p>
-                </div>
-                <Input
+                <h3 className="font-semibold text-primary-dark">
+                  Drop your PDF here
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  or click to browse files
+                </p>
+
+                <input
+                  ref={pdfInputRef}
                   type="file"
                   accept=".pdf"
-                  className="absolute opacity-0 w-1 h-1"
-                  id="pdf-upload"
+                  className="hidden"
                   onChange={handlePdfUpload}
                 />
-                <Button disabled={images.length > 0}>
-                  <label htmlFor="pdf-upload" className="flex cursor-pointer">
-                    <Upload className="h-4 w-4 mr-2" /> Select PDF
-                  </label>
+
+                <Button
+                  disabled={images.length > 0}
+                  onClick={() => pdfInputRef.current?.click()}
+                >
+                  <Upload className="h-4 w-4 mr-2" /> Select PDF
                 </Button>
-                {images.length > 0 && (
-                  <span className="text-red-500 text-xs">
-                    You have already uploaded images for the answer. To upload a
-                    PDF, please switch to the Images tab and remove the uploaded
-                    images first.
-                  </span>
-                )}
               </div>
-              {pdfFile !== null && (
+
+              {pdfFile && (
                 <div className="mt-4 p-4 bg-background rounded-lg">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium truncate">
@@ -140,10 +146,11 @@ export const FileUploader = ({
                       <X className="h-4 w-4" />
                     </Button>
                   </div>
-                  <div className="mt-2 border rounded-md overflow-hidden">
+                  <div className="mt-2 border rounded-md overflow-hidden h-[200px]">
                     <iframe
+                      key={pdfFile?.name}
                       src={URL.createObjectURL(pdfFile)}
-                      className="w-full h-64"
+                      className="w-full h-[200px]"
                       title="PDF Preview"
                     />
                   </div>
@@ -152,50 +159,37 @@ export const FileUploader = ({
             </div>
           </TabsContent>
 
-          {/* Image Upload */}
+          {/* Images Upload Section */}
           <TabsContent value="images">
             <div className="border-2 border-dashed rounded-lg p-8 text-center bg-muted/50">
               <div className="flex flex-col items-center gap-4">
                 <ImageIcon className="h-12 w-12 text-primary-dark" />
-                <div className="space-y-2">
-                  <h3 className="font-semibold text-primary-dark">
-                    Drop your images here
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    or click to browse files (max 5 images)
-                  </p>
-                </div>
-                <Input
+                <h3 className="font-semibold text-primary-dark">
+                  Drop your images here
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  or click to browse files (max {MAX_IMAGES_ALLOWED} images)
+                </p>
+
+                <input
+                  ref={imageInputRef}
                   type="file"
                   accept="image/*"
                   multiple
-                  className="absolute opacity-0 w-1 h-1"
-                  id="image-upload"
+                  className="hidden"
                   onChange={handleImagesUpload}
                 />
+
                 <Button
                   disabled={
                     images.length === MAX_IMAGES_ALLOWED || pdfFile !== null
                   }
+                  onClick={() => imageInputRef.current?.click()}
                 >
-                  <label htmlFor="image-upload" className="flex cursor-pointer">
-                    <Upload className="h-4 w-4 mr-2" /> Select Images
-                  </label>
+                  <Upload className="h-4 w-4 mr-2" /> Select Images
                 </Button>
-                {images.length === MAX_IMAGES_ALLOWED && (
-                  <span className="text-red-500 text-xs">
-                    {" "}
-                    {`You can upload up to ${MAX_IMAGES_ALLOWED} images per answer.`}{" "}
-                  </span>
-                )}
-                {pdfFile !== null && (
-                  <span className="text-red-500 text-xs">
-                    {" "}
-                    You have already uploaded an answer PDF. Switch to the PDF
-                    tab to remove it before uploading images.
-                  </span>
-                )}
               </div>
+
               {images.length > 0 && (
                 <div className="mt-4 grid grid-cols-2 gap-4">
                   {images.map((image, index) => (

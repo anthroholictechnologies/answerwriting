@@ -55,6 +55,7 @@ export const AnswerEvaluatorForm = ({
 }) => {
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [images, setImages] = useState<File[]>([]);
+  console.log("====pdf", pdfFile);
 
   const form = useForm<EvaluateAnswerInput>({
     resolver: zodResolver(evaluateAnswerSchema),

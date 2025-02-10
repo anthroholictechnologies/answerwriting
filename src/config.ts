@@ -9,6 +9,10 @@ import { ZodSchema } from "zod";
 
 export const apiRoutesWhichRequiresAuthentication: ApiRoutePaths[] = [
   ApiRoutePaths.PAGE_DASHBOARD,
+  ApiRoutePaths.PAGE_DASHBOARD_TOOLS_EVALUATOR,
+  ApiRoutePaths.PAGE_DASHBOARD_USER_PROFILE,
+
+  // API Routes
   ApiRoutePaths.EVALUATE_ANSWER,
   // Add routes here that require authentication
   //...

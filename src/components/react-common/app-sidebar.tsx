@@ -18,6 +18,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "answerwriting/lib/utils";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
+import { logout } from "answerwriting/actions";
 
 const profileMenuItems = [
   {
@@ -149,7 +150,10 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="p-4 border-t border-zinc-200">
-        <Button className="flex gap-2 transition-colors duration-200">
+        <Button
+          className="flex gap-2 transition-colors duration-200"
+          onClick={logout}
+        >
           <LogOut className="h-5 w-5" />
           Sign Out
         </Button>

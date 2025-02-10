@@ -56,7 +56,7 @@ const convertPDFToImages = async (pdfFile: File): Promise<File[]> => {
 
       // Convert canvas to Blob
       const blob = await new Promise<Blob | null>((resolve) =>
-        canvas.toBlob(resolve, "image/png", 1.0)
+        canvas.toBlob(resolve, "image/png", 1.0),
       );
 
       if (blob) {
@@ -143,13 +143,13 @@ export default function AnswerEvalTool() {
           ),
         });
       }
-    }
+    },
   );
 
   return (
     <>
       <div className="hidden lg:block">
-        <div className="flex justify-center items-center gap-2">
+        <div className="flex justify-center p-4 items-center gap-2">
           <Image
             src="/logos/1.png"
             height={100}
