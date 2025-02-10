@@ -18,7 +18,7 @@ import {
 import { CheckCircle, PenIcon } from "lucide-react";
 import { useState } from "react";
 import "pdfjs-dist/web/pdf_viewer.css";
-import { GlobalWorkerOptions, getDocument } from "pdfjs-dist/legacy/build/pdf";
+import { GlobalWorkerOptions, getDocument } from "pdfjs-dist";
 
 const convertPDFToImages = async (pdfFile: File): Promise<File[]> => {
   if (typeof window !== "undefined") {
