@@ -18,7 +18,7 @@ import {
 import { CheckCircle, PenIcon } from "lucide-react";
 import { useState } from "react";
 import "pdfjs-dist/web/pdf_viewer.css";
-import { GlobalWorkerOptions, getDocument } from "pdfjs-dist";
+import { GlobalWorkerOptions, getDocument } from "pdfjs-dist/legacy/build/pdf";
 
 const convertPDFToImages = async (pdfFile: File): Promise<File[]> => {
   if (typeof window !== "undefined") {
@@ -56,7 +56,7 @@ const convertPDFToImages = async (pdfFile: File): Promise<File[]> => {
 
       // Convert canvas to Blob
       const blob = await new Promise<Blob | null>((resolve) =>
-        canvas.toBlob(resolve, "image/png", 1.0),
+        canvas.toBlob(resolve, "image/png", 1.0)
       );
 
       if (blob) {
@@ -143,7 +143,7 @@ export default function AnswerEvalTool() {
           ),
         });
       }
-    },
+    }
   );
 
   return (

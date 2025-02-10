@@ -6,8 +6,7 @@
     "dev": "next dev --turbopack -p 8080",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "npm install --ignore-scripts && npm rebuild"
+    "lint": "next lint"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
@@ -29,7 +28,6 @@
     "@react-email/components": "0.0.32",
     "bcrpyt": "^2.0.0",
     "bcryptjs": "^2.4.3",
-    "canvas": "^3.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.4",
