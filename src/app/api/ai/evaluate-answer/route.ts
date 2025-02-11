@@ -69,8 +69,6 @@ export async function POST(
         { status: 401 },
       );
     }
-    console.log("user====", user);
-
     // Parse form data
     const formData = await request.formData();
     const exam = formData.get("exam") as Exams;
@@ -82,8 +80,7 @@ export async function POST(
         ([key, value]) => key.startsWith("image-") && value instanceof Blob,
       )
       .map(([, value]) => value as Blob);
-    console.log("===answerPdf, imagesFiles====", answerPDF, imageFiles);
-
+    
     const userId = user.id;
     const answerId = cuid();
 

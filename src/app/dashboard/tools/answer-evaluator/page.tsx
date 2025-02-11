@@ -130,12 +130,12 @@ export default function AnswerEvalTool() {
       } catch (err) {
         console.error("Error evaluating answer:", err);
         toast.error({
-          title: "Uh oh! Something went wrong.",
-          description: "There was a problem in the registration process.",
+          title: "Server Busy!! Please try again after some time.",
+          description: "There was a problem in evaluating your answer.",
           action: (
             <ToastAction
               altText="Try again"
-              className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/20 hover:border-white/30 transition-all backdrop-blur-sm font-medium text-sm"
+              className="px-2 md:px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/20 hover:border-white/30 transition-all backdrop-blur-sm font-medium text-sm"
               onClick={() => window.location.reload()}
             >
               Try again
