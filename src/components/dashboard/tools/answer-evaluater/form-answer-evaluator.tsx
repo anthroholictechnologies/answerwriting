@@ -55,9 +55,8 @@ export const AnswerEvaluatorForm = ({
 }) => {
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [images, setImages] = useState<File[]>([]);
-  console.log("====pdf", pdfFile);
-
-  const form = useForm<EvaluateAnswerInput>({
+ 
+ const form = useForm<EvaluateAnswerInput>({
     resolver: zodResolver(evaluateAnswerSchema),
     mode: "onChange",
     defaultValues: { question: "", exam: Exams.GS1, marks: Marks.FIFTEEN },
@@ -65,7 +64,7 @@ export const AnswerEvaluatorForm = ({
   });
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6 p-2 md:p-6 lg:h-[100vh] overflow-auto">
+
       <Form {...form}>
         {/* Exam Selection Card */}
         <Card>
@@ -201,7 +200,7 @@ export const AnswerEvaluatorForm = ({
           </Button>
         </div>
       </Form>
-    </div>
+   
   );
 };
 

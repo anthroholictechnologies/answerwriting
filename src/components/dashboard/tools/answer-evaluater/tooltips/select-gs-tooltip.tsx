@@ -14,7 +14,7 @@ export const SelectGSToolTip = () => {
   return (
     <>
       {/* Tooltip for larger screens */}
-      <div className="hidden sm:block">
+      <div className="hidden lg:block">
         <Tooltip>
           <TooltipTrigger>
             <Info className="w-4 h-4 cursor-pointer" />
@@ -26,7 +26,7 @@ export const SelectGSToolTip = () => {
       </div>
 
       {/* Popover for smaller screens */}
-      <div className="sm:hidden">
+      <div className="lg:hidden">
         <Popover>
           <PopoverTrigger>
             <Info className="w-4 h-4 cursor-pointer" />

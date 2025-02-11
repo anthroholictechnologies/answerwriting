@@ -1,7 +1,6 @@
 "use client";
 import { AnswerEvaluatorResult } from "answerwriting/components/dashboard/tools/answer-evaluater/result-answer-evaluator";
 import { AnswerEvaluatorForm } from "answerwriting/components/dashboard/tools/answer-evaluater/form-answer-evaluator";
-import Image from "next/image";
 import { ToastAction } from "answerwriting/components/ui/toast";
 import { ApiRoutePaths, ErrorCodes } from "answerwriting/types/general.types";
 import { useRouter } from "next/navigation";
@@ -19,6 +18,7 @@ import { CheckCircle, PenIcon } from "lucide-react";
 import { useState } from "react";
 import "pdfjs-dist/web/pdf_viewer.css";
 import { GlobalWorkerOptions, getDocument } from "pdfjs-dist";
+import ToolHeading from "answerwriting/components/dashboard/tools/tool-heading";
 
 const convertPDFToImages = async (pdfFile: File): Promise<File[]> => {
   if (typeof window !== "undefined") {
@@ -56,7 +56,7 @@ const convertPDFToImages = async (pdfFile: File): Promise<File[]> => {
 
       // Convert canvas to Blob
       const blob = await new Promise<Blob | null>((resolve) =>
-        canvas.toBlob(resolve, "image/png", 1.0),
+        canvas.toBlob(resolve, "image/png", 1.0)
       );
 
       if (blob) {
@@ -143,32 +143,18 @@ export default function AnswerEvalTool() {
           ),
         });
       }
-    },
+    }
   );
 
-  return (
-    <>
+  const AnswerEvalForm = () => {
+    return (
       <div className="hidden lg:block">
-        <div className="flex justify-center p-4 items-center gap-2">
-          <Image
-            src="/logos/1.png"
-            height={100}
-            width={100}
-            alt="answerwriting logo"
-            className="w-16 h-16"
-          />
-          <h1 className="text-primary-dark font-semibold text-3xl tracking-tighter leading-none">
-            {" "}
-            Answer Evaluator{" "}
-          </h1>
-        </div>
-        <hr className="mt-4" />
-
+        <ToolHeading heading="Answer Evaluator" />
         <div className="flex">
-          <div className="flex-1 border-r pt-4">
+          <div className="flex-1 border border-gray-200 max-w-3xl mx-auto space-y-6 px-6 py-12">
             <AnswerEvaluatorForm makeRequest={makeRequest} />
           </div>
-          <div className="flex-1">
+          <div className="flex-1 border border-gray-200 max-w-3xl mx-auto px-6 py-12">
             <AnswerEvaluatorResult
               evaluationResults={value}
               loading={loading}
@@ -176,47 +162,55 @@ export default function AnswerEvalTool() {
           </div>
         </div>
       </div>
+    );
+  };
 
-      <div className="lg:hidden p-2 md:py-8">
-        <div className="flex justify-center items-center gap-2">
-          <Image
-            src="/logos/1.png"
-            height={100}
-            width={100}
-            alt="answerwriting logo"
-            className="w-16 h-16"
-          />
-          <h1 className="text-primary-dark font-semibold text-3xl tracking-tighter leading-none">
-            {" "}
-            Answer Evaluator{" "}
-          </h1>
-        </div>
-        <hr className="mt-4" />
+  const AnswerEvalFormMobile = () => {
+    return (
+      <div className="lg:hidden">
+        <ToolHeading heading="Answer Evaluator" />
         <Tabs
           defaultValue={activeTab}
           value={activeTab}
           onValueChange={setActiveTab}
-          className="w-full mt-4"
+          className="mt-4 p-4"
         >
-          <TabsList className="grid w-full grid-cols-2 mb-4">
-            <TabsTrigger value="form" className="flex items-center gap-2">
+          <TabsList className="grid w-full grid-cols-2 h-12 mb-4 bg-primary-dark text-white">
+            <TabsTrigger
+              value="form"
+              className="flex items-center h-10 gap-2 bg-primary-dark"
+            >
               <PenIcon className="h-4 w-4" /> Form
             </TabsTrigger>
-            <TabsTrigger value="results" className="flex items-center gap-2">
+            <TabsTrigger
+              value="results"
+              className="flex items-center h-10 gap-2 bg-primary-dark"
+            >
               <CheckCircle className="h-4 w-4" /> Results
             </TabsTrigger>
           </TabsList>
           <TabsContent value="form">
-            <AnswerEvaluatorForm makeRequest={makeRequest} />
+            <div className="max-w-3xl space-y-6 pb-6">
+              <AnswerEvaluatorForm makeRequest={makeRequest} />
+            </div>
           </TabsContent>
           <TabsContent value="results">
-            <AnswerEvaluatorResult
-              evaluationResults={value}
-              loading={loading}
-            />
+            <div className="max-w-3xl space-y-6 pb-6">
+              <AnswerEvaluatorResult
+                evaluationResults={value}
+                loading={loading}
+              />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
-    </>
+    );
+  };
+
+  return (
+    <div>
+      <AnswerEvalForm />
+      <AnswerEvalFormMobile />
+    </div>
   );
 }

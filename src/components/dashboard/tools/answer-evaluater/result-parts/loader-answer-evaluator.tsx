@@ -35,7 +35,7 @@ export const AnswerEvaluatorLoader = () => {
   const steps = [
     { label: "Uploading your answer...", icon: Upload },
     { label: "Analyzing your answer...", icon: Brain },
-    { label: "Evaluating against criteria...", icon: Scale },
+    { label: "Evaluating your answer...", icon: Scale },
     { label: "Generating a detailed report...", icon: Sparkles },
   ];
 

@@ -18,7 +18,7 @@ export const UploadAnswerToolTip = () => {
   return (
     <>
       {/* Tooltip for larger screens */}
-      <div className="hidden sm:block">
+      <div className="hidden lg:block">
         <Tooltip>
           <TooltipTrigger>
             <Info className="h-4 w-4 cursor-pointer" />
@@ -30,7 +30,7 @@ export const UploadAnswerToolTip = () => {
       </div>
 
       {/* Popover for smaller screens */}
-      <div className="sm:hidden">
+      <div className="lg:hidden">
         <Popover>
           <PopoverTrigger>
             <Info className="h-4 w-4 cursor-pointer" />

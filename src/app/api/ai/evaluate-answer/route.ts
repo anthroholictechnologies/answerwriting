@@ -38,7 +38,7 @@ async function convertFileToBase64(file: Blob): Promise<string> {
 async function uploadFiles(
   userId: string,
   answerId: string,
-  files: File[],
+  files: File[]
 ): Promise<string[]> {
   const paths: string[] = [];
   await Promise.all(
@@ -46,7 +46,7 @@ async function uploadFiles(
       const path = `answers/${userId}/${answerId}/${cuid()}.${file.type.split("/")[1]}`;
       await uploadFile({ file, filePath: path });
       paths.push(path);
-    }),
+    })
   );
   return paths;
 }
@@ -57,7 +57,7 @@ async function uploadFiles(
  * @returns A JSON response with the evaluation results.
  */
 export async function POST(
-  request: NextRequest,
+  request: NextRequest
 ): Promise<NextResponse<ApiResponse<EvaluateAnswerAPIResponse>>> {
   try {
     // Authenticate user
@@ -70,9 +70,10 @@ export async function POST(
           errorCode: ErrorCodes.UNAUTHORIZED,
           message: "User not authenticated.",
         },
-        { status: 401 },
+        { status: 401 }
       );
     }
+    console.log("user====", user);
 
     // Parse form data
     const formData = await request.formData();
@@ -82,9 +83,10 @@ export async function POST(
     const answerPDF = formData.get("answerPDF") as File | undefined;
     const imageFiles: File[] = Array.from(formData.entries())
       .filter(
-        ([key, value]) => key.startsWith("image-") && value instanceof File,
+        ([key, value]) => key.startsWith("image-") && value instanceof File
       )
       .map(([, value]) => value as File);
+    console.log("===answerPdf, imagesFiles====", answerPDF, imageFiles);
 
     const userId = user.id;
     const answerId = cuid();
@@ -140,7 +142,7 @@ export async function POST(
       answer_word_limit: getWordsFromMarks(marks),
       output_format:
         StructuredOutputParser.fromZodSchema(
-          evaluationSchema,
+          evaluationSchema
         ).getFormatInstructions(),
       evaluation_parameters: evaluationParameters,
     })) as Evaluation;
@@ -163,10 +165,10 @@ export async function POST(
     const baseParamsWeightage = 0.3 * Number(marks);
     const subjectSpecificParamsWeightage = 0.5 * Number(marks);
     const baseParamScores = evaluation.parameter_scores.filter(
-      (ps) => ps.category === "base_parameter",
+      (ps) => ps.category === "base_parameter"
     );
     const subjectSpecificParamScores = evaluation.parameter_scores.filter(
-      (ps) => ps.category === "subject_specific_parameter",
+      (ps) => ps.category === "subject_specific_parameter"
     );
 
     const marksScoredBaseParams =
@@ -214,7 +216,7 @@ export async function POST(
         errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,
         message: "Error processing Evaluate Answer Request",
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

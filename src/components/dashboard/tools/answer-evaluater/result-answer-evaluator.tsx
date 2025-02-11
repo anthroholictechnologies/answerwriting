@@ -24,7 +24,7 @@ export const AnswerEvaluatorResult = ({
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6 p-2 md:p-8 h-[100vh] overflow-auto">
+    <div className="space-y-6">
       <Question
         exam={evaluationResults.exam}
         marks={evaluationResults.marks}

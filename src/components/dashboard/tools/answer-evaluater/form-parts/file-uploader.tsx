@@ -91,17 +91,17 @@ export const FileUploader = ({
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="pdf" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-4">
+          <TabsList className="grid w-full grid-cols-2 mb-4 bg-primary-dark text-white">
             <TabsTrigger
               value="pdf"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 bg-primary-dark "
               disabled={images.length > 0}
             >
               <FileText className="h-4 w-4" /> PDF
             </TabsTrigger>
             <TabsTrigger
               value="images"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 bg-primary-dark"
               disabled={!!pdfFile}
             >
               <ImageIcon className="h-4 w-4" /> Images
