@@ -79,7 +79,7 @@ const BlogPage = () => {
           action: (
             <ToastAction
               altText="Try again"
-              className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/20 hover:border-white/30 transition-all backdrop-blur-sm font-medium text-sm"
+              className="px-4 py-2 mr-2 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/20 hover:border-white/30 transition-all backdrop-blur-sm font-medium text-sm"
               onClick={handleRetry}
             >
               Try again

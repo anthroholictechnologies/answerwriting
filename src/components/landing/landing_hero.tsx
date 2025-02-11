@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import { ApiRoutePaths } from "answerwriting/types/general.types";
 
 const LandingHero = () => {
   return (
@@ -17,8 +19,7 @@ const LandingHero = () => {
 
         <div className="flex gap-4">
           <Button variant="transparent" size="lg">
-            {" "}
-            Free Evaluation{" "}
+            <Link href={ApiRoutePaths.EVALUATE_ANSWER}>Free Evaluation </Link>
           </Button>
           <Button size="lg"> How it works ? </Button>
         </div>
