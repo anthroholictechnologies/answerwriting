@@ -19,7 +19,9 @@ const LandingHero = () => {
 
         <div className="flex gap-4">
           <Button variant="transparent" size="lg">
-            <Link href={ApiRoutePaths.EVALUATE_ANSWER}>Free Evaluation </Link>
+            <Link href={ApiRoutePaths.PAGE_DASHBOARD_TOOLS_EVALUATOR}>
+              Free Evaluation{" "}
+            </Link>
           </Button>
           <Button size="lg"> How it works ? </Button>
         </div>
