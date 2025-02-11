@@ -17,17 +17,6 @@ import cuid from "cuid";
 import { sumBy } from "lodash";
 
 export const maxDuration = 60;
-
-/**
- * Converts a file to a base64 string.
- * @param file - The file to be converted.
- * @returns A promise that resolves to a base64-encoded string.
- */
-async function convertFileToBase64(file: Blob): Promise<string> {
-  const arrayBuffer = await file.arrayBuffer();
-  return `data:${file.type};base64,${Buffer.from(arrayBuffer).toString("base64")}`;
-}
-
 /**
  * Uploads files to S3 and returns their paths.
  * @param userId - ID of the user.
@@ -38,17 +27,24 @@ async function convertFileToBase64(file: Blob): Promise<string> {
 async function uploadFiles(
   userId: string,
   answerId: string,
-  files: File[]
+  files: Blob[], // Accepts Blob instead of File
 ): Promise<string[]> {
-  const paths: string[] = [];
-  await Promise.all(
+  return Promise.all(
     files.map(async (file) => {
-      const path = `answers/${userId}/${answerId}/${cuid()}.${file.type.split("/")[1]}`;
-      await uploadFile({ file, filePath: path });
-      paths.push(path);
-    })
+      const { buffer, contentType } = await convertBlobToBuffer(file);
+      const path = `answers/${userId}/${answerId}/${cuid()}.${contentType.split("/")[1]}`;
+      await uploadFile({ fileBuffer: buffer, filePath: path, contentType });
+      return path;
+    }),
   );
-  return paths;
+}
+
+// Helper function to convert Blob to Buffer
+async function convertBlobToBuffer(
+  blob: Blob,
+): Promise<{ buffer: Buffer; contentType: string }> {
+  const arrayBuffer = await blob.arrayBuffer();
+  return { buffer: Buffer.from(arrayBuffer), contentType: blob.type };
 }
 
 /**
@@ -57,7 +53,7 @@ async function uploadFiles(
  * @returns A JSON response with the evaluation results.
  */
 export async function POST(
-  request: NextRequest
+  request: NextRequest,
 ): Promise<NextResponse<ApiResponse<EvaluateAnswerAPIResponse>>> {
   try {
     // Authenticate user
@@ -70,7 +66,7 @@ export async function POST(
           errorCode: ErrorCodes.UNAUTHORIZED,
           message: "User not authenticated.",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
     console.log("user====", user);
@@ -80,22 +76,24 @@ export async function POST(
     const exam = formData.get("exam") as Exams;
     const question = formData.get("question") as string;
     const marks = formData.get("marks") as Marks;
-    const answerPDF = formData.get("answerPDF") as File | undefined;
-    const imageFiles: File[] = Array.from(formData.entries())
+    const answerPDF = formData.get("answerPDF") as Blob | undefined; // Fix: Use Blob instead of File
+    const imageFiles: Blob[] = Array.from(formData.entries())
       .filter(
-        ([key, value]) => key.startsWith("image-") && value instanceof File
+        ([key, value]) => key.startsWith("image-") && value instanceof Blob,
       )
-      .map(([, value]) => value as File);
+      .map(([, value]) => value as Blob);
     console.log("===answerPdf, imagesFiles====", answerPDF, imageFiles);
 
     const userId = user.id;
     const answerId = cuid();
+
     // Upload files to S3
     const [pdfPath, imagesPath] = await Promise.all([
       answerPDF
         ? uploadFile({
-            file: answerPDF,
+            fileBuffer: Buffer.from(await answerPDF.arrayBuffer()), // Fix: Convert Blob to Buffer
             filePath: `answers/${userId}/${answerId}/${cuid()}.pdf`,
+            contentType: answerPDF.type, // Fix: Pass Content-Type
           })
         : Promise.resolve(null),
       uploadFiles(userId, answerId, imageFiles),
@@ -133,7 +131,7 @@ export async function POST(
     ];
 
     // Convert images to base64
-    const base64Urls = await Promise.all(imageFiles.map(convertFileToBase64));
+    const base64Urls = await Promise.all(imageFiles.map(convertBlobToBase64));
 
     // Perform evaluation
     const evaluation = (await evaluate({
@@ -142,7 +140,7 @@ export async function POST(
       answer_word_limit: getWordsFromMarks(marks),
       output_format:
         StructuredOutputParser.fromZodSchema(
-          evaluationSchema
+          evaluationSchema,
         ).getFormatInstructions(),
       evaluation_parameters: evaluationParameters,
     })) as Evaluation;
@@ -165,10 +163,10 @@ export async function POST(
     const baseParamsWeightage = 0.3 * Number(marks);
     const subjectSpecificParamsWeightage = 0.5 * Number(marks);
     const baseParamScores = evaluation.parameter_scores.filter(
-      (ps) => ps.category === "base_parameter"
+      (ps) => ps.category === "base_parameter",
     );
     const subjectSpecificParamScores = evaluation.parameter_scores.filter(
-      (ps) => ps.category === "subject_specific_parameter"
+      (ps) => ps.category === "subject_specific_parameter",
     );
 
     const marksScoredBaseParams =
@@ -216,7 +214,13 @@ export async function POST(
         errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,
         message: "Error processing Evaluate Answer Request",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
+}
+
+// Helper function to convert Blob to Base64
+async function convertBlobToBase64(blob: Blob): Promise<string> {
+  const buffer = Buffer.from(await blob.arrayBuffer());
+  return `data:${blob.type};base64,${buffer.toString("base64")}`;
 }

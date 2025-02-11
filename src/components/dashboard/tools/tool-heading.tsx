@@ -10,7 +10,7 @@ const ToolHeading = ({ heading }: { heading: string }) => {
         className="w-16 h-16"
       />
       <h1 className="text-primary-dark font-semibold text-3xl tracking-tighter leading-none">
-        {heading} 
+        {heading}
       </h1>
     </div>
   );

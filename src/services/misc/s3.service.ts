@@ -10,21 +10,20 @@ const s3Client = new S3Client({
 
 export const uploadFile = async ({
   filePath,
-  file,
+  fileBuffer,
+  contentType,
 }: {
   filePath: string;
-  file: File;
+  fileBuffer: Buffer;
+  contentType: string;
 }) => {
   try {
-    // Convert File to Buffer
-    const fileBuffer = Buffer.from(await file.arrayBuffer());
-
     await s3Client.send(
       new PutObjectCommand({
         Bucket: process.env.AWS_BUCKET!,
         Key: filePath,
         Body: fileBuffer,
-        ContentType: file.type,
+        ContentType: contentType,
       }),
     );
 
