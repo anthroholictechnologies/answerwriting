@@ -34,13 +34,17 @@ export const CameraModal: React.FC<CameraModalProps> = ({
   const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  const videoConstraints = {
+    width: { ideal: 1920 }, // Adaptive resolution for better quality
+    height: { ideal: 1080 },
+    facingMode: "environment",
+  };
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current?.getScreenshot();
@@ -53,34 +57,35 @@ export const CameraModal: React.FC<CameraModalProps> = ({
     setCapturedImage(null);
   };
 
-  const getCroppedImg = useCallback((image: HTMLImageElement, crop: Crop) => {
+  const getCroppedImg = useCallback(async (image: HTMLImageElement, crop: Crop) => {
     const canvas = document.createElement("canvas");
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
-    canvas.width = crop.width;
-    canvas.height = crop.height;
+
+    // Convert percentage crop to actual pixel dimensions
+    const cropX = crop.x * scaleX;
+    const cropY = crop.y * scaleY;
+    const cropWidth = crop.width * scaleX;
+    const cropHeight = crop.height * scaleY;
+
+    canvas.width = cropWidth;
+    canvas.height = cropHeight;
     const ctx = canvas.getContext("2d");
 
     if (ctx) {
-      ctx.drawImage(
-        image,
-        crop.x * scaleX,
-        crop.y * scaleY,
-        crop.width * scaleX,
-        crop.height * scaleY,
-        0,
-        0,
-        crop.width,
-        crop.height
-      );
+      ctx.drawImage(image, cropX, cropY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
     }
 
     return new Promise<File>((resolve) => {
-      canvas.toBlob((blob) => {
-        if (blob) {
-          resolve(new File([blob], "captured-note.png", { type: "image/png" }));
-        }
-      }, "image/png");
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            resolve(new File([blob], "captured-note.jpg", { type: "image/jpeg" }));
+          }
+        },
+        "image/jpeg",
+        1.0 // High-quality compression
+      );
     });
   }, []);
 
@@ -100,24 +105,15 @@ export const CameraModal: React.FC<CameraModalProps> = ({
             audio={false}
             ref={webcamRef}
             screenshotQuality={1}
-            screenshotFormat="image/png"
-            videoConstraints={{
-              facingMode: "environment",
-              width: 3840,
-              height: 2160,
-              aspectRatio: 3 / 4,
-            }}
+            screenshotFormat="image/jpeg"
+            videoConstraints={videoConstraints}
             className="w-full h-full object-cover"
           />
         ) : (
-          <ReactCrop
-            crop={crop}
-            onChange={(c) => setCrop(c)}
-            className="w-full h-full"
-          >
+          <ReactCrop crop={crop} onChange={(c) => setCrop(c)} className="w-full h-full">
             <img
               ref={imgRef}
-              src={capturedImage || "/placeholder.svg"}
+              src={capturedImage}
               alt="Captured note"
               className="w-full h-full object-contain"
             />
@@ -127,37 +123,19 @@ export const CameraModal: React.FC<CameraModalProps> = ({
       <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-4">
         {!capturedImage ? (
           <>
-            <Button
-              onClick={capture}
-              size="icon"
-              className="rounded-full w-16 h-16"
-            >
+            <Button onClick={capture} size="icon" className="rounded-full w-16 h-16">
               <Camera className="h-8 w-8" />
             </Button>
-            <Button
-              onClick={onClose}
-              size="icon"
-              variant="secondary"
-              className="rounded-full"
-            >
+            <Button onClick={onClose} size="icon" variant="secondary" className="rounded-full">
               <X className="h-6 w-6" />
             </Button>
           </>
         ) : (
           <>
-            <Button
-              onClick={retake}
-              size="icon"
-              variant="secondary"
-              className="rounded-full"
-            >
+            <Button onClick={retake} size="icon" variant="secondary" className="rounded-full">
               <X className="h-6 w-6" />
             </Button>
-            <Button
-              onClick={confirmCrop}
-              size="icon"
-              className="rounded-full w-16 h-16"
-            >
+            <Button onClick={confirmCrop} size="icon" className="rounded-full w-16 h-16">
               <Check className="h-8 w-8" />
             </Button>
           </>
@@ -168,10 +146,7 @@ export const CameraModal: React.FC<CameraModalProps> = ({
 
   if (isMobile) {
     return (
-      <div
-        className={`fixed inset-0 bg-black z-50 ${isOpen ? "block" : "hidden"}`}
-        style={{ height: "100dvh" }}
-      >
+      <div className={`fixed inset-0 bg-black z-50 ${isOpen ? "block" : "hidden"}`} style={{ height: "100dvh" }}>
         {modalContent}
       </div>
     );
