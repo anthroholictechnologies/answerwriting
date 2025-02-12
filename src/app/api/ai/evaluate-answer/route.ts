@@ -27,7 +27,7 @@ export const maxDuration = 60;
 async function uploadFiles(
   userId: string,
   answerId: string,
-  files: Blob[] // Accepts Blob instead of File
+  files: Blob[], // Accepts Blob instead of File
 ): Promise<string[]> {
   return Promise.all(
     files.map(async (file) => {
@@ -35,13 +35,13 @@ async function uploadFiles(
       const path = `answers/${userId}/${answerId}/${cuid()}.${contentType.split("/")[1]}`;
       await uploadFile({ fileBuffer: buffer, filePath: path, contentType });
       return path;
-    })
+    }),
   );
 }
 
 // Helper function to convert Blob to Buffer
 async function convertBlobToBuffer(
-  blob: Blob
+  blob: Blob,
 ): Promise<{ buffer: Buffer; contentType: string }> {
   const arrayBuffer = await blob.arrayBuffer();
   return { buffer: Buffer.from(arrayBuffer), contentType: blob.type };
@@ -53,7 +53,7 @@ async function convertBlobToBuffer(
  * @returns A JSON response with the evaluation results.
  */
 export async function POST(
-  request: NextRequest
+  request: NextRequest,
 ): Promise<NextResponse<ApiResponse<EvaluateAnswerAPIResponse>>> {
   try {
     console.log("request recieved");
@@ -67,7 +67,7 @@ export async function POST(
           errorCode: ErrorCodes.UNAUTHORIZED,
           message: "User not authenticated.",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
     console.log("user queried from the db");
@@ -79,7 +79,7 @@ export async function POST(
     const answerPDF = formData.get("answerPDF") as Blob | undefined; // Fix: Use Blob instead of File
     const imageFiles: Blob[] = Array.from(formData.entries())
       .filter(
-        ([key, value]) => key.startsWith("image-") && value instanceof Blob
+        ([key, value]) => key.startsWith("image-") && value instanceof Blob,
       )
       .map(([, value]) => value as Blob);
 
@@ -124,7 +124,7 @@ export async function POST(
 
     console.log(
       "subject specific criterias fetched: ",
-      subjectSpecificCriterias
+      subjectSpecificCriterias,
     );
     // Prepare evaluation parameters
     const evaluationParameters = [
@@ -151,7 +151,7 @@ export async function POST(
       answer_word_limit: getWordsFromMarks(marks),
       output_format:
         StructuredOutputParser.fromZodSchema(
-          evaluationSchema
+          evaluationSchema,
         ).getFormatInstructions(),
       evaluation_parameters: evaluationParameters,
     })) as Evaluation;
@@ -178,10 +178,10 @@ export async function POST(
     const baseParamsWeightage = 0.3 * Number(marks);
     const subjectSpecificParamsWeightage = 0.5 * Number(marks);
     const baseParamScores = evaluation.parameter_scores.filter(
-      (ps) => ps.category === "base_parameter"
+      (ps) => ps.category === "base_parameter",
     );
     const subjectSpecificParamScores = evaluation.parameter_scores.filter(
-      (ps) => ps.category === "subject_specific_parameter"
+      (ps) => ps.category === "subject_specific_parameter",
     );
 
     const marksScoredBaseParams =
@@ -229,7 +229,7 @@ export async function POST(
         errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,
         message: "Error processing Evaluate Answer Request",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

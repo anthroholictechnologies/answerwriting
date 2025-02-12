@@ -64,7 +64,7 @@ ${output_format}
 
   const response = await model.invoke([message]);
   return JSON.parse(
-    (response.content as string).replace(/```json|```/g, "").trim()
+    (response.content as string).replace(/```json|```/g, "").trim(),
   );
 }
 

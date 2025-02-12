@@ -21,6 +21,94 @@ import {
   SINGLE_IMAGE_UPLOAD_SIZE_BYTES,
 } from "answerwriting/config";
 import { CameraModal } from "answerwriting/components/react-common/camera-input";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "answerwriting/components/ui/dialog";
+
+const ImageGallery = ({
+  images,
+  removeImage,
+}: {
+  images: File[];
+  removeImage: (index: number) => void;
+}) => {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  return (
+    <>
+      {images.length > 0 && (
+        <div className="h-full mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {images.map((image, index) => {
+            const imageUrl = URL.createObjectURL(image);
+            console.log("====imageUrl=" + imageUrl);
+            return (
+              <div
+                key={index}
+                className="relative p-2 bg-background rounded-lg cursor-pointer"
+              >
+                {/* Trigger Dialog on Click */}
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Image
+                      src={imageUrl}
+                      alt={`Upload ${index + 1}`}
+                      className="w-full h-32 object-cover rounded-md"
+                      width={200}
+                      height={200}
+                      onClick={() => setSelectedImage(imageUrl)}
+                    />
+                  </DialogTrigger>
+
+                  {/* Full Image Dialog */}
+                  {selectedImage && (
+                    <DialogContent
+                      onInteractOutside={() => setSelectedImage(null)}
+                      className="max-w-2xl"
+                    >
+                      <DialogTitle className="text-primary-dark">
+                        Preview
+                      </DialogTitle>
+                      <div className="relative">
+                        <Image
+                          src={selectedImage}
+                          alt="Full View"
+                          className="w-full h-auto rounded-lg"
+                          width={600}
+                          height={600}
+                        />
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="absolute top-2 right-2"
+                          onClick={() => setSelectedImage(null)}
+                        >
+                          <X className="h-5 w-5" />
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  )}
+                </Dialog>
+
+                {/* Remove Image Button */}
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="absolute top-1 right-1"
+                  onClick={() => removeImage(index)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </>
+  );
+};
 
 interface FileUploaderProps {
   pdfFile: File | null;
@@ -43,7 +131,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       const selectedFile = event.target.files[0];
       if (selectedFile.size > MAX_PDF_UPLOAD_SIZE_BYTES) {
         alert(
-          `PDF file too large. Max size is ${MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`
+          `PDF file too large. Max size is ${MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`,
         );
         return;
       }
@@ -55,11 +143,11 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     if (event.target.files?.length) {
       const newImages = Array.from(event.target.files).slice(
         0,
-        MAX_IMAGES_ALLOWED - images.length
+        MAX_IMAGES_ALLOWED - images.length,
       );
       if (newImages.some((img) => img.size > SINGLE_IMAGE_UPLOAD_SIZE_BYTES)) {
         alert(
-          `Each image must be under ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`
+          `Each image must be under ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`,
         );
         return;
       }
@@ -70,7 +158,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   const handleCameraCapture = (file: File) => {
     if (file.size > SINGLE_IMAGE_UPLOAD_SIZE_BYTES) {
       alert(
-        `Image too large. Max size is ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`
+        `Image too large. Max size is ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`,
       );
       return;
     }
@@ -191,32 +279,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                 </div>
               </div>
 
-              {images.length > 0 && (
-                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {images.map((image, index) => (
-                    <div
-                      key={index}
-                      className="relative p-2 bg-background rounded-lg"
-                    >
-                      <Image
-                        src={URL.createObjectURL(image)}
-                        alt={`Upload ${index + 1}`}
-                        className="w-full h-32 object-cover rounded-md"
-                        width={200}
-                        height={200}
-                      />
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        className="absolute top-1 right-1"
-                        onClick={() => removeImage(index)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <ImageGallery images={images} removeImage={removeImage} />
             </div>
           </TabsContent>
         </Tabs>
