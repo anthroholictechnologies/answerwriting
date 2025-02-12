@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import type React from "react";
@@ -7,7 +8,7 @@ import ReactCrop, { type Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { Dialog, DialogContent } from "answerwriting/components/ui/dialog";
 import { Button } from "answerwriting/components/ui/button";
-import { X, Camera, RotateCcw, Check } from "lucide-react";
+import { X, Camera, Check } from "lucide-react";
 
 interface CameraModalProps {
   isOpen: boolean;
@@ -28,7 +29,6 @@ export const CameraModal: React.FC<CameraModalProps> = ({
     x: 10,
     y: 10,
   });
-  const [isFrontCamera, setIsFrontCamera] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const webcamRef = useRef<Webcam>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -51,10 +51,6 @@ export const CameraModal: React.FC<CameraModalProps> = ({
 
   const retake = () => {
     setCapturedImage(null);
-  };
-
-  const toggleCamera = () => {
-    setIsFrontCamera(!isFrontCamera);
   };
 
   const getCroppedImg = useCallback((image: HTMLImageElement, crop: Crop) => {
@@ -82,11 +78,9 @@ export const CameraModal: React.FC<CameraModalProps> = ({
     return new Promise<File>((resolve) => {
       canvas.toBlob((blob) => {
         if (blob) {
-          resolve(
-            new File([blob], "captured-note.jpg", { type: "image/jpeg" })
-          );
+          resolve(new File([blob], "captured-note.png", { type: "image/png" }));
         }
-      }, "image/jpeg");
+      }, "image/png");
     });
   }, []);
 
@@ -105,9 +99,12 @@ export const CameraModal: React.FC<CameraModalProps> = ({
           <Webcam
             audio={false}
             ref={webcamRef}
-            screenshotFormat="image/jpeg"
+            screenshotQuality={1}
+            screenshotFormat="image/png"
             videoConstraints={{
-              facingMode: isFrontCamera ? "user" : "environment",
+              facingMode: "environment",
+              width: 3840,
+              height: 2160,
               aspectRatio: 3 / 4,
             }}
             className="w-full h-full object-cover"
@@ -118,7 +115,6 @@ export const CameraModal: React.FC<CameraModalProps> = ({
             onChange={(c) => setCrop(c)}
             className="w-full h-full"
           >
-            {/* // eslint-disable-next-line @next/next/no-img-element */}
             <img
               ref={imgRef}
               src={capturedImage || "/placeholder.svg"}
@@ -131,14 +127,6 @@ export const CameraModal: React.FC<CameraModalProps> = ({
       <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-4">
         {!capturedImage ? (
           <>
-            <Button
-              onClick={toggleCamera}
-              size="icon"
-              variant="secondary"
-              className="rounded-full"
-            >
-              <RotateCcw className="h-6 w-6" />
-            </Button>
             <Button
               onClick={capture}
               size="icon"
