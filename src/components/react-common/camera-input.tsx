@@ -56,8 +56,8 @@ export const CameraModal: React.FC<CameraModalProps> = ({
     const canvas = document.createElement("canvas");
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
-    canvas.width = crop.width;
-    canvas.height = crop.height;
+    canvas.width = crop.width * scaleX;
+    canvas.height = crop.height * scaleY;
     const ctx = canvas.getContext("2d");
 
     if (ctx) {
@@ -69,8 +69,8 @@ export const CameraModal: React.FC<CameraModalProps> = ({
         crop.height * scaleY,
         0,
         0,
-        crop.width,
-        crop.height
+        canvas.width,
+        canvas.height
       );
     }
 
@@ -78,10 +78,10 @@ export const CameraModal: React.FC<CameraModalProps> = ({
       canvas.toBlob((blob) => {
         if (blob) {
           resolve(
-            new File([blob], "captured-note.jpg", { type: "image/jpeg" })
+            new File([blob], "captured-note.png", { type: "image/png" })
           );
         }
-      }, "image/jpeg");
+      }, "image/png");
     });
   }, []);
 
@@ -103,8 +103,11 @@ export const CameraModal: React.FC<CameraModalProps> = ({
               <Webcam
                 audio={false}
                 ref={webcamRef}
-                screenshotFormat="image/jpeg"
+                screenshotFormat="image/png"
+                screenshotQuality={1} // Maximum quality
                 videoConstraints={{
+                  width: { ideal: 1920 },
+                  height: { ideal: 1080 },
                   facingMode: isFrontCamera ? "user" : "environment",
                 }}
                 className="w-full h-full object-cover"
@@ -129,7 +132,7 @@ export const CameraModal: React.FC<CameraModalProps> = ({
                   ref={imgRef}
                   src={capturedImage || "/placeholder.svg"}
                   alt="Captured note"
-                  className="w-full h-auto"
+                  className="w-[100vw] h-[100dvh]"
                 />
               </ReactCrop>
               <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-4">
