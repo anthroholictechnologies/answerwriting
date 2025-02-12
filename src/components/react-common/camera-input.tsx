@@ -108,7 +108,7 @@ export const CameraModal: React.FC<CameraModalProps> = ({
                   facingMode: isFrontCamera ? "user" : "environment",
                   aspectRatio: 9 / 16,
                 }}
-                className="w-full h-full"
+                className="w-[100vw] h-[100vh]"
               />
               <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-4">
                 <Button onClick={toggleCamera} size="icon" variant="secondary">
