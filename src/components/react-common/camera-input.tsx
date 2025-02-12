@@ -2,7 +2,7 @@
 "use client";
 
 import type React from "react";
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef } from "react";
 import Webcam from "react-webcam";
 import ReactCrop, { type Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
@@ -34,19 +34,8 @@ export const CameraModal: React.FC<CameraModalProps> = ({
     y: 10,
   });
   const [isFrontCamera, setIsFrontCamera] = useState(false);
-  const [aspectRatio, setAspectRatio] = useState<number>(9 / 18);
   const webcamRef = useRef<Webcam>(null);
   const imgRef = useRef<HTMLImageElement>(null);
-
-  useEffect(() => {
-    const updateAspectRatio = () => {
-      setAspectRatio(window.innerWidth / window.innerHeight);
-    };
-
-    updateAspectRatio();
-    window.addEventListener("resize", updateAspectRatio);
-    return () => window.removeEventListener("resize", updateAspectRatio);
-  }, []);
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current?.getScreenshot();
@@ -81,7 +70,7 @@ export const CameraModal: React.FC<CameraModalProps> = ({
         0,
         0,
         crop.width,
-        crop.height,
+        crop.height
       );
     }
 
@@ -89,7 +78,7 @@ export const CameraModal: React.FC<CameraModalProps> = ({
       canvas.toBlob((blob) => {
         if (blob) {
           resolve(
-            new File([blob], "captured-note.jpg", { type: "image/jpeg" }),
+            new File([blob], "captured-note.jpg", { type: "image/jpeg" })
           );
         }
       }, "image/jpeg");
@@ -106,7 +95,7 @@ export const CameraModal: React.FC<CameraModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[100vw] h-[100vh] lg:h-auto lg:w-auto p-0 bg-none">
+      <DialogContent className="lg:hidden w-[100vw] h-[100vh] p-0 bg-none">
         <DialogTitle className="hidden"> {""} </DialogTitle>
         <div className="relative">
           {!capturedImage ? (
@@ -117,9 +106,9 @@ export const CameraModal: React.FC<CameraModalProps> = ({
                 screenshotFormat="image/jpeg"
                 videoConstraints={{
                   facingMode: isFrontCamera ? "user" : "environment",
-                  aspectRatio,
+                  aspectRatio: 9 / 16,
                 }}
-                className="webcam-video w-full h-full"
+                className="w-full h-full"
               />
               <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-4">
                 <Button onClick={toggleCamera} size="icon" variant="secondary">

@@ -131,7 +131,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       const selectedFile = event.target.files[0];
       if (selectedFile.size > MAX_PDF_UPLOAD_SIZE_BYTES) {
         alert(
-          `PDF file too large. Max size is ${MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`,
+          `PDF file too large. Max size is ${MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`
         );
         return;
       }
@@ -143,11 +143,11 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     if (event.target.files?.length) {
       const newImages = Array.from(event.target.files).slice(
         0,
-        MAX_IMAGES_ALLOWED - images.length,
+        MAX_IMAGES_ALLOWED - images.length
       );
       if (newImages.some((img) => img.size > SINGLE_IMAGE_UPLOAD_SIZE_BYTES)) {
         alert(
-          `Each image must be under ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`,
+          `Each image must be under ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`
         );
         return;
       }
@@ -158,7 +158,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   const handleCameraCapture = (file: File) => {
     if (file.size > SINGLE_IMAGE_UPLOAD_SIZE_BYTES) {
       alert(
-        `Image too large. Max size is ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`,
+        `Image too large. Max size is ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`
       );
       return;
     }
@@ -269,13 +269,17 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                     <Upload className="h-4 w-4 mr-2" /> Browse
                   </Button>
 
-                  <Button
-                    disabled={images.length === MAX_IMAGES_ALLOWED || !!pdfFile}
-                    onClick={() => setIsCameraOpen(true)}
-                    className="w-full md:w-auto"
-                  >
-                    <Camera className="h-4 w-4 mr-2" /> Camera
-                  </Button>
+                  <div className="lg:hidden">
+                    <Button
+                      disabled={
+                        images.length === MAX_IMAGES_ALLOWED || !!pdfFile
+                      }
+                      onClick={() => setIsCameraOpen(true)}
+                      className="w-full md:w-auto"
+                    >
+                      <Camera className="h-4 w-4 mr-2" /> Camera
+                    </Button>
+                  </div>
                 </div>
               </div>
 
@@ -284,11 +288,13 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
           </TabsContent>
         </Tabs>
 
-        <CameraModal
-          isOpen={isCameraOpen}
-          onClose={() => setIsCameraOpen(false)}
-          onCapture={handleCameraCapture}
-        />
+        <div className="lg:hidden">
+          <CameraModal
+            isOpen={isCameraOpen}
+            onClose={() => setIsCameraOpen(false)}
+            onCapture={handleCameraCapture}
+          />
+        </div>
       </CardContent>
     </Card>
   );
