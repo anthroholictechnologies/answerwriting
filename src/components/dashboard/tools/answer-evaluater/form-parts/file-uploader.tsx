@@ -1,10 +1,11 @@
+"use client";
+import React, { useRef, useState } from "react";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "answerwriting/components/ui/card";
-import { UploadAnswerToolTip } from "../tooltips/upload-answer-tooltip";
 import {
   TabsTrigger,
   TabsList,
@@ -12,43 +13,40 @@ import {
   Tabs,
 } from "answerwriting/components/ui/tabs";
 import { Button } from "answerwriting/components/ui/button";
-import { FileText, ImageIcon, Upload, X } from "lucide-react";
+import { FileText, ImageIcon, Upload, Camera, X } from "lucide-react";
 import Image from "next/image";
-import { useCustomToast } from "answerwriting/components/react-common/toast";
 import {
   MAX_IMAGES_ALLOWED,
   MAX_PDF_UPLOAD_SIZE_BYTES,
   SINGLE_IMAGE_UPLOAD_SIZE_BYTES,
 } from "answerwriting/config";
-import { useRef } from "react";
+import { CameraModal } from "answerwriting/components/react-common/camera-input";
 
-export const FileUploader = ({
+interface FileUploaderProps {
+  pdfFile: File | null;
+  setPdfFile: (file: File | null) => void;
+  images: File[];
+  setImages: (files: File[]) => void;
+}
+export const FileUploader: React.FC<FileUploaderProps> = ({
   pdfFile,
   setPdfFile,
   images,
   setImages,
-}: {
-  pdfFile: File | null;
-  images: File[];
-  setPdfFile: (file: File | null) => void;
-  setImages: (files: File[]) => void;
 }) => {
-  const toast = useCustomToast();
   const pdfInputRef = useRef<HTMLInputElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
 
   const handlePdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {
       const selectedFile = event.target.files[0];
-
       if (selectedFile.size > MAX_PDF_UPLOAD_SIZE_BYTES) {
-        toast.error({
-          title: "PDF file too large",
-          description: `Max size is ${MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`,
-        });
+        alert(
+          `PDF file too large. Max size is ${MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`
+        );
         return;
       }
-
       setPdfFile(selectedFile);
     }
   };
@@ -57,65 +55,61 @@ export const FileUploader = ({
     if (event.target.files?.length) {
       const newImages = Array.from(event.target.files).slice(
         0,
-        MAX_IMAGES_ALLOWED,
+        MAX_IMAGES_ALLOWED - images.length
       );
-
       if (newImages.some((img) => img.size > SINGLE_IMAGE_UPLOAD_SIZE_BYTES)) {
-        toast.error({
-          title: "Image too large",
-          description: `Each image must be under ${
-            SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024
-          }MB.`,
-        });
+        alert(
+          `Each image must be under ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`
+        );
         return;
       }
-
       setImages([...images, ...newImages]);
     }
   };
 
-  const removePdf = () => setPdfFile(null);
-  const removeImage = (index: number) => {
-    setImages(images.filter((_, i) => i !== index));
+  const handleCameraCapture = (file: File) => {
+    if (file.size > SINGLE_IMAGE_UPLOAD_SIZE_BYTES) {
+      alert(
+        `Image too large. Max size is ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`
+      );
+      return;
+    }
+    setImages([...images, file]);
   };
 
+  const removePdf = () => setPdfFile(null);
+  const removeImage = (index: number) =>
+    setImages(images.filter((_, i) => i !== index));
+
   return (
-    <Card className="md:shadow-sm md:hover:shadow-md transition-shadow">
+    <Card className="w-full max-w-3xl mx-auto md:shadow-sm md:hover:shadow-md transition-shadow">
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <CardTitle className="text-xl text-primary-dark">
-            Upload Answer
-          </CardTitle>
-          <UploadAnswerToolTip />
-        </div>
+        <CardTitle className="text-xl">Upload Answer</CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="pdf" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-4 bg-primary-dark text-white">
+          <TabsList className="grid w-full grid-cols-2 mb-4">
             <TabsTrigger
               value="pdf"
-              className="flex items-center gap-2 bg-primary-dark "
+              className="flex items-center gap-2"
               disabled={images.length > 0}
             >
               <FileText className="h-4 w-4" /> PDF
             </TabsTrigger>
             <TabsTrigger
               value="images"
-              className="flex items-center gap-2 bg-primary-dark"
+              className="flex items-center gap-2"
               disabled={!!pdfFile}
             >
               <ImageIcon className="h-4 w-4" /> Images
             </TabsTrigger>
           </TabsList>
 
-          {/* PDF Upload Section */}
           <TabsContent value="pdf">
             <div className="w-full border-2 border-dashed rounded-lg p-4 md:p-8 text-center bg-muted/50">
               <div className="flex flex-col items-center gap-4">
-                <FileText className="h-12 w-12 text-primary-dark" />
-                <h3 className="font-semibold text-primary-dark">
-                  Drop your PDF here
-                </h3>
+                <FileText className="h-12 w-12" />
+                <h3 className="font-semibold">Drop your PDF here</h3>
                 <p className="text-sm text-muted-foreground">
                   or click to browse files
                 </p>
@@ -131,6 +125,7 @@ export const FileUploader = ({
                 <Button
                   disabled={images.length > 0}
                   onClick={() => pdfInputRef.current?.click()}
+                  className="w-full md:w-auto"
                 >
                   <Upload className="h-4 w-4 mr-2" /> Select PDF
                 </Button>
@@ -148,9 +143,8 @@ export const FileUploader = ({
                   </div>
                   <div className="mt-2 border rounded-md overflow-hidden h-[200px]">
                     <iframe
-                      key={pdfFile?.name}
                       src={URL.createObjectURL(pdfFile)}
-                      className="w-full h-[200px]"
+                      className="w-full h-full"
                       title="PDF Preview"
                     />
                   </div>
@@ -159,16 +153,14 @@ export const FileUploader = ({
             </div>
           </TabsContent>
 
-          {/* Images Upload Section */}
           <TabsContent value="images">
-            <div className="border-2 border-dashed rounded-lg p-8 text-center bg-muted/50">
+            <div className="border-2 border-dashed rounded-lg p-4 md:p-8 text-center bg-muted/50">
               <div className="flex flex-col items-center gap-4">
-                <ImageIcon className="h-12 w-12 text-primary-dark" />
-                <h3 className="font-semibold text-primary-dark">
-                  Drop your images here
-                </h3>
+                <ImageIcon className="h-12 w-12" />
+                <h3 className="font-semibold">Drop your images here</h3>
                 <p className="text-sm text-muted-foreground">
-                  or click to browse files (max {MAX_IMAGES_ALLOWED} images)
+                  or use one of the options below (max {MAX_IMAGES_ALLOWED}{" "}
+                  images)
                 </p>
 
                 <input
@@ -180,18 +172,27 @@ export const FileUploader = ({
                   onChange={handleImagesUpload}
                 />
 
-                <Button
-                  disabled={
-                    images.length === MAX_IMAGES_ALLOWED || pdfFile !== null
-                  }
-                  onClick={() => imageInputRef.current?.click()}
-                >
-                  <Upload className="h-4 w-4 mr-2" /> Select Images
-                </Button>
+                <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
+                  <Button
+                    disabled={images.length === MAX_IMAGES_ALLOWED || !!pdfFile}
+                    onClick={() => imageInputRef.current?.click()}
+                    className="w-full md:w-auto"
+                  >
+                    <Upload className="h-4 w-4 mr-2" /> Browse
+                  </Button>
+
+                  <Button
+                    disabled={images.length === MAX_IMAGES_ALLOWED || !!pdfFile}
+                    onClick={() => setIsCameraOpen(true)}
+                    className="w-full md:w-auto"
+                  >
+                    <Camera className="h-4 w-4 mr-2" /> Camera
+                  </Button>
+                </div>
               </div>
 
               {images.length > 0 && (
-                <div className="mt-4 grid grid-cols-2 gap-4">
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {images.map((image, index) => (
                     <div
                       key={index}
@@ -199,10 +200,10 @@ export const FileUploader = ({
                     >
                       <Image
                         src={URL.createObjectURL(image)}
-                        alt={image.name}
-                        className="w-full h-24 object-cover rounded-md"
-                        height={200}
+                        alt={`Upload ${index + 1}`}
+                        className="w-full h-32 object-cover rounded-md"
                         width={200}
+                        height={200}
                       />
                       <Button
                         size="icon"
@@ -210,7 +211,7 @@ export const FileUploader = ({
                         className="absolute top-1 right-1"
                         onClick={() => removeImage(index)}
                       >
-                        <X className="h-4 w-4 text-red-500" />
+                        <X className="h-4 w-4" />
                       </Button>
                     </div>
                   ))}
@@ -219,7 +220,15 @@ export const FileUploader = ({
             </div>
           </TabsContent>
         </Tabs>
+
+        <CameraModal
+          isOpen={isCameraOpen}
+          onClose={() => setIsCameraOpen(false)}
+          onCapture={handleCameraCapture}
+        />
       </CardContent>
     </Card>
   );
 };
+
+export default FileUploader;
