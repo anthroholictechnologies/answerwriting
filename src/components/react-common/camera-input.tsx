@@ -95,9 +95,9 @@ export const CameraModal: React.FC<CameraModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="lg:hidden w-[100vw] h-[100vh] p-0 bg-none">
+      <DialogContent className="lg:hidden w-[100vw] h-[100dvh] p-0 bg-none">
         <DialogTitle className="hidden"> {""} </DialogTitle>
-        <div className="relative">
+        <div className="relative w-full h-full">
           {!capturedImage ? (
             <>
               <Webcam
@@ -106,9 +106,8 @@ export const CameraModal: React.FC<CameraModalProps> = ({
                 screenshotFormat="image/jpeg"
                 videoConstraints={{
                   facingMode: isFrontCamera ? "user" : "environment",
-                  aspectRatio: 9 / 16,
                 }}
-                className="w-[100vw] h-[100vh]"
+                className="w-full h-full object-cover"
               />
               <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-4">
                 <Button onClick={toggleCamera} size="icon" variant="secondary">
