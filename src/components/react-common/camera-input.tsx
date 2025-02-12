@@ -123,7 +123,7 @@ export const CameraModal: React.FC<CameraModalProps> = ({
               <ReactCrop
                 crop={crop}
                 onChange={(c) => setCrop(c)}
-                className="w-full h-auto"
+                className="w-[100vw] h-[100dvh]"
               >
                 <img
                   ref={imgRef}
