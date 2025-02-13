@@ -109,7 +109,8 @@ export async function generateMetadata({
 export default async function BlogPostPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  params: any;
 }) {
   const dynamicUrl = (await params).slug;
   const post = await fetchPostBySlug(dynamicUrl);
