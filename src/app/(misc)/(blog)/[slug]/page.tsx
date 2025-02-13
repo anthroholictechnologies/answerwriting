@@ -88,7 +88,8 @@ const fetchPostBySlug = async (slug: string) => {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  params: any;
 }): Promise<Metadata> {
   const post = await fetchPostBySlug(params.slug);
 
