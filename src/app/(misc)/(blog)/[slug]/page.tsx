@@ -64,7 +64,7 @@ const BlogStylesContainer = tw.div`
 
 const fetchPostBySlug = async (slug: string) => {
   const resp = await fetch(
-    `${process.env.HEADLESS_CME_BASE_URI}/wp-json/wp/v2/posts?slug=${slug}`,
+    `${process.env.HEADLESS_CME_BASE_URI}/wp-json/wp/v2/posts?slug=${slug}`
   );
 
   const data = await resp.json();
@@ -109,9 +109,9 @@ export async function generateMetadata({
 export default async function BlogPostPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const dynamicUrl = await params.slug;
+  const dynamicUrl = (await params).slug;
   const post = await fetchPostBySlug(dynamicUrl);
 
   if (!post) {
