@@ -15,7 +15,7 @@ export enum ApiRoutePaths {
   PAGE_HOME = "/",
   PAGE_ABOUT_US = "/about",
   PAGE_CONTACT_US = "/contact",
-  PAGE_PRIVACY_POLICY = "/privacy-policy",
+  PAGE_PRIVACY_POLICY = "/privacy",
   PAGE_TERMS_OF_SERVICE = "/terms",
   PAGE_BLOGS = "/blog",
 

@@ -71,7 +71,7 @@ export const CameraModal: React.FC<CameraModalProps> = ({
         0,
         0,
         crop.width,
-        crop.height
+        crop.height,
       );
     }
 

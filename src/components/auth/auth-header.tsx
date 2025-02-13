@@ -10,14 +10,14 @@ const AuthHeader = ({ heading }: { heading?: React.ReactElement }) => {
       <div className="flex flex-col items-center">
         <Link href="/" passHref>
           <Image
-            src="/logos/3_resize.png"
+            src="/logo_4.svg"
             alt="answerwriting.com logo"
             height={50}
             width={250}
             className="w-[90%] h-[100%] lg:h-[120%]"
           />
         </Link>
-        <p className="text-balance ml-[13%] -mt-2 text-[0.7rem] italic">
+        <p className="text-balance -mt-2 text-[0.7rem] italic">
           Craft <ImpactSpan text="Better Answers" /> with AI Precision
         </p>
       </div>

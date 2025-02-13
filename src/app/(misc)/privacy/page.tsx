@@ -2,7 +2,6 @@ import Container from "answerwriting/components/landing/container";
 import Footer from "answerwriting/components/misc/misc_footer";
 import Header from "answerwriting/components/misc/misc_header";
 import ImpactSpan from "answerwriting/components/react-common/impact-span";
-import { ApiRoutePaths } from "answerwriting/types/general.types";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,30 +11,18 @@ const PPHeading = ({ heading }: { heading: string }) => {
   );
 };
 
-const TermsOfService = () => {
-  return (
-    <Link
-      href={ApiRoutePaths.PAGE_TERMS_OF_SERVICE}
-      target="_blank"
-      className="text-primary-dark"
-    >
-      Terms of service
-    </Link>
-  );
-};
 export default async function PrivacyPolicy() {
   return (
     <div className="h-screen w-screen">
       <Header />
       <Container>
         <>
-          <h1 className="text-center text-[3rem] tracking-tighter font-bold leading-none xl:mb-6 mb-2">
-            {" "}
-            Privacy <ImpactSpan text="Policy" />{" "}
+          <h1 className="text-center text-[3rem] tracking-tighter font-bold leading-none">
+            Privacy <ImpactSpan text="Policy" />
           </h1>
 
           <Image
-            src="/logos/2.png"
+            src="/logo_3.svg"
             alt="Answerwriting logo"
             width={300}
             height={300}
@@ -43,29 +30,136 @@ export default async function PrivacyPolicy() {
 
           <div className="flex flex-col gap-8">
             <div>
-              <PPHeading heading="A. General" />
+              <h1 className="font-bold mb-2"> Effctive Date: 20/02/2025 </h1>
               <p>
-                In addition to our <TermsOfService />, Anthroholic respects your
-                privacy and is committed to protecting it. This Privacy Policy
-                (the “Policy”) explains the types of information collected by
-                Anthroholic when you use the Website (as defined in{" "}
-                <TermsOfService />) that references this Policy, how we collect,
-                use, share and store such information collected and also
-                explains the rationale for collection of such information, the
-                privacy rights and choices you have regarding your information
-                submitted to us when you use the Services.
+                Welcome to AnswerWriting.com, a platform dedicated to improving
+                answer writing skills through AI-powered evaluation. Your
+                privacy is important to us. This Privacy Policy explains how we
+                collect, use, and protect your personal information.
+              </p>
+              <p>
+                Since AnswerWriting.com and Anthroholic.com are both owned by
+                Anthroholic Technologies Private Limited, we follow a common
+                privacy policy framework. For a more detailed policy, please
+                refer to our main Privacy Policy at{" "}
+                <Link
+                  href="https://anthroholic.com/privacy"
+                  target="_blank"
+                  className="text-primary-dark"
+                >
+                  anthroholic.com/privacy
+                </Link>
+                .
               </p>
             </div>
 
             <div>
-              <PPHeading heading="B. Applicability" />
+              <PPHeading heading="1. Information We Collect" />
+              <ul className="list-disc ml-5">
+                <li>
+                  <strong>Personal Information:</strong> Name, email address,
+                  and other details you provide during registration.
+                </li>
+                <li>
+                  <strong>User-Generated Content:</strong> Handwritten answers
+                  and text-based submissions for AI evaluation.
+                </li>
+                <li>
+                  <strong>Usage Data:</strong> Log files, IP addresses, browser
+                  type, and interactions with our platform.
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <PPHeading heading="2. How We Use Your Information" />
+              <ul className="list-disc ml-5">
+                <li>Provide AI-driven answer evaluation and feedback.</li>
+                <li>Improve platform performance and user experience.</li>
+                <li>
+                  Communicate updates, notifications, and promotional offers
+                  (only if you opt-in).
+                </li>
+                <li>Ensure compliance with legal and security obligations.</li>
+              </ul>
+            </div>
+
+            <div>
+              <PPHeading heading="3. Data Security" />
               <p>
-                This Policy applies to the Website and the Services provided by
-                Anthroholic. If you are a customer, a member, or a business
-                partner, this Policy also applies to the Services provided by
-                Anthroholic, and to any other products or services that
-                Anthroholic may offer in the future.
+                We take reasonable measures to protect your personal data.
+                However, no system is completely secure. If you have concerns
+                about your data security, please contact us.
               </p>
+            </div>
+
+            <div>
+              <PPHeading heading="4. Third-Party Services" />
+              <p>
+                We may use third-party analytics tools, payment gateways, and AI
+                models to enhance our services. These third parties may collect
+                data as per their policies.
+              </p>
+            </div>
+
+            <div>
+              <PPHeading heading="5. Your Rights & Choices" />
+              <ul className="list-disc ml-5">
+                <li>
+                  You can review, update, or delete your account information by
+                  contacting us.
+                </li>
+                <li>
+                  You may opt out of marketing communications at any time.
+                </li>
+                <li>
+                  For any privacy-related requests, reach out to us at{" "}
+                  <a
+                    href="mailto:info@answerwriting.com"
+                    className="text-primary-dark"
+                  >
+                    info@answerwriting.com
+                  </a>
+                  .
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <PPHeading heading="6. Changes to This Policy" />
+              <p>
+                This Privacy Policy may be updated periodically. Any significant
+                changes will be communicated via email or a notice on our
+                platform.
+              </p>
+            </div>
+
+            <div>
+              <PPHeading heading="7. Contact Us" />
+              <p>For any privacy concerns, please reach out to:</p>
+              <ul className="list-disc ml-5">
+                <li>
+                  📧 Email:{" "}
+                  <a
+                    href="mailto:info@anthroholic.com"
+                    className="text-primary-dark"
+                  >
+                    info@anthroholic.com
+                  </a>
+                </li>
+                <li>📍 Company: Anthroholic Technologies Private Limited</li>
+                <li>
+                  For a more detailed privacy policy, please visit{" "}
+                  <Link
+                    href="https://anthroholic.com/privacy"
+                    target="_blank"
+                    className="text-primary-dark"
+                  >
+                    anthroholic.com/privacy
+                  </Link>
+                  .
+                </li>
+              </ul>
             </div>
           </div>
         </>

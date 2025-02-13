@@ -10,7 +10,7 @@ const Header = () => {
         <Link href={ApiRoutePaths.PAGE_HOME} passHref>
           <div className="flex-1 hidden lg:block hover:cursor-pointer">
             <Image
-              src="/logos/3_resize.png"
+              src="/logo_4.svg"
               alt="answerwriting logo"
               width={200}
               height={40}
@@ -39,7 +39,7 @@ const Header = () => {
         {/* for phone */}
         <div className="flex-1 lg:hidden hover:cursor-pointer px-4 md:px-12">
           <Image
-            src="/logos/1.png"
+            src="/logo_2.svg"
             alt="answerwriting logo"
             width={60}
             height={60}

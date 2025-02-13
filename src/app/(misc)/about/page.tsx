@@ -6,74 +6,108 @@ import Image from "next/image";
 
 export default function AboutUs() {
   return (
-    <div className="h-screen w-screen">
+    <div className="h-screen w-screen overflow-auto">
       <Header />
-      <div className="flex flex-col items-center gap-8 py-4 px-2 xl:px-24">
+      <div className="flex flex-col items-center gap-6 py-4 px-2 xl:px-24">
         <Container>
           <>
-            <h1 className="text-center text-[3rem] tracking-tighter font-bold xl:mb-6 mb-2">
-              {" "}
-              About <ImpactSpan text="Us" />{" "}
+            <h1 className="text-center text-[3rem] tracking-tighter font-bold">
+              About <ImpactSpan text="Us" />
             </h1>
             <Image
-              src="/logos/2.png"
-              alt="Answerwriting logo"
+              src="/logo_3.svg"
+              alt="AnswerWriting logo"
               width={300}
               height={300}
             />
             <div className="flex flex-col gap-6 text-left">
               <p>
-                Welcome to Anthroholic, a platform dedicated to the fascinating
-                discipline of Anthropology! We are a team of passionate
-                Anthropology enthusiasts who believe in the power of education
-                to create a positive change in the world. Anthroholic started as
-                a YouTube & Telegram channel in 2021 to cater the needs of UPSC
-                aspirants who were preparing for their Optional subject. We
-                found that the content related to Anthropology is missing on the
-                internet and the Idea of Anthroholic was born to establish it as
-                a resource for anyone interested in learning Anthropology.
+                Welcome to <strong>AnswerWriting.com</strong> – your go-to
+                platform for mastering the art of answer writing!
               </p>
 
               <p>
-                {`Anthroholic was founded with the vision of making Anthropology
-                accessible to everyone, regardless of their background or
-                financial status. We understand that Anthropology can be a
-                daunting subject, with its many subfields and complex theories.
-                That’s why we have made it our mission to provide free,
-                high-quality education in Anthropology to anyone who is
-                interested.`}
+                We understand that <strong>answer writing</strong> is the key to
+                success in competitive exams like <strong>UPSC Mains</strong>,
+                where structured, well-articulated responses can make all the
+                difference. However, getting consistent feedback and improving
+                without a mentor can be a challenge. That’s where
+                AnswerWriting.com steps in!
               </p>
 
+              <h2 className="text-xl font-semibold mt-4">What We Offer</h2>
+              <ul className="list-disc pl-6">
+                <li>
+                  AI-powered evaluation to provide instant feedback on your
+                  answers.
+                </li>
+                <li>
+                  Submit handwritten answers and refine your structure, clarity,
+                  and presentation.
+                </li>
+                <li>
+                  Improve answer-writing skills without the need for a teacher.
+                </li>
+              </ul>
+
+              <h2 className="text-xl font-semibold mt-4">Who Is This For?</h2>
+              <ul className="list-disc pl-6">
+                <li>
+                  <strong>UPSC Mains Aspirants:</strong> Enhance writing speed,
+                  clarity, and coherence.
+                </li>
+                <li>
+                  <strong>Students preparing for descriptive exams:</strong> Get
+                  structured practice.
+                </li>
+                <li>
+                  <strong>Anyone looking to improve writing skills:</strong> Use
+                  AI-driven feedback for self-assessment.
+                </li>
+              </ul>
+
+              <h2 className="text-xl font-semibold mt-4">Our Mission</h2>
               <p>
-                Our team of experts includes Anthropologists with years of
-                experience in academia and research, as well as individuals from
-                diverse backgrounds who bring unique perspectives to the
-                discipline. Together, we curate a range of resources, including
-                articles, videos, podcasts, and webinars, that cover various
-                aspects of Anthropology.
+                At AnswerWriting.com, we believe that{" "}
+                <strong>consistent practice</strong> and{" "}
+                <strong>smart feedback</strong> can transform an average answer
+                into a high-scoring one. Our mission is to empower aspirants
+                with the right tools to write better, faster, and more
+                effectively.
               </p>
 
+              <h2 className="text-xl font-semibold mt-4">
+                Created by the Anthroholic Team
+              </h2>
               <p>
-                At Anthroholic, we believe that Anthropology is not just a
-                subject to be studied in the classroom. It is a way of looking
-                at the world that can help us better understand ourselves and
-                the societies we live in. We hope that by sharing our knowledge
-                and passion for Anthropology, we can inspire others to develop
-                their own love for this fascinating discipline.
+                This platform is built by the{" "}
+                <a
+                  href="https://anthroholic.com"
+                  className="text-primary-dark hover:underline"
+                >
+                  Anthroholic Team
+                </a>
+                , a trusted name among{" "}
+                <strong>UPSC Anthropology optional</strong> aspirants. We are
+                dedicated to bringing{" "}
+                <strong>innovative learning solutions</strong> that make exam
+                preparation smarter and more efficient.
               </p>
 
-              <p>
-                Whether you are a student of Anthropology, a curious learner, or
-                someone who wants to make a positive impact on the world,
-                Anthroholic is the platform for you. Join our community of
-                Anthropology enthusiasts and discover the rich and diverse world
-                of Anthropology today!
+              <p className="font-semibold text-center mt-6">
+                Join us at{" "}
+                <a
+                  href="https://answerwriting.com"
+                  className="text-primary-dark hover:underline"
+                >
+                  AnswerWriting.com
+                </a>{" "}
+                and take your answer-writing skills to the next level!
               </p>
             </div>
           </>
         </Container>
       </div>
-
       <Footer />
     </div>
   );

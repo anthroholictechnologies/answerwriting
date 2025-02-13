@@ -20,7 +20,6 @@ import { Label } from "answerwriting/components/ui/label";
 import { Exams, Marks } from "answerwriting/types/ai.types";
 import { SelectGSToolTip } from "./tooltips/select-gs-tooltip";
 import { FileUploader } from "./form-parts/file-uploader";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -188,13 +187,6 @@ export const AnswerEvaluatorForm = ({
             });
           }}
         >
-          <Image
-            src="/logos/1.png"
-            height={100}
-            width={100}
-            alt="answerwriting logo"
-            className="w-6 h-6"
-          />
           Submit for Evaluation
         </Button>
       </div>

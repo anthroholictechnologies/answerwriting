@@ -27,6 +27,10 @@ const footerData = {
   policies: [
     { label: "Privacy Policy", href: ApiRoutePaths.PAGE_PRIVACY_POLICY },
     { label: "Terms", href: ApiRoutePaths.PAGE_TERMS_OF_SERVICE },
+    {
+      label: "Cookie Policy",
+      href: "https://www.anthroholic.com/cookie-policy",
+    },
   ],
 };
 

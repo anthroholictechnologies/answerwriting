@@ -1,9 +1,9 @@
 import Image from "next/image";
 const ToolHeading = ({ heading }: { heading: string }) => {
   return (
-    <div className="flex flex-col md:mt-8 lg:mt-0 lg:flex-row justify-center h-32 items-center gap-2">
+    <div className="flex flex-col md:mt-8 lg:mt-0 lg:flex-row justify-center h-32 items-center gap-1">
       <Image
-        src="/logos/1.png"
+        src="logo_2.svg"
         height={100}
         width={100}
         alt="answerwriting logo"

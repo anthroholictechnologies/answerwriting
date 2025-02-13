@@ -101,7 +101,7 @@ export function AppSidebar() {
       <SidebarHeader className="p-4 border-b border-zinc-200">
         <div className="relative h-12">
           <Image
-            src="/logos/3_resize.png"
+            src="/logo_4.svg"
             fill
             alt="answerwriting logo"
             className="object-contain"

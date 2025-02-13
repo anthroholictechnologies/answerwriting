@@ -2,9 +2,8 @@ import Container from "answerwriting/components/landing/container";
 import Footer from "answerwriting/components/misc/misc_footer";
 import Header from "answerwriting/components/misc/misc_header";
 import ImpactSpan from "answerwriting/components/react-common/impact-span";
-import { ApiRoutePaths } from "answerwriting/types/general.types";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 
 const PPHeading = ({ heading }: { heading: string }) => {
   return (
@@ -12,17 +11,6 @@ const PPHeading = ({ heading }: { heading: string }) => {
   );
 };
 
-const TermsOfService = () => {
-  return (
-    <Link
-      href={ApiRoutePaths.PAGE_TERMS_OF_SERVICE}
-      target="_blank"
-      className="text-primary-dark"
-    >
-      Terms of service
-    </Link>
-  );
-};
 export default async function TermsOfServices() {
   return (
     <div className="h-screen w-screen">
@@ -30,12 +18,11 @@ export default async function TermsOfServices() {
       <Container>
         <>
           <h1 className="text-center text-[3rem] leading-none tracking-tighter font-bold xl:mb-6 mb-2">
-            {" "}
-            Terms and <ImpactSpan text="Conditions" />{" "}
+            Terms and <ImpactSpan text="Conditions" />
           </h1>
 
           <Image
-            src="/logos/2.png"
+            src="/logo_3.svg"
             alt="Answerwriting logo"
             width={300}
             height={300}
@@ -43,28 +30,164 @@ export default async function TermsOfServices() {
 
           <div className="flex flex-col gap-8">
             <div>
-              <PPHeading heading="A. General" />
+              <h1 className="font-bold">Effective Date: 20/02/2025 </h1>
               <p>
-                In addition to our <TermsOfService />, Anthroholic respects your
-                privacy and is committed to protecting it. This Privacy Policy
-                (the “Policy”) explains the types of information collected by
-                Anthroholic when you use the Website (as defined in{" "}
-                <TermsOfService />) that references this Policy, how we collect,
-                use, share and store such information collected and also
-                explains the rationale for collection of such information, the
-                privacy rights and choices you have regarding your information
-                submitted to us when you use the Services.
+                {` Welcome to AnswerWriting.com! These Terms and Conditions ("Terms") govern your use of our platform and services. By accessing or using AnswerWriting.com, you agree to be bound by these Terms.`}
+              </p>
+              <div>
+                Since AnswerWriting.com and Anthroholic.com are owned by
+                Anthroholic Technologies Private Limited, most of the terms
+                applicable to Anthroholic.com also apply here. For a more
+                comprehensive understanding, please refer to our detailed Terms
+                of Service at{" "}
+                <Link
+                  href="https://www.anthroholic.com/terms"
+                  className="text-primary"
+                >
+                  {" "}
+                  anthroholic.com/terms{" "}
+                </Link>
+                .
+              </div>
+            </div>
+
+            <div>
+              <PPHeading heading="1. Use of the Platform" />
+              <ul className="list-disc pl-6">
+                <li>
+                  <strong>Purpose:</strong> This platform is designed to help
+                  users improve their answer writing skills through AI-powered
+                  evaluation.
+                </li>
+                <li>
+                  <strong>User Responsibility:</strong> You are responsible for
+                  maintaining the confidentiality of your account credentials
+                  and for all activities under your account.
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <PPHeading heading="2. Content & Intellectual Property" />
+              <ul className="list-disc pl-6">
+                <li>
+                  <strong>Ownership:</strong> All content, AI-generated
+                  feedback, and materials on AnswerWriting.com are the
+                  intellectual property of Anthroholic Technologies Private
+                  Limited.
+                </li>
+                <li>
+                  <strong>User-Generated Content:</strong> By submitting answers
+                  for evaluation, you grant us a non-exclusive right to analyze
+                  and process the content to improve our services.
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <PPHeading heading="3. Payments & Refunds" />
+              <ul className="list-disc pl-6">
+                <li>
+                  Some features of the platform may be paid services. Pricing
+                  details will be provided before purchase.{" "}
+                  <Link
+                    href="https://answerwriting.com/pricing"
+                    className="text-primary-dark"
+                  >
+                    Refer here
+                  </Link>
+                  .
+                </li>
+                <li>
+                  <strong>No Refund Policy:</strong> Refunds are applicable as
+                  per the refund policy.{" "}
+                  <Link
+                    href="https://answerwriting.com/refunds-returns"
+                    className="text-primary-dark"
+                  >
+                    Learn more
+                  </Link>
+                  .
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <PPHeading heading="4. Prohibited Activities" />
+              <ul className="list-disc pl-6">
+                <li>
+                  You agree <strong>NOT</strong> to use the platform for any
+                  unlawful or unethical purposes.
+                </li>
+                <li>
+                  Sharing or distributing AI-generated feedback for commercial
+                  use without permission is prohibited.
+                </li>
+                <li>
+                  Attempting to disrupt or manipulate the AI system or platform
+                  functionality is strictly prohibited.
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <PPHeading heading="5. Limitation of Liability" />
+              <p>
+                We strive to provide accurate and reliable AI-driven feedback,
+                but we do not guarantee any specific improvements in exam
+                performance.
+              </p>
+              <p>
+                Anthroholic Technologies Private Limited is not liable for any
+                direct or indirect damages resulting from the use of this
+                platform.
               </p>
             </div>
 
             <div>
-              <PPHeading heading="B. Applicability" />
+              <PPHeading heading="6. Termination of Access" />
               <p>
-                This Policy applies to the Website and the Services provided by
-                Anthroholic. If you are a customer, a member, or a business
-                partner, this Policy also applies to the Services provided by
-                Anthroholic, and to any other products or services that
-                Anthroholic may offer in the future.
+                We reserve the right to suspend or terminate accounts that
+                violate these Terms or misuse the platform.
+              </p>
+            </div>
+
+            <div>
+              <PPHeading heading="7. Changes to Terms" />
+              <p>
+                We may update these Terms periodically. Continued use of the
+                platform after any updates constitutes acceptance of the revised
+                Terms.
+              </p>
+            </div>
+
+            <div>
+              <PPHeading heading="8. Contact Information" />
+              <p>For any queries regarding these Terms, reach out to:</p>
+              <ul className="list-disc pl-6">
+                <li>
+                  <strong>Email:</strong>{" "}
+                  <Link
+                    href="mailto:info@answerwriting.com"
+                    className="text-primary-dark"
+                  >
+                    info@answerwriting.com
+                  </Link>
+                </li>
+                <li>
+                  <strong>Company:</strong> Anthroholic Technologies Private
+                  Limited
+                </li>
+              </ul>
+              <p>
+                For a detailed Terms and Conditions page, please visit{" "}
+                <Link
+                  href="https://anthroholic.com/terms"
+                  className="text-primary-dark"
+                >
+                  anthroholic.com/terms
+                </Link>
+                .
               </p>
             </div>
           </div>

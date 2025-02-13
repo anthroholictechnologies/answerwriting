@@ -88,7 +88,7 @@ const BlogPage = () => {
         });
       }
     },
-    [page]
+    [page],
   );
 
   useEffect(() => {
@@ -191,7 +191,7 @@ const BlogPage = () => {
             disabled={loading}
             className={cn(
               "px-8 py-3 text-base group",
-              loading && "cursor-not-allowed opacity-50"
+              loading && "cursor-not-allowed opacity-50",
             )}
           >
             {loading ? (

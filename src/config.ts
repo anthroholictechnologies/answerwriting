@@ -42,9 +42,9 @@ export const COMPANY_NAME = "answerwriting.com";
 
 export const COMPANY_EMAIL = "info@answerwriting.com";
 
-export const TELEGRAM_URL = "https://www.telegram.com";
-export const YOUTUBE_URL = "https://www.youtube.com";
-export const IG_URL = "https://www.instagram.com";
+export const TELEGRAM_URL = "https://t.me/answerwritingpro";
+export const YOUTUBE_URL = "https://youtube.com/@answerwritingpro";
+export const IG_URL = "https://instagram.com/anthroholic";
 
 export const MAX_PDF_UPLOAD_SIZE_BYTES = 2 * 1024 * 1024;
 export const SINGLE_IMAGE_UPLOAD_SIZE_BYTES = 1 * 1024 * 1024;
