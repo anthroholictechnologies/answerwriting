@@ -1,10 +1,16 @@
 export enum ApiRoutePaths {
+  // API
+
+  // Authentication
   REGISTER = "/api/auth/register",
   VERIFY_EMAIL = "/api/auth/verify-email",
   FORGET_PASSWORD = "/api/auth/forget-password",
   RESET_PASSWORD = "/api/auth/reset-password",
+
+  // Tools
   EVALUATE_ANSWER = "/api/ai/evaluate-answer",
 
+  // Pages
   // misc
   PAGE_HOME = "/",
   PAGE_ABOUT_US = "/about",
@@ -13,14 +19,21 @@ export enum ApiRoutePaths {
   PAGE_TERMS_OF_SERVICE = "/terms",
   PAGE_BLOGS = "/blog",
 
-  // auth user pages
+  //dashboard
   PAGE_DASHBOARD = "/dashboard",
-  PAGE_DASHBOARD_USER_PROFILE = "/dashboard/user/profile",
-  PAGE_DASHBOARD_TOOLS_EVALUATOR = "/dashboard/tools/answer-evaluator",
+
+  // Profile
+  PAGE_DASHBOARD_USER_PROFILE = "/me",
+
+  // Tools
+  PAGE_DASHBOARD_TOOLS_EVALUATOR = "/evaluator",
 
   // auth
-  PAGE_LOGIN = "/auth/login",
-  PAGE_REGISTER = "/auth/register",
+  PAGE_LOGIN = "/login",
+  PAGE_REGISTER = "/register",
+  PAGE_VERIFY_EMAIL = "/verify-email",
+  PAGE_FORGET_PASSWORD = "/forget-password",
+  PAGE_RESET_PASSWORD = "/reset-password",
 
   //pricing
   PAGE_PRICING = "/pricing",

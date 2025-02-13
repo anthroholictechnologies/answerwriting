@@ -151,7 +151,7 @@ export function LoginForm({ urlError }: { urlError: string }) {
     name: string,
     label: string,
     type = "text",
-    placeholder: string,
+    placeholder: string
   ) => (
     <FormField
       control={form.control}
@@ -162,7 +162,7 @@ export function LoginForm({ urlError }: { urlError: string }) {
             <FormLabel>{label}</FormLabel>
             {name === "password" && (
               <AnswerWritingLink
-                href="/auth/forget-password"
+                href={ApiRoutePaths.PAGE_FORGET_PASSWORD}
                 linkText="Forgot your password?"
                 overrideClasses="ml-auto text-xs md:text-sm p-0 m-0 h-1"
               />
@@ -226,7 +226,7 @@ export function LoginForm({ urlError }: { urlError: string }) {
               "password",
               "Password",
               "password",
-              "Enter a password",
+              "Enter a password"
             )}
           </div>
           <AuthFooter

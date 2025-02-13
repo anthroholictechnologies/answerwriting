@@ -3,6 +3,7 @@ import { prisma } from "answerwriting/prisma";
 import { DateTime } from "luxon";
 import { Resend } from "resend";
 import SendVerificationEmailTemplate from "../../emails/email-verification.email.template";
+import { ApiRoutePaths } from "answerwriting/types/general.types";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -18,16 +19,13 @@ export const sendEmailVerificationMail = async ({
   userId: string;
   emailTo: string;
 }) => {
-  // if (process.env.NODE_ENV === "development") {
-  //   return;
-  // }
   await resend.emails.send({
     from: process.env.RESEND_EMAIL_FROM as string,
     to: [emailTo],
     subject: `Welcome to ${COMPANY_NAME} Please Verify Your Email`,
     react: SendVerificationEmailTemplate({
       name: name,
-      verificationLink: `${process.env.APP_BASE_URI}/auth/verify-email?a=${userId}&b=${token}`,
+      verificationLink: `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_VERIFY_EMAIL}?a=${userId}&b=${token}`,
     }),
   });
 };

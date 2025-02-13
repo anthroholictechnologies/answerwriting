@@ -88,7 +88,7 @@ const BlogPage = () => {
         });
       }
     },
-    [page],
+    [page]
   );
 
   useEffect(() => {
@@ -158,7 +158,7 @@ const BlogPage = () => {
                 </div>
 
                 {/* Title */}
-                <Link href={`/blog/${post.slug}`} passHref>
+                <Link href={post.slug} passHref>
                   <h3 className="text-xl font-bold group-hover:text-blue-600 transition-colors">
                     {post.title}
                   </h3>
@@ -171,7 +171,7 @@ const BlogPage = () => {
                 ></p>
 
                 {/* Read More */}
-                <Link href={`/blog/${post.slug}`} passHref>
+                <Link href={post.slug} passHref>
                   <Button variant="outline" className="w-full group mt-4">
                     Read More
                     <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -191,7 +191,7 @@ const BlogPage = () => {
             disabled={loading}
             className={cn(
               "px-8 py-3 text-base group",
-              loading && "cursor-not-allowed opacity-50",
+              loading && "cursor-not-allowed opacity-50"
             )}
           >
             {loading ? (

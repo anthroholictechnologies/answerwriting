@@ -12,7 +12,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   secret: process.env.AUTH_SECRET,
   pages: {
-    signIn: "/auth/login",
+    signIn: "/login",
   },
   callbacks: {
     async jwt({ token, user }) {

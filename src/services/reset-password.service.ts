@@ -8,6 +8,7 @@ import { generateToken } from "answerwriting/lib/utils/token.utils";
 import { DateTime } from "luxon";
 import { Resend } from "resend";
 import ForgetPasswordEmailTemplate from "../../emails/forgetpassword.email.template";
+import { ApiRoutePaths } from "answerwriting/types/general.types";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -46,7 +47,7 @@ export const sendForgetPasswordMail = async ({
     subject: `Reset your password for ${COMPANY_NAME}`,
     react: ForgetPasswordEmailTemplate({
       name,
-      resetLink: `${process.env.APP_BASE_URI}/auth/reset-password?a=${userId}&b=${token}`,
+      resetLink: `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_RESET_PASSWORD}?a=${userId}&b=${token}`,
     }),
   });
 };
