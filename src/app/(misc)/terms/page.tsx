@@ -22,7 +22,7 @@ export default async function TermsOfServices() {
           </h1>
 
           <Image
-            src="/logo_3.svg"
+            src="/logo_3.webp"
             alt="Answerwriting logo"
             width={300}
             height={300}

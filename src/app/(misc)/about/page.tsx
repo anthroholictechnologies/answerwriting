@@ -15,7 +15,7 @@ export default function AboutUs() {
               About <ImpactSpan text="Us" />
             </h1>
             <Image
-              src="/logo_3.svg"
+              src="/logo_3.webp"
               alt="AnswerWriting logo"
               width={300}
               height={300}
