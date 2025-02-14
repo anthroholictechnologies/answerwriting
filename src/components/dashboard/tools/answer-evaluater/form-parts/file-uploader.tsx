@@ -13,14 +13,13 @@ import {
   Tabs,
 } from "answerwriting/components/ui/tabs";
 import { Button } from "answerwriting/components/ui/button";
-import { FileText, ImageIcon, Upload, Camera, X } from "lucide-react";
+import { FileText, ImageIcon, Upload, X } from "lucide-react";
 import Image from "next/image";
 import {
   MAX_IMAGES_ALLOWED,
   MAX_PDF_UPLOAD_SIZE_BYTES,
   SINGLE_IMAGE_UPLOAD_SIZE_BYTES,
 } from "answerwriting/config";
-import { CameraModal } from "answerwriting/components/react-common/camera-input";
 import {
   Dialog,
   DialogContent,
@@ -124,8 +123,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 }) => {
   const pdfInputRef = useRef<HTMLInputElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
-  const [isCameraOpen, setIsCameraOpen] = useState(false);
-
   const handlePdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {
       const selectedFile = event.target.files[0];
@@ -153,16 +150,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       }
       setImages([...images, ...newImages]);
     }
-  };
-
-  const handleCameraCapture = (file: File) => {
-    if (file.size > SINGLE_IMAGE_UPLOAD_SIZE_BYTES) {
-      alert(
-        `Image too large. Max size is ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`,
-      );
-      return;
-    }
-    setImages([...images, file]);
   };
 
   const removePdf = () => setPdfFile(null);
@@ -268,18 +255,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                   >
                     <Upload className="h-4 w-4 mr-2" /> Browse
                   </Button>
-
-                  <div className="lg:hidden">
-                    <Button
-                      disabled={
-                        images.length === MAX_IMAGES_ALLOWED || !!pdfFile
-                      }
-                      onClick={() => setIsCameraOpen(true)}
-                      className="w-full md:w-auto"
-                    >
-                      <Camera className="h-4 w-4 mr-2" /> Camera
-                    </Button>
-                  </div>
                 </div>
               </div>
 
@@ -287,14 +262,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
             </div>
           </TabsContent>
         </Tabs>
-
-        <div className="lg:hidden">
-          <CameraModal
-            isOpen={isCameraOpen}
-            onClose={() => setIsCameraOpen(false)}
-            onCapture={handleCameraCapture}
-          />
-        </div>
       </CardContent>
     </Card>
   );
