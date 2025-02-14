@@ -1,10 +1,7 @@
-import React from "react";
-import DashboardClient from "answerwriting/components/dashboard";
 import { auth } from "answerwriting/auth";
+import { ProfilePage } from "answerwriting/components/dashboard/user/me";
 
-export default async function Dashboard() {
+export default async function Profile() {
   const session = await auth();
-  const user = session?.user;
-
-  return <DashboardClient user={user} />;
+  return <ProfilePage user={session?.user} />;
 }

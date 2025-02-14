@@ -13,12 +13,21 @@ import {
 } from "answerwriting/components/ui/sidebar";
 import { Button } from "answerwriting/components/ui/button";
 import Image from "next/image";
-import { User, LogOut, Brain } from "lucide-react";
+import { User, LogOut, Brain, Home, Calculator } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "answerwriting/lib/utils";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
 import { logout } from "answerwriting/actions";
+
+// Add Home to menu items
+const mainMenuItems = [
+  {
+    label: "Home",
+    icon: Home,
+    href: ApiRoutePaths.PAGE_DASHBOARD, // Assuming this is your dashboard home path
+  },
+];
 
 const profileMenuItems = [
   {
@@ -27,11 +36,17 @@ const profileMenuItems = [
     href: ApiRoutePaths.PAGE_DASHBOARD_USER_PROFILE,
   },
 ];
+
 const aiToolsMenuItems = [
   {
     label: "Answer Evaluator",
     href: ApiRoutePaths.PAGE_DASHBOARD_TOOLS_EVALUATOR,
     icon: Brain,
+  },
+  {
+    label: "Word Counter",
+    href: ApiRoutePaths.PAGE_DASHBOARD_TOOLS_WORD_COUNTER, // You'll need to add this path to your types
+    icon: Calculator,
   },
 ];
 
@@ -110,6 +125,22 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
+        {/* Home Section */}
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu className="space-y-2">
+              {mainMenuItems.map((item) => (
+                <MenuItem
+                  key={item.href}
+                  href={item.href}
+                  icon={item.icon}
+                  label={item.label}
+                />
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
         {/* Profile Section */}
         <SidebarGroup>
           <SidebarGroupLabel className="px-4 mb-2 text-xs font-semibold text-zinc-400 uppercase tracking-wider">

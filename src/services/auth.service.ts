@@ -36,6 +36,7 @@ export const authenticate = async (credentials: {
         id: user.id,
         emailVerified: user.emailVerified,
         image: user.image,
+        password: user.password,
       }
     : null;
 };

@@ -1,7 +1,19 @@
+import { cn } from "answerwriting/lib/utils";
 import Image from "next/image";
-const ToolHeading = ({ heading }: { heading: string }) => {
+const ToolHeading = ({
+  heading,
+  className,
+}: {
+  heading: string;
+  className?: string;
+}) => {
   return (
-    <div className="flex flex-col md:mt-8 lg:mt-0 lg:flex-row justify-center h-32 items-center gap-1">
+    <div
+      className={cn(
+        "flex flex-col md:mt-8 lg:mt-0 lg:flex-row justify-center h-32 items-center gap-1",
+        className ?? "",
+      )}
+    >
       <Image
         src="logo_2.svg"
         height={100}

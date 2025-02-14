@@ -27,6 +27,7 @@ export enum ApiRoutePaths {
 
   // Tools
   PAGE_DASHBOARD_TOOLS_EVALUATOR = "/evaluator",
+  PAGE_DASHBOARD_TOOLS_WORD_COUNTER = "/wordcounter",
 
   // auth
   PAGE_LOGIN = "/login",
@@ -73,4 +74,5 @@ export interface AuthenticatedUser {
   id: string;
   emailVerified: Date | null;
   image: string | null;
+  password: string | null;
 }

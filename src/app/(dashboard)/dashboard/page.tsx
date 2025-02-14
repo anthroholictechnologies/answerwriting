@@ -1,6 +1,8 @@
-import { ApiRoutePaths } from "answerwriting/types/general.types";
-import { redirect } from "next/navigation";
+import { auth } from "answerwriting/auth";
+import DashBoardClient from "answerwriting/components/dashboard";
 
 export default async function Dashboard() {
-  redirect(ApiRoutePaths.PAGE_DASHBOARD_USER_PROFILE)
+  const session = await auth();
+  const user = session?.user;
+  return <DashBoardClient user={user} />;
 }

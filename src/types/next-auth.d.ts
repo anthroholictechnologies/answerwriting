@@ -7,6 +7,7 @@ declare module "next-auth" {
     id: string;
     emailVerified: Date | null;
     image: string | null;
+    password?: string | null;
   }
 
   interface Session {
@@ -16,6 +17,7 @@ declare module "next-auth" {
       id: string;
       emailVerified: Date | null;
       image: string | null;
+      password?: string | null;
     } & DefaultSession["user"];
   }
 }
@@ -27,5 +29,6 @@ declare module "next-auth/jwt" {
     email: string;
     emailVerified: Date | null;
     image: string | null;
+    password?: string | null;
   }
 }

@@ -2,16 +2,14 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
+import TypewriterHeading from "./hero_heading";
 
 const LandingHero = () => {
   return (
     <>
       {/* First Section - Header */}
       <div className="flex flex-col items-center gap-8 px-2 pt-16 md:px-24 md:pt-24">
-        <h1 className="text-center text-[2.5rem] lg:text-[4rem] font-bold md:max-w-4xl tracking-tighter leading-tight">
-          Master UPSC Mains Answer Writing with{" "}
-          <span className="text-primary">AI Precision</span>
-        </h1>
+        <TypewriterHeading />
 
         <p className="text-tertiary text-center text-lg">
           Your Personalized Answer Evaluation Tool for Daily Practice, Crafted
