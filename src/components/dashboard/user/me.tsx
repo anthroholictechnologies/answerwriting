@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useEffect, useState } from "react";
 import { Mail, Check, User, CreditCard } from "lucide-react";
@@ -9,10 +8,12 @@ import { User as UserShape } from "next-auth";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
 import { useCustomToast } from "answerwriting/components/react-common/toast";
 import { useRouter } from "next/navigation";
+
 export const ProfilePage = ({ user }: { user?: UserShape }) => {
   const toast = useCustomToast();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("profile");
+
   useEffect(() => {
     if (!user) {
       toast.info({
@@ -33,64 +34,63 @@ export const ProfilePage = ({ user }: { user?: UserShape }) => {
   const linkedWithGoogle = !user.password;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-6xl mx-auto p-6">
+    <div className="min-h-screen">
+      <div className="max-w-6xl mx-auto p-4 md:p-6">
         {/* Top Section */}
-        <div className="p-6 mb-6">
-          <div className="flex items-center gap-4">
+        <div className="p-4 md:p-6 mb-4 md:mb-6">
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={user?.image ?? "/user.png"}
               alt={user?.name ?? "Aspirant"}
               className="w-16 h-16 rounded-full object-cover border-2 border-gray-100"
             />
-            <div>
+            <div className="text-center sm:text-left">
               <h1 className="text-xl font-semibold text-secondary-dark">
                 {user.name}
               </h1>
-              <div className="flex items-center gap-2 text-sm mt-1">
+              <div className="flex items-center justify-center sm:justify-start gap-2 text-sm mt-1">
                 <Mail className="w-4 h-4" />
-                <span>{user.email}</span>
+                <span className="break-all">{user.email}</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="flex gap-6">
-          {/* Vertical Navigation */}
-          <div className="w-64 flex-shrink-0">
-            <div>
-              <nav className="flex flex-col">
-                <button
-                  onClick={() => setActiveTab("profile")}
-                  className={`flex items-center gap-3 p-4 text-sm font-bold border-l-2 transition-colors ${
-                    activeTab === "profile"
-                      ? "border-primary-dark text-primary-dark"
-                      : "border-transparent"
-                  }`}
-                >
-                  <User className="w-5 h-5" />
-                  Profile
-                </button>
-                <button
-                  onClick={() => setActiveTab("plan")}
-                  className={`flex items-center gap-3 p-4 text-sm font-bold border-l-2 transition-colors ${
-                    activeTab === "plan"
-                      ? "border-primary-dark text-primary-dark"
-                      : "border-transparent"
-                  }`}
-                >
-                  <CreditCard className="w-5 h-5" />
-                  Your Plan
-                </button>
-              </nav>
-            </div>
+        <div className="flex flex-col md:flex-row gap-6">
+          {/* Horizontal/Vertical Navigation */}
+          <div className="md:w-64 flex-shrink-0">
+            <nav className="flex md:flex-col border-b md:border-b-0 mb-4 md:mb-0">
+              <button
+                onClick={() => setActiveTab("profile")}
+                className={`flex items-center justify-center md:justify-start gap-3 p-4 text-sm font-bold flex-1 md:flex-none border-b-2 md:border-b-0 md:border-l-2 transition-colors ${
+                  activeTab === "profile"
+                    ? "border-primary-dark text-primary-dark"
+                    : "border-transparent"
+                }`}
+              >
+                <User className="w-5 h-5" />
+                <span className="hidden sm:inline">Profile</span>
+              </button>
+              <button
+                onClick={() => setActiveTab("plan")}
+                className={`flex items-center justify-center md:justify-start gap-3 p-4 text-sm font-bold flex-1 md:flex-none border-b-2 md:border-b-0 md:border-l-2 transition-colors ${
+                  activeTab === "plan"
+                    ? "border-primary-dark text-primary-dark"
+                    : "border-transparent"
+                }`}
+              >
+                <CreditCard className="w-5 h-5" />
+                <span className="hidden sm:inline">Your Plan</span>
+              </button>
+            </nav>
           </div>
 
           {/* Content Area */}
           <div className="flex-1">
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-4 md:p-6">
                 {activeTab === "profile" ? (
                   <div className="space-y-6">
                     <div>
@@ -105,8 +105,8 @@ export const ProfilePage = ({ user }: { user?: UserShape }) => {
                           <label className="block text-sm font-bold mb-1">
                             Email
                           </label>
-                          <div className="flex items-center gap-2">
-                            <span className="text-secondary-dark">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-secondary-dark break-all">
                               {user.email}
                             </span>
                             {emailVerified && (
@@ -133,8 +133,8 @@ export const ProfilePage = ({ user }: { user?: UserShape }) => {
                 ) : (
                   <div className="space-y-6">
                     <h2 className="text-xl font-semibold mb-6">Subscription</h2>
-                    <div className="bg-white border rounded-lg p-6">
-                      <div className="flex items-center justify-between">
+                    <div className="bg-white border rounded-lg p-4 md:p-6">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div>
                           <h3 className="text-lg font-medium text-gray-900">
                             {"Free"} Plan
@@ -144,7 +144,7 @@ export const ProfilePage = ({ user }: { user?: UserShape }) => {
                           </p>
                         </div>
                         {"Free" === "Free" && (
-                          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                          <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white">
                             Upgrade Plan
                           </Button>
                         )}
@@ -157,8 +157,8 @@ export const ProfilePage = ({ user }: { user?: UserShape }) => {
                           Available Plans
                         </h3>
                         <Card>
-                          <CardContent className="p-6">
-                            <div className="flex justify-between items-center">
+                          <CardContent className="p-4 md:p-6">
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                               <div>
                                 <h4 className="text-lg font-medium">
                                   Pro Plan
@@ -174,7 +174,12 @@ export const ProfilePage = ({ user }: { user?: UserShape }) => {
                                   </li>
                                 </ul>
                               </div>
-                              <Button variant="outline">Learn More</Button>
+                              <Button
+                                variant="outline"
+                                className="w-full sm:w-auto"
+                              >
+                                Learn More
+                              </Button>
                             </div>
                           </CardContent>
                         </Card>
@@ -190,3 +195,5 @@ export const ProfilePage = ({ user }: { user?: UserShape }) => {
     </div>
   );
 };
+
+export default ProfilePage;
