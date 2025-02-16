@@ -13,7 +13,14 @@ import {
 } from "answerwriting/components/ui/sidebar";
 import { Button } from "answerwriting/components/ui/button";
 import Image from "next/image";
-import { User, LogOut, Brain, Home, Calculator } from "lucide-react";
+import {
+  User,
+  LogOut,
+  Brain,
+  Home,
+  Calculator,
+  DiamondPlusIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "answerwriting/lib/utils";
@@ -34,6 +41,11 @@ const profileMenuItems = [
     label: "My Profile",
     icon: User,
     href: ApiRoutePaths.PAGE_DASHBOARD_USER_PROFILE,
+  },
+  {
+    label: "Upgrade to Premium",
+    icon: DiamondPlusIcon,
+    href: ApiRoutePaths.PAGE_PRICING,
   },
 ];
 

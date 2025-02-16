@@ -20,7 +20,7 @@ const ErrorResponses = {
 };
 
 export async function POST(
-  request: NextRequest
+  request: NextRequest,
 ): Promise<NextResponse<ApiResponse>> {
   try {
     const { a: userId, b: token } = (await request.json()) as VerifyEmailInput;
@@ -76,7 +76,7 @@ export async function POST(
         success: true,
         message: "Email verified successfully",
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (err: unknown) {
     console.error(`Error verifying the user's email`, err);
@@ -86,7 +86,7 @@ export async function POST(
         success: false,
         errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
