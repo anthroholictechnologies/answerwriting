@@ -10,17 +10,17 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary-dark text-primary-foreground shadow hover:bg-primary/90",
+          "bg-primary-dark text-primary-foreground shadow transition-all duration-200 ease-in-out hover:scale-105",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
           "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+          "bg-white text-secondary-dark shadow transition-all duration-200 ease-in-out hover:scale-105",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         transparent:
-          "bg-transparent  hover:bg-primary hover:text-white border shadow-none border-primary text-primary",
+          "bg-transparent border shadow-none border-primary-dark text-primary-dark transition-all duration-200 ease-in-out hover:scale-105",
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -33,7 +33,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 export interface ButtonProps
@@ -52,7 +52,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  },
+  }
 );
 Button.displayName = "Button";
 
