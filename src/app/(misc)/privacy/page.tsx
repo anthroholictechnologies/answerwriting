@@ -30,7 +30,7 @@ export default async function PrivacyPolicy() {
 
           <div className="flex flex-col gap-8">
             <div>
-              <h1 className="font-bold mb-2"> Effctive Date: 20/02/2025 </h1>
+              <h1 className="font-bold mb-2"> Effective Date: 20/02/2025 </h1>
               <p>
                 Welcome to AnswerWriting.com, a platform dedicated to improving
                 answer writing skills through AI-powered evaluation. Your
