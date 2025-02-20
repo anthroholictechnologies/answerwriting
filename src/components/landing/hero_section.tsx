@@ -1,5 +1,5 @@
 import Link from "next/link";
-import TypewriterHeading from "./hero_heading";
+import { TypewriterHeading } from "./hero_heading";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
 import { ButtonPrimary } from "../react-common/buttons/button_primary";
 
