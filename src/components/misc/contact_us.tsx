@@ -90,7 +90,7 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="lg:shadow lg:border rounded-standard bg-white flex flex-col  w-full max-w-screen-md  mx-auto xl:p-12 xl:mt-4 mb-12">
+    <div className="lg:shadow lg:border rounded-standard bg-white flex flex-col  w-full max-w-screen-md  mx-auto py-12 xl:p-12 xl:mt-12 mb-12">
       <CardHeader>
         <CardTitle className="text-center text-[2rem] xl:text-[3rem] leading-none tracking-tighter font-bold xl:mb-6 mb-2">
           Contact <ImpactSpan text="Us" />

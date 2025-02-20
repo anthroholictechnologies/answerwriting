@@ -1,8 +1,8 @@
 import React from "react";
 import { MailIcon } from "lucide-react";
-import Telegram from "../react-common/icons/telegram";
-import Youtube from "../react-common/icons/youtube";
-import Ig from "../react-common/icons/instagram";
+import Telegram from "../icons/telegram";
+import Youtube from "../icons/youtube";
+import Ig from "../icons/instagram";
 import Link from "next/link";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
 import {
@@ -12,7 +12,7 @@ import {
   TELEGRAM_URL,
   YOUTUBE_URL,
 } from "answerwriting/config";
-import { Facebook } from "../react-common/icons/facebook";
+import { Facebook } from "../icons/facebook";
 
 const footerData = {
   brandName: "Answerwriting",
@@ -45,11 +45,11 @@ const footerData = {
     },
     {
       label: "Refund Policy",
-      href: ApiRoutePaths.PAGE_PRIVACY_POLICY,
+      href: ApiRoutePaths.PAGE_REFUND_PLOCIY,
     },
     {
       label: "FAQ",
-      href: ApiRoutePaths.PAGE_PRIVACY_POLICY,
+      href: ApiRoutePaths.PAGE_FAQ,
     },
   ],
 };

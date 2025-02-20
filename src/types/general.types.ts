@@ -18,6 +18,8 @@ export enum ApiRoutePaths {
   PAGE_PRIVACY_POLICY = "/privacy",
   PAGE_TERMS_OF_SERVICE = "/terms",
   PAGE_BLOGS = "/blog",
+  PAGE_REFUND_PLOCIY = "/refund",
+  PAGE_FAQ = "/faq",
 
   //dashboard
   PAGE_DASHBOARD = "/dashboard",
