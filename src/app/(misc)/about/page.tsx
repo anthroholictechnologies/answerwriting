@@ -1,6 +1,6 @@
-import Container from "answerwriting/components/landing/container";
+import Container from "answerwriting/components/misc/misc_container";
 import Footer from "answerwriting/components/misc/misc_footer";
-import Header from "answerwriting/components/misc/misc_header";
+import Header from "answerwriting/components/react-common/header_footer/unauth_header";
 import ImpactSpan from "answerwriting/components/react-common/impact-span";
 import Image from "next/image";
 

@@ -47,7 +47,7 @@ const TestimonialCard = ({ name, role, image, fallback, quote }: any) => (
   </div>
 );
 
-export const SectionSeven = () => {
+export const Section_6 = () => {
   return (
     <section className="w-full pt-12 md:pt-20 lg:pt-28">
       <div className="container max-w-6xl px-4 md:px-6">

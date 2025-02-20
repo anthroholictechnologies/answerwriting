@@ -1,10 +1,9 @@
 import Link from "next/link";
-import TypewriterHeading from "../hero_heading";
+import TypewriterHeading from "./hero_heading";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
-import { ButtonPrimary } from "./buttons/button_primary";
-import { ButtonTertiary } from "./buttons/button_tertiary";
+import { ButtonPrimary } from "../react-common/buttons/button_primary";
 
-export const SectionOne = () => {
+export const Section_1 = () => {
   return (
     <section className="flex flex-col items-center mx-auto max-w-6xl xl:max-w-screen-xl py-16 md:py-24 px-6 md:px-12 lg:px-16">
       {/* Text Section */}
@@ -17,12 +16,11 @@ export const SectionOne = () => {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4">
-          <ButtonPrimary>
+          <ButtonPrimary styles="lg:px-12">
             <Link href={ApiRoutePaths.PAGE_DASHBOARD_TOOLS_EVALUATOR}>
-              Free Evaluation
+              📝 Free Evaluation
             </Link>
           </ButtonPrimary>
-          <ButtonTertiary>How it works?</ButtonTertiary>
         </div>
       </div>
 

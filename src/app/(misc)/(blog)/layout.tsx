@@ -1,4 +1,4 @@
-import Header from "answerwriting/components/misc/misc_header";
+import Header from "answerwriting/components/react-common/header_footer/unauth_header";
 import { BlogSidebar } from "answerwriting/components/react-common/blog-sidebar";
 import {
   SidebarProvider,
