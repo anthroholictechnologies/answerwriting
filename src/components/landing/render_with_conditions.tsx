@@ -3,8 +3,8 @@ import { TertiarySection } from "answerwriting/components/react-common/sections/
 export const Section_3 = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   return (
     <TertiarySection
-      title="Go Pro"
-      highlightText="Score"
+      title="Go Pro Score more with"
+      highlightText="AnswerWriting"
       description="Upgrade to advanced answer evaluation, deep insights, and unlimited practice."
       isLoggedIn={isLoggedIn}
       loggedInButtonText="💎 Upgrade to Pro"
