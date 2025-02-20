@@ -15,7 +15,7 @@ export const Section_2 = () => {
       ctaButtons={
         <>
           <ButtonPrimary>🚀 Start evaluating now</ButtonPrimary>
-          <ButtonSecondary>🚀 Eliminate waiting time</ButtonSecondary>
+          <ButtonSecondary>🔥 Eliminate waiting time</ButtonSecondary>
         </>
       }
     />
@@ -32,6 +32,7 @@ export const Section_5 = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         to refine your structure, enhance clarity, or meet UPSC standards, our 
         platform guides you at every step."
       imageSrc="/homepage_sectionfive.webp"
+      transparentImage
       ctaButtons={
         <>
           {isLoggedIn ? (
