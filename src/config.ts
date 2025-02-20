@@ -45,7 +45,7 @@ export const COMPANY_EMAIL = "info@answerwriting.com";
 export const TELEGRAM_URL = "https://t.me/answerwritingpro";
 export const YOUTUBE_URL = "https://youtube.com/@answerwritingpro";
 export const IG_URL = "https://instagram.com/answerwritingpro";
-export const FACEBOOK_URL = "https://facebook.com/answerwritingpro"
+export const FACEBOOK_URL = "https://facebook.com/answerwritingpro";
 
 export const MAX_PDF_UPLOAD_SIZE_BYTES = 2 * 1024 * 1024;
 export const SINGLE_IMAGE_UPLOAD_SIZE_BYTES = 1 * 1024 * 1024;

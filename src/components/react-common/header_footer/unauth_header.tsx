@@ -1,12 +1,11 @@
 import Image from "next/image";
-import { Button } from "../ui/button";
-import { Gift } from "lucide-react";
 import Link from "next/link";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
+import { ButtonPrimary } from "../buttons/button_primary";
 const Header = () => {
   return (
     <header>
-      <nav className="flex w-full lg:justify-around pt-8 bg-gray-50 pb-4 lg:px-24">
+      <nav className="flex w-full lg:justify-around py-4 bg-gray-50 lg:px-24">
         <Link href={ApiRoutePaths.PAGE_HOME} passHref>
           <div className="flex-1 hidden lg:block hover:cursor-pointer">
             <Image
@@ -19,21 +18,7 @@ const Header = () => {
           </div>
         </Link>
         <div className="items-center justify-end gap-4 flex-1 hidden lg:flex">
-          <div className="hidden hover:cursor-pointer h-8 w-8 lg:flex justify-center items-center rounded-full shadow border border-[lightGray]">
-            <Gift className="text-primary-dark" />
-          </div>
-          <Button size="lg" className="py-5 hover:cursor-pointer">
-            {" "}
-            Learn More{" "}
-          </Button>
-          <Button
-            size="lg"
-            variant="transparent"
-            className="py-5 hover:cursor-pointer"
-          >
-            {" "}
-            View Timetable{" "}
-          </Button>
+          <ButtonPrimary styles="px-10"> 💎 Upgrade to Pro </ButtonPrimary>
         </div>
 
         {/* for phone */}
@@ -47,18 +32,10 @@ const Header = () => {
           />
         </div>
         <div className="flex-1 gap-1 flex lg:hidden items-center justify-end px-4 md:px-12">
-          <Button size="sm" className="hover:cursor-pointer">
+          <ButtonPrimary size="sm" styles="py-6">
             {" "}
-            Learn More{" "}
-          </Button>
-          <Button
-            size="sm"
-            variant="transparent"
-            className="hover:cursor-pointer"
-          >
-            {" "}
-            View Timetable{" "}
-          </Button>
+            💎 Upgrade to Pro{" "}
+          </ButtonPrimary>
         </div>
       </nav>
     </header>
