@@ -7,6 +7,7 @@ interface SecondarySectionProps {
   imageSrc: string;
   ctaButtons: React.ReactNode;
   reverseLayout?: boolean;
+  transparentImage?: boolean; // For using a transparent image for the background instead of a solid color.
 }
 
 export const SecondarySection = ({
@@ -16,6 +17,7 @@ export const SecondarySection = ({
   imageSrc,
   ctaButtons,
   reverseLayout = false,
+  transparentImage = false,
 }: SecondarySectionProps) => {
   return (
     <section
@@ -25,7 +27,9 @@ export const SecondarySection = ({
     >
       {/* Image Container */}
       <div className="flex-[0.50] flex justify-center max-w-sm md:max-w-[26rem]">
-        <div className="bg-white shadow-md rounded-xl overflow-hidden w-full">
+        <div
+          className={`${transparentImage ? "" : "bg-white shadow-md rounded-xl"}  overflow-hidden w-full`}
+        >
           <Image
             src={imageSrc}
             alt="Feature illustration"

@@ -22,7 +22,7 @@ export const TertiarySection = ({
 }: TertiarySectionProps) => {
   return (
     <section
-      className={`flex flex-col items-center text-center gap-6 px-6 md:px-10 lg:px-20 py-16 lg:py-20 ${
+      className={`flex flex-col items-center text-center gap-6 px-6 md:px-10 lg:px-20 pt-16 md:py-16 lg:py-20 ${
         gradientBackground ? "bg-gradient-to-b from-[#fbfeff] to-[#ecf8ff]" : ""
       }`}
     >
