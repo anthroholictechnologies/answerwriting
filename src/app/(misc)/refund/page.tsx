@@ -18,8 +18,14 @@ export default function RefundPolicy() {
       <Header />
       <Container>
         <>
-          <h1 className="text-center text-[3rem] tracking-tighter font-bold leading-none mb-4">
+          <h1 className="hidden md:block text-center text-[3rem] tracking-tighter font-bold leading-none mb-4">
             Refund & <ImpactSpan text="Return Policy" />
+          </h1>
+
+          <h1 className="md:hidden text-center text-[3rem] tracking-tighter font-bold leading-none mb-4">
+            <div>Refund</div>
+            <div>&</div>
+            <ImpactSpan text="Return Policy" />
           </h1>
 
           <Image
