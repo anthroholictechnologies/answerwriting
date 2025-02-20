@@ -5,7 +5,7 @@ import { ButtonPrimary } from "../react-common/buttons/button_primary";
 
 export const Section_1 = () => {
   return (
-    <section className="flex flex-col items-center mx-auto max-w-6xl xl:max-w-screen-xl py-16 md:py-24 px-6 md:px-12 lg:px-16">
+    <section className="flex flex-col items-center mx-auto max-w-6xl xl:max-w-screen-xl pt-8 pb-16 md:py-24 px-6 md:px-12 lg:px-16">
       {/* Text Section */}
       <div className="flex flex-col items-center text-center gap-6">
         <TypewriterHeading />
