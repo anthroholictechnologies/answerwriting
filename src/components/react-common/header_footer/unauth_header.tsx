@@ -32,10 +32,7 @@ const Header = () => {
           />
         </div>
         <div className="flex-1 gap-1 flex lg:hidden items-center justify-end px-4 md:px-12">
-          <ButtonPrimary size="sm">
-            {" "}
-            💎 Get Pro{" "}
-          </ButtonPrimary>
+          <ButtonPrimary size="sm"> 💎 Get Pro </ButtonPrimary>
         </div>
       </nav>
     </header>

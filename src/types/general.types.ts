@@ -40,6 +40,7 @@ export enum ApiRoutePaths {
 
   //pricing
   PAGE_PRICING = "/pricing",
+  PAGE_UPGRADE = "/upgrade",
 }
 
 export enum ErrorCodes {
@@ -78,3 +79,5 @@ export interface AuthenticatedUser {
   image: string | null;
   password: string | null;
 }
+
+export type PlanType = "free" | "pro";
