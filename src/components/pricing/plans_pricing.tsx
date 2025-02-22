@@ -44,7 +44,7 @@ const plans: Plan[] = [
 const PlanCard: React.FC<{ plan: Plan }> = ({ plan }) => {
   return (
     <div
-      className={`w-full py-4 border rounded-xl transition-all duration-300 hover:border-primary-dark 
+      className={`w-full mx-auto py-4 sm:py-0 border rounded-xl transition-all duration-300 hover:border-primary-dark 
       ${plan.highlight ? "bg-blue-50/30 border-blue-200" : "bg-white border-gray-200"}`}
     >
       <div className="flex flex-col md:flex-row md:items-center">

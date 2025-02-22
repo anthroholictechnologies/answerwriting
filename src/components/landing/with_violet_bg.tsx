@@ -2,6 +2,8 @@ import { SecondarySection } from "answerwriting/components/react-common/sections
 import { ButtonSecondary } from "../react-common/buttons/button_secondary";
 import { ButtonPrimary } from "../react-common/buttons/button_primary";
 import { CommonButton } from "../react-common/buttons/button_upgrade";
+import Link from "next/link";
+import { ApiRoutePaths } from "answerwriting/types/general.types";
 
 export const Section_2 = () => {
   return (
@@ -15,8 +17,12 @@ export const Section_2 = () => {
       imageSrc="/homepage-sectiontwo.webp"
       ctaButtons={
         <>
-          <ButtonPrimary> Start evaluating now</ButtonPrimary>
-          <ButtonSecondary> Eliminate waiting time</ButtonSecondary>
+          <Link href={ApiRoutePaths.PAGE_DASHBOARD_TOOLS_EVALUATOR} passHref>
+            <ButtonPrimary> Start evaluating now</ButtonPrimary>
+          </Link>
+          <Link href={ApiRoutePaths.PAGE_PRICING}>
+            <ButtonSecondary> Eliminate waiting time</ButtonSecondary>
+          </Link>
         </>
       }
     />

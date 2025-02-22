@@ -29,10 +29,10 @@ type PricingCardProps = {
 };
 
 const freeFeatures: string[] = [
-  "Evaluate up to 2 answers per month (Free Plan)",
+  "Evaluate up to 2 answers per month",
   "Get instant AI-powered feedback",
   "Improve your answers for higher scores",
-  "Save and review answers for 1 day (Free Plan)",
+  "Save and review answers for 1 day",
   "Upgrade for unlimited answer evaluations",
   "Access a free word counter for better writing",
 ];

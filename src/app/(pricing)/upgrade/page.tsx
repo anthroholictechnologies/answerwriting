@@ -14,10 +14,11 @@ export default async function Upgrade(): Promise<React.ReactNode> {
         <div className="flex justify-center w-full xl:w-1/2">
           <PricingCards userCurrentPlan="free" isLoggedIn={!!session} />
         </div>
-
         <div className="w-full space-y-6 xl:w-1/2">
           <PricingPlans />
-          <GuaranteeCard />
+          <div className="hidden xl:block">
+            <GuaranteeCard />
+          </div>
         </div>
       </div>
       <Footer />

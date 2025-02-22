@@ -33,7 +33,7 @@ export const PricingToolTip = ({ text }: { text: string }) => {
           <PopoverTrigger asChild>
             <Info className="w-4 h-4 cursor-pointer text-muted-foreground" />
           </PopoverTrigger>
-          <PopoverContent className="max-w-xs text-sm p-4 bg-primary-dark text-white shadow-md border border-border">
+          <PopoverContent className="max-w-xs text-sm p-4 shadow-md border border-border">
             <p>{text}</p>
           </PopoverContent>
         </Popover>
