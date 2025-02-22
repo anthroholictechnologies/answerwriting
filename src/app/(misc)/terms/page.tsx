@@ -4,6 +4,7 @@ import Header from "answerwriting/components/react-common/header_footer/unauth_h
 import ImpactSpan from "answerwriting/components/react-common/impact-span";
 import Link from "next/link";
 import Image from "next/image";
+import { auth } from "answerwriting/auth";
 
 const PPHeading = ({ heading }: { heading: string }) => {
   return (
@@ -12,9 +13,10 @@ const PPHeading = ({ heading }: { heading: string }) => {
 };
 
 export default async function TermsOfServices() {
+  const session = await auth();
   return (
     <div className="h-screen w-screen">
-      <Header />
+      <Header isLoggedIn={!!session} />
       <Container>
         <>
           <h1 className="text-center text-[3rem] leading-none tracking-tighter font-bold xl:mb-6 mb-2">

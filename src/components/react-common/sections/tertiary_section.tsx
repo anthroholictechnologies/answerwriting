@@ -1,13 +1,11 @@
 import ImpactSpan from "answerwriting/components/react-common/impact-span";
-import { ButtonPrimary } from "answerwriting/components/react-common/buttons/button_primary";
+import { CommonButton } from "../buttons/button_upgrade";
 
 interface TertiarySectionProps {
   title: string;
   highlightText: string;
   description: string;
   isLoggedIn: boolean;
-  loggedInButtonText: string;
-  loggedOutButtonText: string;
   gradientBackground?: boolean;
 }
 
@@ -16,8 +14,6 @@ export const TertiarySection = ({
   highlightText,
   description,
   isLoggedIn,
-  loggedInButtonText,
-  loggedOutButtonText,
   gradientBackground = false,
 }: TertiarySectionProps) => {
   return (
@@ -46,9 +42,11 @@ export const TertiarySection = ({
         </span>
       </h2>
       <p className="text-lg max-w-4xl lg:text-xl">{description}</p>
-      <ButtonPrimary>
-        {isLoggedIn ? loggedInButtonText : loggedOutButtonText}
-      </ButtonPrimary>
+      <CommonButton
+        isLoggedIn={isLoggedIn}
+        isProUser={false}
+        variant="primary"
+      />
     </section>
   );
 };

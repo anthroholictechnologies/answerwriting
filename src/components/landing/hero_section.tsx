@@ -2,7 +2,6 @@ import Link from "next/link";
 import { TypewriterHeading } from "./hero_heading";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
 import { ButtonPrimary } from "../react-common/buttons/button_primary";
-
 export const Section_1 = () => {
   return (
     <section className="flex flex-col items-center mx-auto max-w-6xl xl:max-w-screen-xl pt-8 pb-16 md:py-24 px-6 md:px-12 lg:px-16">
@@ -18,7 +17,7 @@ export const Section_1 = () => {
         <div className="flex flex-col sm:flex-row gap-4">
           <ButtonPrimary styles="lg:px-12">
             <Link href={ApiRoutePaths.PAGE_DASHBOARD_TOOLS_EVALUATOR}>
-              📝 Free Evaluation
+              <div className="flex items-center gap-1">Free Evaluation</div>
             </Link>
           </ButtonPrimary>
         </div>

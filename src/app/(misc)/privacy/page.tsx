@@ -1,3 +1,4 @@
+import { auth } from "answerwriting/auth";
 import Container from "answerwriting/components/misc/misc_container";
 import Footer from "answerwriting/components/react-common/header_footer/unauth_footer";
 import Header from "answerwriting/components/react-common/header_footer/unauth_header";
@@ -12,9 +13,10 @@ const PPHeading = ({ heading }: { heading: string }) => {
 };
 
 export default async function PrivacyPolicy() {
+  const session = await auth();
   return (
     <div className="h-screen w-screen">
-      <Header />
+      <Header isLoggedIn={!!session} />
       <Container>
         <>
           <h1 className="text-center text-[3rem] tracking-tighter font-bold leading-none">

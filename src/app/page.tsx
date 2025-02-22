@@ -18,7 +18,7 @@ export default async function Home() {
   const user = session?.user;
   return (
     <div className="h-screen w-screen">
-      <Header />
+      <Header isLoggedIn={!!user} />
       <Section_1 />
       <Section_2 />
       <Section_3 isLoggedIn={!!user} />

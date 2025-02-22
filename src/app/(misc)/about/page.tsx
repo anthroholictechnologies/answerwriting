@@ -1,13 +1,15 @@
+import { auth } from "answerwriting/auth";
 import Container from "answerwriting/components/misc/misc_container";
 import Footer from "answerwriting/components/react-common/header_footer/unauth_footer";
 import Header from "answerwriting/components/react-common/header_footer/unauth_header";
 import ImpactSpan from "answerwriting/components/react-common/impact-span";
 import Image from "next/image";
 
-export default function AboutUs() {
+export default async function AboutUs() {
+  const session = await auth();
   return (
     <div className="h-screen w-screen overflow-auto">
-      <Header />
+      <Header isLoggedIn={!!session} />
       <Container>
         <>
           <h1 className="text-center text-[3rem] tracking-tighter font-bold">

@@ -1,6 +1,7 @@
 import { SecondarySection } from "answerwriting/components/react-common/sections/secondary_section";
 import { ButtonSecondary } from "../react-common/buttons/button_secondary";
 import { ButtonPrimary } from "../react-common/buttons/button_primary";
+import { CommonButton } from "../react-common/buttons/button_upgrade";
 
 export const Section_2 = () => {
   return (
@@ -14,8 +15,8 @@ export const Section_2 = () => {
       imageSrc="/homepage-sectiontwo.webp"
       ctaButtons={
         <>
-          <ButtonPrimary>🚀 Start evaluating now</ButtonPrimary>
-          <ButtonSecondary>🔥 Eliminate waiting time</ButtonSecondary>
+          <ButtonPrimary> Start evaluating now</ButtonPrimary>
+          <ButtonSecondary> Eliminate waiting time</ButtonSecondary>
         </>
       }
     />
@@ -34,13 +35,11 @@ export const Section_5 = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       imageSrc="/homepage_sectionfive.webp"
       transparentImage
       ctaButtons={
-        <>
-          {isLoggedIn ? (
-            <ButtonSecondary>💎 Upgrade to Pro</ButtonSecondary>
-          ) : (
-            <ButtonSecondary>{`✍🏻 Sign up now. It's free`}</ButtonSecondary>
-          )}
-        </>
+        <CommonButton
+          variant="secondary"
+          isProUser={false}
+          isLoggedIn={isLoggedIn}
+        />
       }
       reverseLayout // Flip layout for variation
     />

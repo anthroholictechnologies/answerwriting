@@ -5,6 +5,7 @@ import ImpactSpan from "answerwriting/components/react-common/impact-span";
 import Link from "next/link";
 import Image from "next/image";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
+import { auth } from "answerwriting/auth";
 
 const RPHeading = ({ heading }: { heading: string }) => {
   return (
@@ -12,10 +13,11 @@ const RPHeading = ({ heading }: { heading: string }) => {
   );
 };
 
-export default function RefundPolicy() {
+export default async function RefundPolicy() {
+  const session = await auth();
   return (
     <div className="h-screen w-screen">
-      <Header />
+      <Header isLoggedIn={!!session} />
       <Container>
         <>
           <h1 className="hidden md:block text-center text-[3rem] tracking-tighter font-bold leading-none mb-4">

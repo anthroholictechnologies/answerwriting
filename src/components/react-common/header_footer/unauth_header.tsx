@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
-import { ButtonPrimary } from "../buttons/button_primary";
-const Header = () => {
+import { CommonButton } from "../buttons/button_upgrade";
+const Header = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   return (
     <header>
       <nav className="flex w-full lg:justify-around py-4 bg-gray-50 lg:px-24">
@@ -18,11 +18,16 @@ const Header = () => {
           </div>
         </Link>
         <div className="items-center justify-end gap-4 flex-1 hidden lg:flex">
-          <ButtonPrimary styles="px-10"> 💎 Upgrade to Pro </ButtonPrimary>
+          <CommonButton
+            isProUser={false}
+            isLoggedIn={isLoggedIn}
+            variant="primary"
+            customSignUpMessage="Sign Up"
+          />
         </div>
 
         {/* for phone */}
-        <div className="flex-1 lg:hidden hover:cursor-pointer px-4 md:px-12">
+        <div className="flex-1 lg:hidden hover:cursor-pointer px-4 lg:px-12">
           <Image
             src="/logo_1.webp"
             alt="answerwriting logo"
@@ -31,8 +36,15 @@ const Header = () => {
             className="lg:hidden h-[60px] w-[60px]"
           />
         </div>
-        <div className="flex-1 gap-1 flex lg:hidden items-center justify-end px-4 md:px-12">
-          <ButtonPrimary size="sm"> 💎 Get Pro </ButtonPrimary>
+        <div className="flex lg:hidden items-center px-4">
+          <CommonButton
+            isProUser={false}
+            isLoggedIn={isLoggedIn}
+            variant="primary"
+            customEvaluationMessage="Evaluate"
+            customSignUpMessage="Sign Up"
+            customUpgradeMessage="Upgrade"
+          />
         </div>
       </nav>
     </header>
