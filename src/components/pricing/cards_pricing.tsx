@@ -7,13 +7,15 @@ import {
 } from "answerwriting/components/ui/card";
 import { Check, RocketIcon, X } from "lucide-react";
 import { PricingToolTip } from "answerwriting/components/pricing/tooltip_pricing";
-import { CommonButton } from "../react-common/buttons/button_upgrade";
 import { Plans, PlanType } from "answerwriting/types/payment.types";
 import { maxBy } from "lodash";
 import {
   convertPaisaToRupee,
   getDurationMonths,
 } from "answerwriting/lib/utils";
+import { ButtonPrimary } from "../react-common/buttons/button_primary";
+import { ApiRoutePaths } from "answerwriting/types/general.types";
+import Link from "next/link";
 
 type Feature = {
   d: string;
@@ -75,7 +77,6 @@ const PricingCard: React.FC<PricingCardProps> = ({
   featHeading,
   showUpgradeButton = false,
   lucideIcon,
-  isLoggedIn,
   pricingPage = false,
 }) => {
   return (
@@ -113,11 +114,14 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
       {pricingPage && showUpgradeButton && (
         <div className="flex flex-col items-center gap-4 px-4 sm:px-6">
-          <CommonButton
-            isProUser={false}
-            variant="primary"
-            isLoggedIn={isLoggedIn}
-          />
+           <Link href={ApiRoutePaths.PAGE_UPGRADE}>
+            <ButtonPrimary>
+              <div className="flex gap-2 items-center">
+                <RocketIcon className="h-6 w-6" />
+                Upgrade to Pro
+              </div>
+            </ButtonPrimary>
+          </Link>
           <div className="flex items-center justify-center gap-1 text-sm text-center">
             <span>3 days money back guarantee</span>
             <PricingToolTip text="Try pro for 3 days. If you're not happy, we'll give you a full refund." />
