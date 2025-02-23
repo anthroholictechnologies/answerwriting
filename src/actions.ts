@@ -7,6 +7,8 @@ import { ApiResponse, ApiRoutePaths, ErrorCodes } from "./types/general.types";
 import { ContactInput } from "./validations/general.schema";
 import { Resend } from "resend";
 import ContactEmail from "../emails/contactus.email.template";
+import { prisma } from "./prisma";
+import { Duration, Plans, PlanType } from "./types/payment.types";
 
 export const logout = async () => {
   return signOut({ redirectTo: ApiRoutePaths.PAGE_LOGIN });
@@ -91,4 +93,28 @@ export const SendContactUsEmail = async (data: ContactInput) => {
       message: "Error sending contact us email",
     };
   }
+};
+
+export const getPlans = async (): Promise<Plans[]> => {
+  const plans = await prisma.subscriptionPlan.findMany({
+    include: {
+      billingOptions: true,
+    },
+  });
+
+  return plans.map((plan) => {
+    return {
+      id: plan.id,
+      name: plan.name as PlanType,
+      billingOptions: plan.billingOptions.map((bo) => {
+        return {
+          id: bo.id,
+          planId: bo.planId,
+          duration: bo.duration as Duration,
+          totalPrice: bo.totalPrice,
+          discountPercentage: bo.discountPercentage,
+        };
+      }),
+    };
+  });
 };

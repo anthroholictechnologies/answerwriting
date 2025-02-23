@@ -80,4 +80,4 @@ export interface AuthenticatedUser {
   password: string | null;
 }
 
-export type PlanType = "free" | "pro";
+

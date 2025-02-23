@@ -1,4 +1,5 @@
 import { Marks, Words } from "answerwriting/types/ai.types";
+import { Duration } from "answerwriting/types/payment.types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -27,5 +28,22 @@ export const getWordsFromMarks = (marks: Marks): Words => {
       return Words.TWO_FIFTY;
     case Marks.TWENTY:
       return Words.THREE_HUNDERED;
+  }
+};
+
+export const convertPaisaToRupee = (paisa: number): number => {
+  return paisa / 100;
+};
+
+export const getDurationMonths = (duration: Duration): number => {
+  switch (duration) {
+    case Duration.ANNUAL:
+      return 12;
+    case Duration.HALF_YEARLY:
+      return 6;
+    case Duration.QUATERLY:
+      return 3;
+    case Duration.MONTHLY:
+      return 1;
   }
 };

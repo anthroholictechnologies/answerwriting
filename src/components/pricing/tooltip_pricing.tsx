@@ -18,7 +18,7 @@ export const PricingToolTip = ({ text }: { text: string }) => {
       {/* ✅ Wrap Tooltips in TooltipProvider */}
       {/* Tooltip for larger screens */}
       <div className="hidden lg:block">
-        <Tooltip>
+        <Tooltip delayDuration={0}>
           <TooltipTrigger asChild>
             <Info className="w-4 h-4 cursor-pointer text-muted-foreground" />
           </TooltipTrigger>

@@ -1,6 +1,12 @@
 -- CreateEnum
 CREATE TYPE "exams" AS ENUM ('GS1', 'GS2', 'GS3', 'GS4');
 
+-- CreateEnum
+CREATE TYPE "plan_type" AS ENUM ('FREE', 'PRO');
+
+-- CreateEnum
+CREATE TYPE "duration" AS ENUM ('ANNUAL', 'HALF_YEARLY', 'QUATERLY', 'MONTHLY');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
@@ -139,6 +145,29 @@ CREATE TABLE "answers" (
     CONSTRAINT "answers_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "subscription_plan" (
+    "id" TEXT NOT NULL,
+    "name" "plan_type" NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "subscription_plan_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "billing_option" (
+    "id" TEXT NOT NULL,
+    "plan_id" TEXT NOT NULL,
+    "duration" "duration" NOT NULL,
+    "discount_percentage" INTEGER NOT NULL,
+    "total_price" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "billing_option_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
@@ -180,3 +209,6 @@ ALTER TABLE "subject_criteria" ADD CONSTRAINT "subject_criteria_subject_id_fkey"
 
 -- AddForeignKey
 ALTER TABLE "answers" ADD CONSTRAINT "answers_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "billing_option" ADD CONSTRAINT "billing_option_plan_id_fkey" FOREIGN KEY ("plan_id") REFERENCES "subscription_plan"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

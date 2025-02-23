@@ -7,9 +7,12 @@ import { ApiRoutePaths } from "answerwriting/types/general.types";
 import PricingCards from "answerwriting/components/pricing/cards_pricing";
 import GuaranteeCard from "answerwriting/components/pricing/gurantee";
 import { auth } from "answerwriting/auth";
+import { getPlans } from "answerwriting/actions";
+import { PlanType } from "answerwriting/types/payment.types";
 
 export default async function PricingPage(): Promise<React.ReactNode> {
   const session = await auth();
+  const plans = await getPlans()
   return (
     <>
       <Header isLoggedIn={!!session} />
@@ -50,9 +53,10 @@ export default async function PricingPage(): Promise<React.ReactNode> {
           </div>
         </div>
         <PricingCards
-          userCurrentPlan="free"
+          userCurrentPlan={PlanType.FREE}
           isLoggedIn={!!session}
           pricingPage
+          plans={plans}
         />
         <div>
           <GuaranteeCard />

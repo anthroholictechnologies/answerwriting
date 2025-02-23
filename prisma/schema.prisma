@@ -180,3 +180,43 @@ model Answer {
 
   @@map("answers")
 }
+
+enum PlanType {
+  FREE
+  PRO
+
+  @@map("plan_type")
+}
+
+enum Duration {
+  ANNUAL
+  HALF_YEARLY
+  QUATERLY
+  MONTHLY
+
+  @@map("duration")
+}
+
+model SubscriptionPlan {
+  id        String   @id @default(uuid())
+  name      PlanType
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  billingOptions BillingOption[]
+
+  @@map("subscription_plan")
+}
+
+model BillingOption {
+  id                 String           @id @default(uuid())
+  planId             String           @map("plan_id")
+  plan               SubscriptionPlan @relation(fields: [planId], references: [id])
+  duration           Duration         @map("duration")
+  discountPercentage Int              @map("discount_percentage")
+  totalPrice         Int              @map("total_price")
+  createdAt          DateTime         @default(now()) @map("created_at")
+  updatedAt          DateTime         @updatedAt @map("updated_at")
+
+  @@map("billing_option")
+}
