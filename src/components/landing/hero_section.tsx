@@ -2,6 +2,7 @@ import Link from "next/link";
 import { TypewriterHeading } from "./hero_heading";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
 import { ButtonPrimary } from "../react-common/buttons/button_primary";
+import Image from "next/image";
 export const Section_1 = () => {
   return (
     <section className="flex flex-col items-center mx-auto max-w-6xl xl:max-w-screen-xl pt-8 pb-16 md:py-24 px-6 md:px-12 lg:px-16">
@@ -26,7 +27,7 @@ export const Section_1 = () => {
       {/* Video Section */}
       <div className="flex justify-center w-full mt-12">
         <div className="relative w-full max-w-5xl aspect-video border-8 border-primary drop-shadow-[0_0_12px_rgba(45,128,246,0.8)] rounded-3xl overflow-hidden shadow-lg">
-          <iframe
+          {/* <iframe
             className="w-full h-full"
             src="https://www.youtube.com/embed/29LnjZcAanY?si=XAVzwMy1v3esjOV1"
             title="YouTube video player"
@@ -34,7 +35,14 @@ export const Section_1 = () => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
-          ></iframe>
+          ></iframe> */}
+          <Image
+            src="/answer-writing.webp"
+            alt="Auth Image"
+            height={600}
+            width={600}
+            className="object-contain w-full h-full"
+          />
         </div>
       </div>
     </section>
