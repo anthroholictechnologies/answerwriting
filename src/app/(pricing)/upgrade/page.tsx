@@ -27,9 +27,7 @@ export default async function Upgrade(): Promise<React.ReactNode> {
               plans.find((p) => p.name === PlanType.PRO)!.billingOptions
             }
           />
-          <div className="hidden xl:block">
-            <GuaranteeCard />
-          </div>
+          
         </div>
       </div>
       <Footer />

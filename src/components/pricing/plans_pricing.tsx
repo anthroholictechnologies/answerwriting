@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { ButtonTertiary } from "../react-common/buttons/button_tertiary";
 import { BillingOptions, Duration } from "answerwriting/types/payment.types";
 import { maxBy, orderBy } from "lodash";
@@ -10,8 +10,9 @@ import {
 import { useAsyncFn } from "react-use";
 import { upgradeToPro } from "answerwriting/lib/utils/api/payments.api";
 import { ButtonPrimary } from "../react-common/buttons/button_primary";
-import Spinner from "../react-common/spinner";
-import { PaymentFrame } from "./payment_frame";
+import { useRouter } from "next/navigation";
+import { RocketIcon } from "lucide-react";
+import GuaranteeCard from "./gurantee";
 
 function formatduration(duration: Duration) {
   switch (duration) {
@@ -108,7 +109,7 @@ const PricingPlans = ({
 }: {
   billingOptions: BillingOptions[];
 }) => {
-  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
+  const router = useRouter();
 
   const [{ loading: isLoading }, initiatePayment] = useAsyncFn(
     async (id: string) => {
@@ -122,7 +123,7 @@ const PricingPlans = ({
           response.success &&
           response.data?.data?.instrumentResponse?.redirectInfo?.url
         ) {
-          setPaymentUrl(response.data.data.instrumentResponse.redirectInfo.url);
+          router.push(response.data.data.instrumentResponse.redirectInfo.url);
         } else {
           throw new Error("Failed to get payment URL");
         }
@@ -130,7 +131,7 @@ const PricingPlans = ({
         console.error("Payment initiation failed:", error);
         // Handle error appropriately
       }
-    },
+    }
   );
 
   const onSelect = (id: string) => {
@@ -139,40 +140,38 @@ const PricingPlans = ({
 
   const bestPlan = maxBy(billingOptions, (bo) => bo.discountPercentage);
 
-  if (paymentUrl) {
+  if (isLoading) {
     return (
-      <PaymentFrame
-        redirectUrl={paymentUrl}
-        onBack={() => setPaymentUrl(null)}
-      />
+      <div className="flex flex-col gap-6 items-center justify-center w-full h-full">
+        <div className="animate-pulse">
+          <RocketIcon className="text-primary-dark mx-auto" />
+          <div className="text-2xl text-primary-dark">
+            Initiating Payment...{" "}
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className="relative">
-      {isLoading && (
-        <div className="absolute inset-0 z-20 flex items-start md:items-center justify-center gap-4 bg-white/50 backdrop-blur-md">
-          <div>
-            <Spinner />
-          </div>
-        </div>
-      )}
-      <div className="flex flex-col items-center w-full max-w-4xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-gray-800 mb-8">
-          Select your plan
-        </h2>
-        <div className="w-full space-y-4">
-          {orderBy(billingOptions, (bo) => bo.discountPercentage, ["desc"]).map(
-            (bo, index) => (
-              <BillingOptionCard
-                key={index}
-                bo={bo}
-                bestPlan={bestPlan?.id === bo.id ? "Best Value" : ""}
-                onSelect={onSelect}
-              />
-            ),
-          )}
-        </div>
+    <div className="flex flex-col items-center w-full max-w-4xl mx-auto px-4">
+      <h2 className="text-3xl font-bold text-secondary-dark mb-8">
+        Select your plan
+      </h2>
+      <div className="w-full space-y-4">
+        {orderBy(billingOptions, (bo) => bo.discountPercentage, ["desc"]).map(
+          (bo, index) => (
+            <BillingOptionCard
+              key={index}
+              bo={bo}
+              bestPlan={bestPlan?.id === bo.id ? "Best Value" : ""}
+              onSelect={onSelect}
+            />
+          )
+        )}
+      </div>
+      <div className="hidden xl:block">
+        <GuaranteeCard />
       </div>
     </div>
   );
