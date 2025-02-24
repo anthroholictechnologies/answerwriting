@@ -1,6 +1,7 @@
 "use client";
+
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import {
   Card,
   CardDescription,
@@ -13,25 +14,19 @@ import Link from "next/link";
 import { ButtonPrimary } from "answerwriting/components/react-common/buttons/button_primary";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
 
-export default function PaymentStatus() {
+function PaymentStatusContent() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState("pending");
 
-  // Set payment status based on URL query parameter
   useEffect(() => {
     const statusParam = searchParams.get("status") || "pending";
     setStatus(statusParam.toLowerCase());
-
-    // You could fetch real order details here
-    // const orderId = searchParams.get('orderId');
-    // fetchOrderDetails(orderId).then(data => setDetails(data));
   }, [searchParams]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          {/* Dynamic Status Icon */}
           <div
             className={`mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full ${
               status === "success"
@@ -50,7 +45,6 @@ export default function PaymentStatus() {
             )}
           </div>
 
-          {/* Dynamic Title */}
           <CardTitle className="text-2xl font-bold">
             {status === "success"
               ? "Payment Successful!"
@@ -59,10 +53,9 @@ export default function PaymentStatus() {
                 : "Payment Processing"}
           </CardTitle>
 
-          {/* Dynamic Description */}
           <CardDescription className="text-base">
             {status === "success"
-              ? `Your payment has been processed successfully. We've sent a receipt to your email address`
+              ? "Your payment has been processed successfully. We've sent a receipt to your email address."
               : status === "failure"
                 ? "We were unable to process your payment. Please check the details below and try again."
                 : "Your payment is being processed. This may take a moment."}
@@ -70,18 +63,15 @@ export default function PaymentStatus() {
         </CardHeader>
 
         <CardFooter className="flex flex-col space-y-2">
-          {/* Dynamic Buttons Based on Status */}
           {status === "success" && (
             <Link href={ApiRoutePaths.PAGE_DASHBOARD}>
-              {" "}
-              <ButtonPrimary>Back to Dashboard</ButtonPrimary>{" "}
+              <ButtonPrimary>Back to Dashboard</ButtonPrimary>
             </Link>
           )}
 
           {status === "pending" && (
             <Link href={ApiRoutePaths.PAGE_DASHBOARD}>
-              {" "}
-              <ButtonPrimary>Back to Dashboard</ButtonPrimary>{" "}
+              <ButtonPrimary>Back to Dashboard</ButtonPrimary>
             </Link>
           )}
 
@@ -91,7 +81,6 @@ export default function PaymentStatus() {
             </Link>
           )}
 
-          {/* Support Link for Failure & Pending */}
           {(status === "failure" || status === "pending") && (
             <p className="text-xs text-center mt-4 text-gray-500">
               Need help?{" "}
@@ -106,5 +95,13 @@ export default function PaymentStatus() {
         </CardFooter>
       </Card>
     </div>
+  );
+}
+
+export default function PaymentStatus() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PaymentStatusContent />
+    </Suspense>
   );
 }

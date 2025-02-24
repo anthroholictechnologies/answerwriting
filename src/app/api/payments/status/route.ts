@@ -85,11 +85,11 @@ export async function POST(req: NextRequest) {
       //   );
 
       // case "CHARGED_BACK":
-        // console.log("🔄 Chargeback initiated. Redirecting...");
-        // return NextResponse.redirect(
-        //   `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_CHARGEBACK}`,
-        //   { status: 301 }
-        // );
+      // console.log("🔄 Chargeback initiated. Redirecting...");
+      // return NextResponse.redirect(
+      //   `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_CHARGEBACK}`,
+      //   { status: 301 }
+      // );
 
       default:
         console.log("❓ Unknown state:", paymentState);
@@ -101,6 +101,9 @@ export async function POST(req: NextRequest) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error(err);
-    return NextResponse.json({ success: false, errorCode: ErrorCodes.INTERNAL_SERVER_ERROR });
+    return NextResponse.json({
+      success: false,
+      errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,
+    });
   }
 }
