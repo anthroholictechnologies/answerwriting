@@ -2,7 +2,6 @@ import Footer from "answerwriting/components/react-common/header_footer/unauth_f
 import Header from "answerwriting/components/react-common/header_footer/unauth_header";
 import PricingCards from "answerwriting/components/pricing/cards_pricing";
 import PricingPlans from "answerwriting/components/pricing/plans_pricing";
-import GuaranteeCard from "answerwriting/components/pricing/gurantee";
 import { auth } from "answerwriting/auth";
 import { getPlans } from "answerwriting/actions";
 import { PlanType } from "answerwriting/types/payment.types";
