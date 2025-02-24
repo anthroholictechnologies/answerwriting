@@ -1,5 +1,5 @@
-import React from "react";
-import { ButtonPrimary } from "../react-common/buttons/button_primary";
+"use client";
+import React, { useState } from "react";
 import { ButtonTertiary } from "../react-common/buttons/button_tertiary";
 import { BillingOptions, Duration } from "answerwriting/types/payment.types";
 import { maxBy, orderBy } from "lodash";
@@ -7,28 +7,30 @@ import {
   convertPaisaToRupee,
   getDurationMonths,
 } from "answerwriting/lib/utils";
+import { useAsyncFn } from "react-use";
+import { upgradeToPro } from "answerwriting/lib/utils/api/payments.api";
+import { ButtonPrimary } from "../react-common/buttons/button_primary";
+import Spinner from "../react-common/spinner";
+import { PaymentFrame } from "./payment_frame";
 
 function formatduration(duration: Duration) {
   switch (duration) {
     case Duration.ANNUAL:
       return "Annual";
-      break;
     case Duration.HALF_YEARLY:
       return "Half-Yearly";
-      break;
     case Duration.QUATERLY:
       return "Quaterly";
-      break;
     case Duration.MONTHLY:
       return "Monthly";
-      break;
   }
 }
 
 const BillingOptionCard: React.FC<{
   bo: BillingOptions;
   bestPlan: string;
-}> = ({ bo, bestPlan }) => {
+  onSelect: (id: string) => void;
+}> = ({ bo, bestPlan, onSelect }) => {
   return (
     <div
       className={`w-full mx-auto py-4 sm:py-0 border rounded-xl transition-all duration-300 hover:border-primary-dark 
@@ -78,9 +80,21 @@ const BillingOptionCard: React.FC<{
 
           <div className="w-1/4 lg:w-auto">
             {bestPlan ? (
-              <ButtonPrimary>Select</ButtonPrimary>
+              <ButtonPrimary
+                onClick={() => {
+                  onSelect(bo.id);
+                }}
+              >
+                Select
+              </ButtonPrimary>
             ) : (
-              <ButtonTertiary>Select</ButtonTertiary>
+              <ButtonTertiary
+                onClick={() => {
+                  onSelect(bo.id);
+                }}
+              >
+                Select
+              </ButtonTertiary>
             )}
           </div>
         </div>
@@ -94,22 +108,71 @@ const PricingPlans = ({
 }: {
   billingOptions: BillingOptions[];
 }) => {
+  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
+
+  const [{ loading: isLoading }, initiatePayment] = useAsyncFn(
+    async (id: string) => {
+      try {
+        const response = (await upgradeToPro({
+          billingOptionId: id,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        })) as any;
+
+        if (
+          response.success &&
+          response.data?.data?.instrumentResponse?.redirectInfo?.url
+        ) {
+          setPaymentUrl(response.data.data.instrumentResponse.redirectInfo.url);
+        } else {
+          throw new Error("Failed to get payment URL");
+        }
+      } catch (error) {
+        console.error("Payment initiation failed:", error);
+        // Handle error appropriately
+      }
+    },
+  );
+
+  const onSelect = (id: string) => {
+    initiatePayment(id);
+  };
+
   const bestPlan = maxBy(billingOptions, (bo) => bo.discountPercentage);
+
+  if (paymentUrl) {
+    return (
+      <PaymentFrame
+        redirectUrl={paymentUrl}
+        onBack={() => setPaymentUrl(null)}
+      />
+    );
+  }
+
   return (
-    <div className="flex flex-col items-center w-full max-w-4xl mx-auto px-4">
-      <h2 className="text-3xl font-bold text-gray-800 mb-8">
-        Select your plan
-      </h2>
-      <div className="w-full space-y-4">
-        {orderBy(billingOptions, (bo) => bo.discountPercentage, ["desc"]).map(
-          (bo, index) => (
-            <BillingOptionCard
-              key={index}
-              bo={bo}
-              bestPlan={bestPlan?.id === bo.id ? "Best Value" : ""}
-            />
-          )
-        )}
+    <div className="relative">
+      {isLoading && (
+        <div className="absolute inset-0 z-20 flex items-start md:items-center justify-center gap-4 bg-white/50 backdrop-blur-md">
+          <div>
+            <Spinner />
+          </div>
+        </div>
+      )}
+      <div className="flex flex-col items-center w-full max-w-4xl mx-auto px-4">
+        <h2 className="text-3xl font-bold text-gray-800 mb-8">
+          Select your plan
+        </h2>
+        <div className="w-full space-y-4">
+          {orderBy(billingOptions, (bo) => bo.discountPercentage, ["desc"]).map(
+            (bo, index) => (
+              <BillingOptionCard
+                key={index}
+                bo={bo}
+                bestPlan={bestPlan?.id === bo.id ? "Best Value" : ""}
+                onSelect={onSelect}
+              />
+            ),
+          )}
+        </div>
       </div>
     </div>
   );

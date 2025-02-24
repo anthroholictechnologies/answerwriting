@@ -114,7 +114,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
       {pricingPage && showUpgradeButton && (
         <div className="flex flex-col items-center gap-4 px-4 sm:px-6">
-           <Link href={ApiRoutePaths.PAGE_UPGRADE}>
+          <Link href={ApiRoutePaths.PAGE_UPGRADE}>
             <ButtonPrimary>
               <div className="flex gap-2 items-center">
                 <RocketIcon className="h-6 w-6" />
@@ -181,22 +181,22 @@ const PricingCards = ({
 }) => {
   const bestBillingOptionFree = maxBy(
     plans.find((p) => p.name === PlanType.FREE)?.billingOptions ?? [],
-    (bo) => bo.discountPercentage
+    (bo) => bo.discountPercentage,
   );
   const bestBillingOptionPro = maxBy(
     plans.find((p) => p.name === PlanType.PRO)?.billingOptions ?? [],
-    (bo) => bo.discountPercentage
+    (bo) => bo.discountPercentage,
   );
   const priceForFree = bestBillingOptionFree
     ? convertPaisaToRupee(
         bestBillingOptionFree.totalPrice /
-          getDurationMonths(bestBillingOptionFree.duration)
+          getDurationMonths(bestBillingOptionFree.duration),
       )
     : 0;
   const priceForPro = bestBillingOptionPro
     ? convertPaisaToRupee(
         bestBillingOptionPro.totalPrice /
-          getDurationMonths(bestBillingOptionPro.duration)
+          getDurationMonths(bestBillingOptionPro.duration),
       )
     : 0;
 

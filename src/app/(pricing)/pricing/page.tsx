@@ -12,7 +12,7 @@ import { PlanType } from "answerwriting/types/payment.types";
 
 export default async function PricingPage(): Promise<React.ReactNode> {
   const session = await auth();
-  const plans = await getPlans()
+  const plans = await getPlans();
   return (
     <>
       <Header isLoggedIn={!!session} />

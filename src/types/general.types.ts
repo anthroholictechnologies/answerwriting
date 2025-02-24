@@ -10,6 +10,9 @@ export enum ApiRoutePaths {
   // Tools
   EVALUATE_ANSWER = "/api/ai/evaluate-answer",
 
+  // Payment
+  UPGRADE_TO_PRO = "/api/payments/purchase",
+
   // Pages
   // misc
   PAGE_HOME = "/",
@@ -62,6 +65,8 @@ export enum ErrorCodes {
   ALREADY_REGISTERED_WITH_GOOGLE = "AlreadyRegisteredWithGoogle",
 
   UNAUTHORIZED = "Unauthorized",
+
+  INVALID_BILLING_OPTIONS = "InvalidBillingOption",
 }
 
 export interface ApiResponse<T = unknown> {
@@ -79,5 +84,3 @@ export interface AuthenticatedUser {
   image: string | null;
   password: string | null;
 }
-
-

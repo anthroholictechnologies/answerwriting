@@ -6,6 +6,7 @@ import {
   verifyEmailSchema,
 } from "answerwriting/validations/auth.schema";
 import { ZodSchema } from "zod";
+import { purchaseSchema } from "./validations/payment.schema";
 
 export const apiRoutesWhichRequiresAuthentication: ApiRoutePaths[] = [
   ApiRoutePaths.PAGE_DASHBOARD,
@@ -14,6 +15,9 @@ export const apiRoutesWhichRequiresAuthentication: ApiRoutePaths[] = [
 
   // API Routes
   ApiRoutePaths.EVALUATE_ANSWER,
+
+  // PAYMENT
+  ApiRoutePaths.UPGRADE_TO_PRO,
   // Add routes here that require authentication
   //...
 ];
@@ -22,6 +26,7 @@ export const apiRoutesWhichRequiresValidations: ApiRoutePaths[] = [
   ApiRoutePaths.VERIFY_EMAIL,
   ApiRoutePaths.FORGET_PASSWORD,
   ApiRoutePaths.RESET_PASSWORD,
+  ApiRoutePaths.UPGRADE_TO_PRO,
 ];
 
 export const apiRoutesSchemaMapping: Partial<{
@@ -31,6 +36,7 @@ export const apiRoutesSchemaMapping: Partial<{
   [ApiRoutePaths.VERIFY_EMAIL]: verifyEmailSchema,
   [ApiRoutePaths.FORGET_PASSWORD]: forgetPasswordSchema,
   [ApiRoutePaths.RESET_PASSWORD]: resetPasswordSchema,
+  [ApiRoutePaths.UPGRADE_TO_PRO]: purchaseSchema,
 };
 
 export const EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_MINUTES = 15;
@@ -53,3 +59,7 @@ export const MAX_IMAGES_ALLOWED = 5;
 
 // Asset paths
 export const LOGO_BANNER_URI = `https://res.cloudinary.com/dc36fxbog/image/upload/v1737793645/logo_dnei0q.png`;
+
+// Payment
+export const PHONE_PAY_PAYMENT_ENDPOINT = "/pg/v1/pay";
+export const CHECKSUM_ADDER = "###";

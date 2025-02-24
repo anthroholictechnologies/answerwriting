@@ -13,7 +13,7 @@ export default async function Upgrade(): Promise<React.ReactNode> {
   return (
     <>
       <Header isLoggedIn={!!session} />
-      <div className="flex flex-col-reverse mx-auto w-full xl:max-w-6xl xl:flex-row  gap-8 p-4 py-16">
+      <div className="flex flex-col-reverse mx-auto w-full xl:max-w-6xl xl:flex-row  gap-8 p-4 xl:py-16">
         <div className="flex justify-center w-full xl:w-1/2">
           <PricingCards
             userCurrentPlan={PlanType.FREE}

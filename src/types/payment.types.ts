@@ -22,3 +22,17 @@ export interface Plans {
   name: PlanType;
   billingOptions: BillingOptions[];
 }
+
+export interface PurchaseRequestPayload {
+  merchantId: string;
+  merchantTransactionId: string;
+  // Always in paisa
+  amount: number;
+  merchantUserId: string;
+  redirectUrl: string;
+  redirectMode: string;
+  callbackUrl: string;
+  paymentInstrument: {
+    type: "PAY_PAGE";
+  };
+}

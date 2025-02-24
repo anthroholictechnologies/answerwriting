@@ -5,15 +5,18 @@ export const ButtonPrimary = ({
   children,
   size,
   styles,
+  onClick,
 }: {
   children: React.ReactNode;
   styles?: string;
   size?: "lg" | "sm" | "default" | "icon" | null | undefined;
+  onClick?: () => void;
 }) => {
   return (
     <Button
       size={size ?? "lg"}
       className={cn("flex rounded-full text-md font-bold", styles ?? "")}
+      onClick={onClick}
     >
       {children}
     </Button>
