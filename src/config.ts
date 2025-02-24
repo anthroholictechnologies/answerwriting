@@ -17,7 +17,7 @@ export const apiRoutesWhichRequiresAuthentication: ApiRoutePaths[] = [
   ApiRoutePaths.EVALUATE_ANSWER,
 
   // PAYMENT
-  ApiRoutePaths.UPGRADE_TO_PRO,
+  ApiRoutePaths.PURCHASE,
   // Add routes here that require authentication
   //...
 ];
@@ -26,7 +26,7 @@ export const apiRoutesWhichRequiresValidations: ApiRoutePaths[] = [
   ApiRoutePaths.VERIFY_EMAIL,
   ApiRoutePaths.FORGET_PASSWORD,
   ApiRoutePaths.RESET_PASSWORD,
-  ApiRoutePaths.UPGRADE_TO_PRO,
+  ApiRoutePaths.PURCHASE,
 ];
 
 export const apiRoutesSchemaMapping: Partial<{
@@ -36,7 +36,7 @@ export const apiRoutesSchemaMapping: Partial<{
   [ApiRoutePaths.VERIFY_EMAIL]: verifyEmailSchema,
   [ApiRoutePaths.FORGET_PASSWORD]: forgetPasswordSchema,
   [ApiRoutePaths.RESET_PASSWORD]: resetPasswordSchema,
-  [ApiRoutePaths.UPGRADE_TO_PRO]: purchaseSchema,
+  [ApiRoutePaths.PURCHASE]: purchaseSchema,
 };
 
 export const EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_MINUTES = 15;
@@ -62,4 +62,5 @@ export const LOGO_BANNER_URI = `https://res.cloudinary.com/dc36fxbog/image/uploa
 
 // Payment
 export const PHONE_PAY_PAYMENT_ENDPOINT = "/pg/v1/pay";
+export const PHONE_PAY_PAYMENT_STATUS_ENDPOINT = "/pg/v1/status"
 export const CHECKSUM_ADDER = "###";

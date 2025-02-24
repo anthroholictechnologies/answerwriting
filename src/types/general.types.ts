@@ -11,7 +11,8 @@ export enum ApiRoutePaths {
   EVALUATE_ANSWER = "/api/ai/evaluate-answer",
 
   // Payment
-  UPGRADE_TO_PRO = "/api/payments/purchase",
+  PURCHASE = "/api/payments/purchase",
+  STATUS = "/api/payments/status",
 
   // Pages
   // misc
@@ -44,6 +45,7 @@ export enum ApiRoutePaths {
   //pricing
   PAGE_PRICING = "/pricing",
   PAGE_UPGRADE = "/upgrade",
+  PAGE_PAYMENT_STATUS = "/payment-status",
 }
 
 export enum ErrorCodes {

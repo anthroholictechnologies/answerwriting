@@ -1,5 +1,5 @@
 import { prisma } from "answerwriting/prisma";
-import { ErrorCodes } from "answerwriting/types/general.types";
+import { ApiRoutePaths, ErrorCodes } from "answerwriting/types/general.types";
 import { PurchaseRequestPayload } from "answerwriting/types/payment.types";
 import { PurchaseInput } from "answerwriting/validations/payment.schema";
 import { NextRequest, NextResponse } from "next/server";
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
           message: "Invalid billing option",
           errorCode: ErrorCodes.INVALID_BILLING_OPTIONS,
         },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
           message: "Missing required environment variables",
           errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,
         },
-        { status: 500 },
+        { status: 500 }
       );
     }
 
@@ -51,8 +51,8 @@ export async function POST(req: NextRequest) {
     const merchantTransactionId = `MT${Date.now()}`;
     const merchantUserId = `MUID${Date.now()}`;
     const amount = billingOption.totalPrice;
-    const redirectUrl = `${process.env.APP_BASE_URI}/api/status?id=${merchantTransactionId}`;
-    const callbackUrl = `${process.env.APP_BASE_URI}/api/status?id=${merchantTransactionId}`;
+    const redirectUrl = `${process.env.APP_BASE_URI}${ApiRoutePaths.STATUS}?id=${merchantTransactionId}`;
+    const callbackUrl = `${process.env.APP_BASE_URI}${ApiRoutePaths.STATUS}id=${merchantTransactionId}`;
 
     // Construct payload
     const payload: PurchaseRequestPayload = {
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
 
     // Convert payload to Base64
     const payloadBase64 = Buffer.from(JSON.stringify(payload)).toString(
-      "base64",
+      "base64"
     );
     const fullUrl = `${payloadBase64}${PHONE_PAY_PAYMENT_ENDPOINT}${saltKey}`;
     const sha256 = crypto.createHash("sha256").update(fullUrl).digest("hex");
@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
     const response = await axios.post(
       `${phonePayBaseURI}${PHONE_PAY_PAYMENT_ENDPOINT}`,
       { request: payloadBase64 },
-      { headers },
+      { headers }
     );
 
     return NextResponse.json({
@@ -110,7 +110,7 @@ export async function POST(req: NextRequest) {
         message: "Failed Purchase",
         success: false,
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
