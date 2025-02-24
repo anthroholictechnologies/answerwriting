@@ -23,7 +23,7 @@ const testimonials = [
       "I always found it difficult to get my answers evaluated on time, which slowed down my preparation. AnswerWriting changed that by providing instant, detailed feedback. Now, I can practice more efficiently and see real improvement in my writing.",
   },
   {
-    name: "Ashima Shuka",
+    name: "Ashima Shukla",
     role: "UPSC Teacher",
     image: "/testimonial_ashima.webp",
     fallback: "AS",

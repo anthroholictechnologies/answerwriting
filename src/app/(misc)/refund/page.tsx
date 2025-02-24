@@ -88,7 +88,7 @@ export default async function RefundPolicy() {
               </ul>
               <p>
                 Our team will review your request and notify you of approval or
-                rejection. If approved, the refund will be processed within 5-7
+                rejection. If approved, the refund will be credited within 5-7
                 business days via the original payment method.
               </p>
             </div>
