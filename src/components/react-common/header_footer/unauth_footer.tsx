@@ -1,5 +1,5 @@
 import React from "react";
-import { MailIcon } from "lucide-react";
+import { MailIcon, PhoneIcon } from "lucide-react";
 import Telegram from "../icons/telegram";
 import Youtube from "../icons/youtube";
 import Ig from "../icons/instagram";
@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
 import {
   COMPANY_EMAIL,
+  COMPANY_PHONE_NUMBER,
   FACEBOOK_URL,
   IG_URL,
   TELEGRAM_URL,
@@ -35,6 +36,7 @@ const footerData = {
   ],
   contact: {
     email: COMPANY_EMAIL,
+    phone: COMPANY_PHONE_NUMBER,
   },
   policies: [
     { label: "Privacy Policy", href: ApiRoutePaths.PAGE_PRIVACY_POLICY },
@@ -108,6 +110,15 @@ const Footer = () => {
                 href={`mailto:${footerData.contact.email}`}
               >
                 {footerData.contact.email}
+              </Link>
+            </div>
+            <div className="flex gap-2">
+              <PhoneIcon className="hover:text-primary-dark" />
+              <Link
+                className="flex text-md hover:text-primary-dark mb-2"
+                href={`tel:${footerData.contact.phone}`}
+              >
+                {footerData.contact.phone}
               </Link>
             </div>
           </div>

@@ -5,6 +5,7 @@ import ImpactSpan from "answerwriting/components/react-common/impact-span";
 import Link from "next/link";
 import Image from "next/image";
 import { auth } from "answerwriting/auth";
+import { COMPANY_EMAIL, COMPANY_PHONE_NUMBER } from "answerwriting/config";
 
 const PPHeading = ({ heading }: { heading: string }) => {
   return (
@@ -151,19 +152,24 @@ export default async function TermsOfServices() {
             <div>
               <PPHeading heading="8. Contact Information" />
               <p>For any queries regarding these Terms, reach out to:</p>
-              <ul className="list-disc pl-6">
+              <ul className="list-disc ml-5">
                 <li>
-                  <strong>Email:</strong>{" "}
-                  <Link
-                    href="mailto:info@answerwriting.com"
+                  <strong> Email: </strong>
+                  <a
+                    href={`mailto:${COMPANY_EMAIL}`}
                     className="text-primary-dark"
                   >
-                    info@answerwriting.com
-                  </Link>
+                    {COMPANY_EMAIL}
+                  </a>
                 </li>
-
                 <li>
-                  <strong>Phone:</strong> +91 7303290503
+                  <strong>Phone:</strong>
+                  <Link
+                    href={`tel:${COMPANY_PHONE_NUMBER}`}
+                    className="text-primary-dark"
+                  >
+                    {COMPANY_PHONE_NUMBER}
+                  </Link>
                 </li>
               </ul>
             </div>

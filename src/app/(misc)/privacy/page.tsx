@@ -3,7 +3,9 @@ import Container from "answerwriting/components/misc/misc_container";
 import Footer from "answerwriting/components/react-common/header_footer/unauth_footer";
 import Header from "answerwriting/components/react-common/header_footer/unauth_header";
 import ImpactSpan from "answerwriting/components/react-common/impact-span";
+import { COMPANY_EMAIL, COMPANY_PHONE_NUMBER } from "answerwriting/config";
 import Image from "next/image";
+import Link from "next/link";
 const PPHeading = ({ heading }: { heading: string }) => {
   return (
     <h2 className="text-[1.5rem] tracking-tighter font-bold mb-2">{heading}</h2>
@@ -127,14 +129,20 @@ export default async function PrivacyPolicy() {
                 <li>
                   <strong> Email: </strong>
                   <a
-                    href="mailto:info@answerwriting.com"
+                    href={`mailto:${COMPANY_EMAIL}`}
                     className="text-primary-dark"
                   >
-                    info@answerwriting.com
+                    {COMPANY_EMAIL}
                   </a>
                 </li>
                 <li>
-                  <strong>Phone:</strong> +91 7303290503
+                  <strong>Phone:</strong>
+                  <Link
+                    href={`tel:${COMPANY_PHONE_NUMBER}`}
+                    className="text-primary-dark"
+                  >
+                    {COMPANY_PHONE_NUMBER}
+                  </Link>
                 </li>
               </ul>
             </div>

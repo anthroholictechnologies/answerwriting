@@ -47,6 +47,7 @@ export const MAX_FORGET_PASSWORD_REQUEST_ALLOWED_IN_A_DAY = 3;
 export const COMPANY_NAME = "answerwriting.com";
 
 export const COMPANY_EMAIL = "info@answerwriting.com";
+export const COMPANY_PHONE_NUMBER = "+917303290503";
 
 export const TELEGRAM_URL = "https://t.me/answerwritingpro";
 export const YOUTUBE_URL = "https://youtube.com/@answerwritingpro";
