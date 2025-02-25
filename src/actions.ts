@@ -47,6 +47,14 @@ export const signInWithCredentials = async ({
           message: "User not found.",
         };
       } else if (
+        err.cause?.err?.message === ErrorCodes.VERIFICATION_EMAIL_PENDING
+      ) {
+        return {
+          success: false,
+          errorCode: ErrorCodes.VERIFICATION_EMAIL_PENDING,
+          message: "Verification Email Required.",
+        };
+      } else if (
         err.cause?.err?.message === ErrorCodes.ALREADY_REGISTERED_WITH_GOOGLE
       ) {
         return {
