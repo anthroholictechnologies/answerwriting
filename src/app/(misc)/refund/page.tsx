@@ -21,7 +21,7 @@ export default async function RefundPolicy() {
       <Container>
         <>
           <h1 className="hidden md:block text-center text-[3rem] tracking-tighter font-bold leading-none mb-4">
-            Refund & <ImpactSpan text="Return Policy" />
+            Refund <ImpactSpan text="Policy" />
           </h1>
 
           <h1 className="md:hidden text-center text-[3rem] tracking-tighter font-bold leading-none mb-4">
@@ -51,16 +51,6 @@ export default async function RefundPolicy() {
               <RPHeading heading="1. Refund Eligibility" />
               <ul className="list-disc ml-5">
                 <li>Refund requests must be made within 3 days of purchase.</li>
-                <li>
-                  Refunds are not applicable for digital products such as:
-                  <ul className="list-disc ml-5">
-                    <li>
-                      eBooks, PDFs, test series, or downloadable study
-                      materials.
-                    </li>
-                    <li>Any video courses or exclusive content.</li>
-                  </ul>
-                </li>
                 <li>
                   Users who violate our Terms & Conditions or misuse the
                   platform will not be eligible for a refund.
@@ -142,6 +132,24 @@ export default async function RefundPolicy() {
                 </a>
                 .
               </p>
+            </div>
+
+            <div>
+              <RPHeading heading="5. Contact Us" />
+              <ul className="list-disc ml-5">
+                <li>
+                  <strong> Email: </strong>
+                  <a
+                    href="mailto:info@answerwriting.com"
+                    className="text-primary-dark"
+                  >
+                    info@answerwriting.com
+                  </a>
+                </li>
+                <li>
+                  <strong>Phone:</strong> +91 7303290503
+                </li>
+              </ul>
             </div>
           </div>
         </>

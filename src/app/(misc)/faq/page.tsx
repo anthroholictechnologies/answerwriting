@@ -80,12 +80,12 @@ export default async function FAQ() {
                   <br />
                   Our AI evaluates your answer based on:
                   <ul className="list-disc ml-5">
-                    <li>✅ Question Alignment</li>
-                    <li>✅ Structure & Coherence</li>
-                    <li>✅ Clarity & Precision</li>
-                    <li>✅ Depth & Multi-Dimensionality</li>
-                    <li>✅ Syllabus & PYQ Mapping</li>
-                    <li>✅ Score Estimation & Improvement Tips</li>
+                    <li>Question Alignment</li>
+                    <li>Structure & Coherence</li>
+                    <li>Clarity & Precision</li>
+                    <li>Depth & Multi-Dimensionality</li>
+                    <li>Syllabus & PYQ Mapping</li>
+                    <li>Score Estimation & Improvement Tips</li>
                   </ul>
                 </li>
                 <li>

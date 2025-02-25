@@ -25,7 +25,7 @@ export default async function Upgrade(): Promise<React.ReactNode> {
             billingOptions={
               plans.find((p) => p.name === PlanType.PRO)!.billingOptions
             }
-          />        
+          />
         </div>
       </div>
       <Footer />

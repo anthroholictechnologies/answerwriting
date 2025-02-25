@@ -131,7 +131,7 @@ const PricingPlans = ({
         console.error("Payment initiation failed:", error);
         // Handle error appropriately
       }
-    }
+    },
   );
 
   const onSelect = (id: string) => {
@@ -167,7 +167,7 @@ const PricingPlans = ({
               bestPlan={bestPlan?.id === bo.id ? "Best Value" : ""}
               onSelect={onSelect}
             />
-          )
+          ),
         )}
       </div>
       <div className="hidden xl:block">

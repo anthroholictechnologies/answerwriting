@@ -4,8 +4,6 @@ import Footer from "answerwriting/components/react-common/header_footer/unauth_f
 import Header from "answerwriting/components/react-common/header_footer/unauth_header";
 import ImpactSpan from "answerwriting/components/react-common/impact-span";
 import Image from "next/image";
-import Link from "next/link";
-
 const PPHeading = ({ heading }: { heading: string }) => {
   return (
     <h2 className="text-[1.5rem] tracking-tighter font-bold mb-2">{heading}</h2>
@@ -38,20 +36,6 @@ export default async function PrivacyPolicy() {
                 answer writing skills through AI-powered evaluation. Your
                 privacy is important to us. This Privacy Policy explains how we
                 collect, use, and protect your personal information.
-              </p>
-              <p>
-                Since AnswerWriting.com and Anthroholic.com are both owned by
-                Anthroholic Technologies Private Limited, we follow a common
-                privacy policy framework. For a more detailed policy, please
-                refer to our main Privacy Policy at{" "}
-                <Link
-                  href="https://anthroholic.com/privacy"
-                  target="_blank"
-                  className="text-primary-dark"
-                >
-                  anthroholic.com/privacy
-                </Link>
-                .
               </p>
             </div>
 
@@ -141,25 +125,16 @@ export default async function PrivacyPolicy() {
               <p>For any privacy concerns, please reach out to:</p>
               <ul className="list-disc ml-5">
                 <li>
-                  📧 Email:{" "}
+                  <strong> Email: </strong>
                   <a
-                    href="mailto:info@anthroholic.com"
+                    href="mailto:info@answerwriting.com"
                     className="text-primary-dark"
                   >
-                    info@anthroholic.com
+                    info@answerwriting.com
                   </a>
                 </li>
-                <li>📍 Company: Anthroholic Technologies Private Limited</li>
                 <li>
-                  For a more detailed privacy policy, please visit{" "}
-                  <Link
-                    href="https://anthroholic.com/privacy"
-                    target="_blank"
-                    className="text-primary-dark"
-                  >
-                    anthroholic.com/privacy
-                  </Link>
-                  .
+                  <strong>Phone:</strong> +91 7303290503
                 </li>
               </ul>
             </div>

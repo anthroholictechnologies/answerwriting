@@ -15,7 +15,7 @@ export const PricingToolTip = ({ text }: { text: string }) => {
   return (
     <TooltipProvider>
       {" "}
-      {/* ✅ Wrap Tooltips in TooltipProvider */}
+      {/* Wrap Tooltips in TooltipProvider */}
       {/* Tooltip for larger screens */}
       <div className="hidden lg:block">
         <Tooltip delayDuration={0}>

@@ -62,5 +62,5 @@ export const LOGO_BANNER_URI = `https://res.cloudinary.com/dc36fxbog/image/uploa
 
 // Payment
 export const PHONE_PAY_PAYMENT_ENDPOINT = "/pg/v1/pay";
-export const PHONE_PAY_PAYMENT_STATUS_ENDPOINT = "/pg/v1/status"
+export const PHONE_PAY_PAYMENT_STATUS_ENDPOINT = "/pg/v1/status";
 export const CHECKSUM_ADDER = "###";

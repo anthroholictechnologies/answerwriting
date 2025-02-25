@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
           message: "Missing required environment variables",
           errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
 
     const resp = (await axios.get(
       `${phonePayBaseURI}${fullUrl}`,
-      { headers }
+      { headers },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     )) as any;
 
@@ -54,17 +54,17 @@ export async function POST(req: NextRequest) {
     // Redirect based on payment state
     switch (paymentState) {
       case "COMPLETED":
-        console.log("✅ Payment successful. Redirecting...");
+        console.log("Payment successful. Redirecting...");
         return NextResponse.redirect(
           `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=success`,
-          { status: 301 }
+          { status: 301 },
         );
 
       case "PENDING":
         console.log("⏳ Payment still processing. Redirecting...");
         return NextResponse.redirect(
           `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=pending`,
-          { status: 301 }
+          { status: 301 },
         );
 
       case "FAILED":
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
         console.log("❌ Payment failed. Redirecting...");
         return NextResponse.redirect(
           `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=failure`,
-          { status: 301 }
+          { status: 301 },
         );
 
       // case "REFUNDED":
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
         console.log("❓ Unknown state:", paymentState);
         return NextResponse.redirect(
           `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=failure`,
-          { status: 301 }
+          { status: 301 },
         );
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

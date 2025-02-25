@@ -36,21 +36,6 @@ export default async function TermsOfServices() {
               <p>
                 {` Welcome to AnswerWriting.com! These Terms and Conditions ("Terms") govern your use of our platform and services. By accessing or using AnswerWriting.com, you agree to be bound by these Terms.`}
               </p>
-              <div>
-                Since AnswerWriting.com and Anthroholic.com are owned by
-                Anthroholic Technologies Private Limited, most of the terms
-                applicable to Anthroholic.com also apply here. For a more
-                comprehensive understanding, please refer to our detailed Terms
-                of Service at{" "}
-                <Link
-                  href="https://www.anthroholic.com/terms"
-                  className="text-primary"
-                >
-                  {" "}
-                  anthroholic.com/terms{" "}
-                </Link>
-                .
-              </div>
             </div>
 
             <div>
@@ -176,21 +161,11 @@ export default async function TermsOfServices() {
                     info@answerwriting.com
                   </Link>
                 </li>
+
                 <li>
-                  <strong>Company:</strong> Anthroholic Technologies Private
-                  Limited
+                  <strong>Phone:</strong> +91 7303290503
                 </li>
               </ul>
-              <p>
-                For a detailed Terms and Conditions page, please visit{" "}
-                <Link
-                  href="https://anthroholic.com/terms"
-                  className="text-primary-dark"
-                >
-                  anthroholic.com/terms
-                </Link>
-                .
-              </p>
             </div>
           </div>
         </>
