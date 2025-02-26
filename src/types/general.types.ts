@@ -11,8 +11,8 @@ export enum ApiRoutePaths {
   EVALUATE_ANSWER = "/api/ai/evaluate-answer",
 
   // Payment
-  PURCHASE = "/api/payments/purchase",
-  STATUS = "/api/payments/status",
+  PAYMENTS_PURCHASE = "/api/payments/purchase",
+  PAYMENTS_STATUS = "/api/payments/status",
 
   // Pages
   // misc
@@ -65,6 +65,8 @@ export enum ErrorCodes {
 
   INVALID_CREDENTIALS = "InvalidCredentials",
   ALREADY_REGISTERED_WITH_GOOGLE = "AlreadyRegisteredWithGoogle",
+
+  ALREADY_SUBSCRIBED = "AlreadySubscribed",
 
   UNAUTHORIZED = "Unauthorized",
 

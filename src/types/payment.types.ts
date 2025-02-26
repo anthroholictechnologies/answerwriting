@@ -10,6 +10,19 @@ export enum Duration {
   MONTHLY = "MONTHLY",
 }
 
+export enum SubscriptionStatus {
+  ACTIVE = "ACTIVE",
+  EXPIRED = "EXPIRED",
+  CANCELLED = "CANCELLED",
+  PENDING = "PENDING",
+}
+
+export enum PaymentStatus {
+  PENDING = "PENDING",
+  SUCCESS = "SUCCESS",
+  FAILED = "FAILED",
+}
+
 export interface BillingOptions {
   id: string;
   duration: Duration;
@@ -27,7 +40,7 @@ export interface PurchaseRequestPayload {
   merchantId: string;
   merchantTransactionId: string;
   // Always in paisa
-  amount: number;
+  amountInPaisa: number;
   merchantUserId: string;
   redirectUrl: string;
   redirectMode: string;
@@ -35,4 +48,8 @@ export interface PurchaseRequestPayload {
   paymentInstrument: {
     type: "PAY_PAGE";
   };
+}
+
+export interface InitiatePaymentResponse {
+  paymentGatewayUrl: string;
 }

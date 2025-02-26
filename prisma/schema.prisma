@@ -27,7 +27,9 @@ model User {
   emailVerificationTokens EmailVerificationToken[]
   forgetPasswordTokens    ForgetPasswordToken[]
 
-  answers Answer[]
+  answers       Answer[]
+  subscriptions Subscription[]
+  payments      Payment[]
 
   @@map("users")
 }
@@ -204,6 +206,7 @@ model SubscriptionPlan {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   billingOptions BillingOption[]
+  subscriptions  Subscription[]
 
   @@map("subscription_plan")
 }
@@ -218,5 +221,62 @@ model BillingOption {
   createdAt          DateTime         @default(now()) @map("created_at")
   updatedAt          DateTime         @updatedAt @map("updated_at")
 
+  subscription Subscription[]
+
   @@map("billing_option")
+}
+
+enum PaymentStatus {
+  SUCCESS
+  FAILED
+  PENDING
+
+  @@map("payment_status")
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+  PENDING
+
+  @@map("subscription_status")
+}
+
+model Subscription {
+  id                 String             @id @default(cuid())
+  planId             String             @map("plan_id")
+  billingOptionId    String             @map("billing_option_id")
+  userId             String             @map("user_id")
+  subscriptionStatus SubscriptionStatus
+  activationDate     DateTime?          @map("activation_date")
+  expiryDate         DateTime?          @map("expiry_date") // Nullable if no expiry date at creation
+  createdAt          DateTime           @default(now()) @map("created_at")
+  updatedAt          DateTime           @updatedAt @map("updated_at")
+
+  // Relations
+  plan          SubscriptionPlan @relation(fields: [planId], references: [id])
+  billingOption BillingOption    @relation(fields: [billingOptionId], references: [id])
+  user          User             @relation(fields: [userId], references: [id])
+  payment       Payment[]
+
+  @@index([userId, subscriptionStatus]) // Fast lookups for active subscriptions
+  @@map("subscriptions")
+}
+
+model Payment {
+  id             String        @id @default(cuid())
+  amount         Int
+  userId         String        @map("user_id")
+  user           User          @relation(fields: [userId], references: [id])
+  status         PaymentStatus
+  subscriptionId String        @map("subscription_id")
+  subscription   Subscription  @relation(fields: [subscriptionId], references: [id])
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  paymentJSON    Json          @map("payment_json")
+
+  @@index([userId])
+  @@index([subscriptionId]) 
+  @@map("payments")
 }

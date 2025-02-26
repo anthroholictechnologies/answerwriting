@@ -114,16 +114,12 @@ const PricingPlans = ({
   const [{ loading: isLoading }, initiatePayment] = useAsyncFn(
     async (id: string) => {
       try {
-        const response = (await upgradeToPro({
+        const response = await upgradeToPro({
           billingOptionId: id,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        })) as any;
+        });
 
-        if (
-          response.success &&
-          response.data?.data?.instrumentResponse?.redirectInfo?.url
-        ) {
-          router.push(response.data.data.instrumentResponse.redirectInfo.url);
+        if (response.paymentGatewayUrl) {
+          router.push(response.paymentGatewayUrl);
         } else {
           throw new Error("Failed to get payment URL");
         }

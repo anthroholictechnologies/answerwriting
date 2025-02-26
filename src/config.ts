@@ -15,18 +15,16 @@ export const apiRoutesWhichRequiresAuthentication: ApiRoutePaths[] = [
 
   // API Routes
   ApiRoutePaths.EVALUATE_ANSWER,
-
   // PAYMENT
-  ApiRoutePaths.PURCHASE,
-  // Add routes here that require authentication
-  //...
+  ApiRoutePaths.PAYMENTS_PURCHASE,
+  ApiRoutePaths.PAYMENTS_STATUS,
 ];
 export const apiRoutesWhichRequiresValidations: ApiRoutePaths[] = [
   ApiRoutePaths.REGISTER,
   ApiRoutePaths.VERIFY_EMAIL,
   ApiRoutePaths.FORGET_PASSWORD,
   ApiRoutePaths.RESET_PASSWORD,
-  ApiRoutePaths.PURCHASE,
+  ApiRoutePaths.PAYMENTS_PURCHASE,
 ];
 
 export const apiRoutesSchemaMapping: Partial<{
@@ -36,7 +34,7 @@ export const apiRoutesSchemaMapping: Partial<{
   [ApiRoutePaths.VERIFY_EMAIL]: verifyEmailSchema,
   [ApiRoutePaths.FORGET_PASSWORD]: forgetPasswordSchema,
   [ApiRoutePaths.RESET_PASSWORD]: resetPasswordSchema,
-  [ApiRoutePaths.PURCHASE]: purchaseSchema,
+  [ApiRoutePaths.PAYMENTS_PURCHASE]: purchaseSchema,
 };
 
 export const EMAIL_VERIFICATION_TOKEN_EXPIRATION_TIMEOUT_MINUTES = 15;
