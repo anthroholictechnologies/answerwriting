@@ -134,7 +134,7 @@ export const getPlans = async (): Promise<Plans[]> => {
 };
 
 export const getUserSubscription = async (
-  userId?: string
+  userId?: string,
 ): Promise<Subscription | null> => {
   if (!userId) {
     return null;

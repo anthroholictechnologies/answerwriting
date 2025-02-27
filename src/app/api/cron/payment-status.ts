@@ -22,7 +22,7 @@ export async function POST() {
   });
 
   const pendingTransactions = transactionsWithTheirLatestStatus.filter(
-    (tx) => tx.history?.[0]?.status === TransactionStatus.PENDING
+    (tx) => tx.history?.[0]?.status === TransactionStatus.PENDING,
   );
 
   for (const transaction of pendingTransactions) {

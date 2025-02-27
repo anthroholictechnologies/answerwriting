@@ -105,7 +105,7 @@ export type PhonePePaymentInitiationResponse = {
 export enum PhonePayTransactionStates {
   COMPLETED = "COMPLETED",
   PENDING = "PENDING",
-  FAILED = "FAILED"
+  FAILED = "FAILED",
 }
 
 export type PhonePayStatusCheckAPIResponse = {

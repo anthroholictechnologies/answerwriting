@@ -1,8 +1,8 @@
 {
-    "crons": [
-        {
-            "path": "/cron/payment-status",
-            "schedule": "0 5 * * *"
-        }
-    ]
+  "crons": [
+    {
+      "path": "/cron/payment-status",
+      "schedule": "0 5 * * *"
+    }
+  ]
 }

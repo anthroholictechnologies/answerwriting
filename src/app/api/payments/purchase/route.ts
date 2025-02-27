@@ -68,7 +68,7 @@ async function handlePayment({
               - PENDING => THROW ERROR
 */
 export async function POST(
-  req: NextRequest
+  req: NextRequest,
 ): Promise<NextResponse<ApiResponse<InitiatePaymentResponse>>> {
   try {
     // STEP 1: Check if the user is authenticated or not
@@ -80,7 +80,7 @@ export async function POST(
           message: "User not authenticated",
           errorCode: ErrorCodes.UNAUTHORIZED,
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -96,7 +96,7 @@ export async function POST(
           message: "Product not found",
           errorCode: ErrorCodes.PRODUCT_NOT_FOUND,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const user = await prisma.user.findUnique({
@@ -180,7 +180,7 @@ export async function POST(
         message: "Failed Purchase",
         errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

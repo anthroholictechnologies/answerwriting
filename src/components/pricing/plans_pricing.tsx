@@ -220,14 +220,14 @@ const PricingPlans: React.FC<{
           ),
         });
       }
-    }
+    },
   );
 
   const handleSelect = (id: string) => initiatePayment(id);
 
   const bestPlan = useMemo(
     () => maxBy(billingOptions, (bo) => bo.discountPercentage),
-    [billingOptions]
+    [billingOptions],
   );
 
   const selectedPlanDetails = useMemo(() => {
