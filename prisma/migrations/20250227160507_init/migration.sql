@@ -2,16 +2,13 @@
 CREATE TYPE "exams" AS ENUM ('GS1', 'GS2', 'GS3', 'GS4');
 
 -- CreateEnum
-CREATE TYPE "plan_type" AS ENUM ('FREE', 'PRO');
+CREATE TYPE "plan_name" AS ENUM ('FREE', 'PRO');
 
 -- CreateEnum
-CREATE TYPE "duration" AS ENUM ('ANNUAL', 'HALF_YEARLY', 'QUATERLY', 'MONTHLY');
+CREATE TYPE "duration" AS ENUM ('ANNUAL', 'HALF_YEARLY', 'QUARTERLY', 'MONTHLY');
 
 -- CreateEnum
-CREATE TYPE "payment_status" AS ENUM ('SUCCESS', 'FAILED', 'PENDING');
-
--- CreateEnum
-CREATE TYPE "subscription_status" AS ENUM ('ACTIVE', 'EXPIRED', 'CANCELLED', 'PENDING');
+CREATE TYPE "transaction_status" AS ENUM ('STARTED', 'COMPLETED', 'CANCELLED', 'FAILED', 'PENDING');
 
 -- CreateTable
 CREATE TABLE "users" (
@@ -152,17 +149,17 @@ CREATE TABLE "answers" (
 );
 
 -- CreateTable
-CREATE TABLE "subscription_plan" (
+CREATE TABLE "plans" (
     "id" TEXT NOT NULL,
-    "name" "plan_type" NOT NULL,
+    "name" "plan_name" NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "subscription_plan_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "plans_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "billing_option" (
+CREATE TABLE "products" (
     "id" TEXT NOT NULL,
     "plan_id" TEXT NOT NULL,
     "duration" "duration" NOT NULL,
@@ -171,36 +168,43 @@ CREATE TABLE "billing_option" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "billing_option_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "products_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "subscriptions" (
+CREATE TABLE "orders" (
     "id" TEXT NOT NULL,
-    "plan_id" TEXT NOT NULL,
-    "billing_option_id" TEXT NOT NULL,
+    "product_id" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
-    "subscriptionStatus" "subscription_status" NOT NULL,
-    "activation_date" TIMESTAMP(3),
-    "expiry_date" TIMESTAMP(3),
+    "transaction_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "subscriptions_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "orders_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "payments" (
+CREATE TABLE "transactions" (
     "id" TEXT NOT NULL,
     "amount" INTEGER NOT NULL,
-    "user_id" TEXT NOT NULL,
-    "status" "payment_status" NOT NULL,
-    "subscription_id" TEXT NOT NULL,
+    "cancellation_reason" TEXT,
+    "payment_result_json" JSONB,
+    "payment_initiation_json" JSONB,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
-    "payment_json" JSONB NOT NULL,
 
-    CONSTRAINT "payments_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "transactions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "transaction_status_history" (
+    "id" TEXT NOT NULL,
+    "status" "transaction_status" NOT NULL,
+    "transaction_id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "transaction_status_history_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -225,13 +229,13 @@ CREATE UNIQUE INDEX "subjects_name_key" ON "subjects"("name");
 CREATE INDEX "subjects_exam_idx" ON "subjects"("exam");
 
 -- CreateIndex
-CREATE INDEX "subscriptions_user_id_subscriptionStatus_idx" ON "subscriptions"("user_id", "subscriptionStatus");
+CREATE UNIQUE INDEX "orders_transaction_id_key" ON "orders"("transaction_id");
 
 -- CreateIndex
-CREATE INDEX "payments_user_id_idx" ON "payments"("user_id");
+CREATE INDEX "orders_user_id_idx" ON "orders"("user_id");
 
 -- CreateIndex
-CREATE INDEX "payments_subscription_id_idx" ON "payments"("subscription_id");
+CREATE INDEX "orders_product_id_idx" ON "orders"("product_id");
 
 -- AddForeignKey
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -255,19 +259,16 @@ ALTER TABLE "subject_criteria" ADD CONSTRAINT "subject_criteria_subject_id_fkey"
 ALTER TABLE "answers" ADD CONSTRAINT "answers_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "billing_option" ADD CONSTRAINT "billing_option_plan_id_fkey" FOREIGN KEY ("plan_id") REFERENCES "subscription_plan"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "products" ADD CONSTRAINT "products_plan_id_fkey" FOREIGN KEY ("plan_id") REFERENCES "plans"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_plan_id_fkey" FOREIGN KEY ("plan_id") REFERENCES "subscription_plan"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "orders" ADD CONSTRAINT "orders_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_billing_option_id_fkey" FOREIGN KEY ("billing_option_id") REFERENCES "billing_option"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "orders" ADD CONSTRAINT "orders_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "orders" ADD CONSTRAINT "orders_transaction_id_fkey" FOREIGN KEY ("transaction_id") REFERENCES "transactions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "payments" ADD CONSTRAINT "payments_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "payments" ADD CONSTRAINT "payments_subscription_id_fkey" FOREIGN KEY ("subscription_id") REFERENCES "subscriptions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "transaction_status_history" ADD CONSTRAINT "transaction_status_history_transaction_id_fkey" FOREIGN KEY ("transaction_id") REFERENCES "transactions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

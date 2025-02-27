@@ -1,109 +1,88 @@
+import { prisma } from "answerwriting/prisma";
 import {
-  CHECKSUM_ADDER,
-  PHONE_PAY_PAYMENT_STATUS_ENDPOINT,
-} from "answerwriting/config";
+  checkPaymentStatus,
+  handlePaymentFailed,
+  handlePaymentPending,
+  handlePaymentSuccess,
+} from "answerwriting/services/payments.service";
 import { ApiRoutePaths, ErrorCodes } from "answerwriting/types/general.types";
+import {
+  PhonePayStatusCheckAPIResponse,
+  PhonePayTransactionStates,
+} from "answerwriting/types/payment.types";
 import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
-import axios from "axios";
 
 export async function POST(req: NextRequest) {
   try {
-    const merchantId = process.env.PHONE_PAY_MERCHANT_ID;
-    const saltKey = process.env.PHONE_PAY_SALT_KEY;
-    const saltIndex = process.env.PHONE_PAY_SALT_INDEX;
-    const phonePayBaseURI = process.env.PHONE_PAY_BASE_URI;
-
     const searchParams = req.nextUrl.searchParams;
     const merchantTransactionId = searchParams.get("id");
 
-    if (!merchantId || !saltKey || !saltIndex || !phonePayBaseURI) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Missing required environment variables",
-          errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,
-        },
-        { status: 500 },
-      );
+    // Validate if merchantTransactionId is present
+    if (!merchantTransactionId) {
+      throw new Error(`Merchant transaction Id Missing`);
     }
 
-    const fullUrl = `${PHONE_PAY_PAYMENT_STATUS_ENDPOINT}/${merchantId}/${merchantTransactionId}`;
-    const sha256 = crypto
-      .createHash("sha256")
-      .update(fullUrl + saltKey)
-      .digest("hex");
-    const checkSum = sha256 + CHECKSUM_ADDER + saltIndex;
+    // Fetch the payment status from PhonePe's API
+    const resp = (await checkPaymentStatus({
+      merchantTransactionId,
+    })) as PhonePayStatusCheckAPIResponse;
 
-    const headers = {
-      accept: "application/json",
-      "Content-Type": "application/json",
-      "X-VERIFY": checkSum,
-      "X-MERCHANT-ID": merchantId, // Added this header
-    };
+    // Retrieve the transaction from the database
+    const transaction = await prisma.transaction.findUnique({
+      where: {
+        id: merchantTransactionId,
+      },
+    });
 
-    const resp = (await axios.get(
-      `${phonePayBaseURI}${fullUrl}`,
-      { headers },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    )) as any;
+    // If transaction is not found, return an error
+    if (!transaction) {
+      throw new Error(`Transaction not found`);
+    }
 
-    const paymentState = resp.data?.data?.state || "UNKNOWN";
-    console.log("📌 Payment state:", paymentState);
+    // Store the raw payment response JSON for debugging/audit purposes
+    await prisma.transaction.update({
+      where: { id: transaction.id },
+      data: { paymentResultJSON: resp },
+    });
 
-    // Redirect based on payment state
-    switch (paymentState) {
-      case "COMPLETED":
-        console.log("Payment successful. Redirecting...");
-        return NextResponse.redirect(
-          `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=success`,
-          { status: 301 },
-        );
+    // Extract the payment status
+    const paymentState = resp?.data?.state;
 
-      case "PENDING":
-        console.log("⏳ Payment still processing. Redirecting...");
-        return NextResponse.redirect(
-          `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=pending`,
-          { status: 301 },
-        );
-
-      case "FAILED":
-      case "DECLINED":
-      case "EXPIRED":
-      case "CANCELLED":
-        console.log("❌ Payment failed. Redirecting...");
-        return NextResponse.redirect(
-          `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=failure`,
-          { status: 301 },
-        );
-
-      // case "REFUNDED":
-      //   console.log("🔄 Payment refunded. Redirecting...");
-      //   return NextResponse.redirect(
-      //     `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_REFUND}`,
-      //     { status: 301 }
-      //   );
-
-      // case "CHARGED_BACK":
-      // console.log("🔄 Chargeback initiated. Redirecting...");
-      // return NextResponse.redirect(
-      //   `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_CHARGEBACK}`,
-      //   { status: 301 }
-      // );
-
-      default:
-        console.log("❓ Unknown state:", paymentState);
-        return NextResponse.redirect(
-          `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=failure`,
-          { status: 301 },
-        );
+    // Handle different transaction statuses
+    if (paymentState === PhonePayTransactionStates.COMPLETED) {
+      await handlePaymentSuccess({
+        transactionId: transaction.id,
+      });
+      return NextResponse.redirect(
+        `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=success`,
+        { status: 301 }
+      );
+    } else if (paymentState === PhonePayTransactionStates.PENDING) {
+      await handlePaymentPending({
+        transactionId: transaction.id,
+      });
+      return NextResponse.redirect(
+        `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=pending`,
+        { status: 301 }
+      );
+    } else {
+      await handlePaymentFailed({
+        transactionId: transaction.id,
+      });
+      // Redirect to failure page
+      return NextResponse.redirect(
+        `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=failure`,
+        { status: 301 }
+      );
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error(err);
+    // Return a JSON error response in case of an exception
     return NextResponse.json({
       success: false,
       errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,
+      message: err.message, // Provide an error message for debugging
     });
   }
 }

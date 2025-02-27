@@ -3,12 +3,13 @@ import Header from "answerwriting/components/react-common/header_footer/unauth_h
 import PricingCards from "answerwriting/components/pricing/cards_pricing";
 import PricingPlans from "answerwriting/components/pricing/plans_pricing";
 import { auth } from "answerwriting/auth";
-import { getPlans } from "answerwriting/actions";
+import { getPlans, getUserSubscription } from "answerwriting/actions";
 import { PlanType } from "answerwriting/types/payment.types";
 
 export default async function Upgrade(): Promise<React.ReactNode> {
   const session = await auth();
   const plans = await getPlans();
+  const userSubscription = await getUserSubscription(session?.user.id);
   return (
     <>
       <Header isLoggedIn={!!session} />
@@ -25,6 +26,8 @@ export default async function Upgrade(): Promise<React.ReactNode> {
             billingOptions={
               plans.find((p) => p.name === PlanType.PRO)!.billingOptions
             }
+            userLoggedIn={!!session}
+            userSubscription={userSubscription}
           />
         </div>
       </div>

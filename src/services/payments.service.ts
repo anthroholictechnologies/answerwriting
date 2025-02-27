@@ -1,10 +1,17 @@
 import {
   CHECKSUM_ADDER,
   PHONE_PAY_PAYMENT_ENDPOINT,
+  PHONE_PAY_PAYMENT_STATUS_ENDPOINT,
 } from "answerwriting/config";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
-import { PurchaseRequestPayload } from "answerwriting/types/payment.types";
+import {
+  PhonePePaymentInitiationResponse,
+  PhonePePurchaseRequestPayload,
+  TransactionStatus,
+} from "answerwriting/types/payment.types";
 import crypto from "crypto";
+import axios from "axios";
+import { prisma } from "answerwriting/prisma";
 
 function generateRedirectURI({
   merchantTransactionId,
@@ -14,15 +21,8 @@ function generateRedirectURI({
   return `${process.env.APP_BASE_URI}${ApiRoutePaths.PAYMENTS_STATUS}?id=${merchantTransactionId}`;
 }
 
-function generateCheckSum(
-  payloadBase64: string,
-  saltKey: string,
-  saltIndex: string,
-): string {
-  const fullUrl = `${payloadBase64}${PHONE_PAY_PAYMENT_ENDPOINT}${saltKey}`;
-  const sha256 = crypto.createHash("sha256").update(fullUrl).digest("hex");
-  return `${sha256}${CHECKSUM_ADDER}${saltIndex}`;
-}
+const generateCheckSumForPaymentInitiation = (payloadBase64: string) =>
+  `${crypto.createHash("sha256").update(`${payloadBase64}${PHONE_PAY_PAYMENT_ENDPOINT}${process.env.PHONE_PAY_SALT_KEY}`).digest("hex")}${CHECKSUM_ADDER}${process.env.PHONE_PAY_SALT_INDEX}`;
 
 export async function initiatePayment({
   merchantTransactionId,
@@ -32,16 +32,16 @@ export async function initiatePayment({
   merchantTransactionId: string;
   merchantUserId: string;
   amountInPaisa: number;
-}) {
+}): Promise<PhonePePaymentInitiationResponse> {
   const redirectURI = generateRedirectURI({
     merchantTransactionId,
   });
 
-  const payload: PurchaseRequestPayload = {
+  const payload: PhonePePurchaseRequestPayload = {
     merchantId: process.env.PHONE_PAY_MERCHANT_ID!,
     merchantTransactionId,
     merchantUserId,
-    amountInPaisa,
+    amount: amountInPaisa,
     redirectUrl: redirectURI,
     callbackUrl: redirectURI,
     paymentInstrument: { type: "PAY_PAGE" },
@@ -49,13 +49,9 @@ export async function initiatePayment({
   };
 
   const baseSixtyFourPayload = Buffer.from(JSON.stringify(payload)).toString(
-    "base64",
+    "base64"
   );
-  const checkSum = generateCheckSum(
-    baseSixtyFourPayload,
-    process.env.PHONE_PAY_SALT_KEY!,
-    process.env.PHONE_PAY_SALT_INDEX!,
-  );
+  const checkSum = generateCheckSumForPaymentInitiation(baseSixtyFourPayload);
 
   const headers = {
     accept: "application/json",
@@ -67,8 +63,103 @@ export async function initiatePayment({
   const response = await axios.post(
     `${process.env.PHONE_PAY_BASE_URI}${PHONE_PAY_PAYMENT_ENDPOINT}`,
     { request: baseSixtyFourPayload },
-    { headers },
+    { headers }
   );
 
-  return response.data;
+  const respData = <PhonePePaymentInitiationResponse>response.data;
+  return respData;
 }
+
+const generateCheckSumForPaymentStatus = (merchantTransactionId: string) =>
+  crypto
+    .createHash("sha256")
+    .update(
+      `${PHONE_PAY_PAYMENT_STATUS_ENDPOINT}/${process.env.PHONE_PAY_MERCHANT_ID}/${merchantTransactionId}${process.env.PHONE_PAY_SALT_KEY}`
+    )
+    .digest("hex") +
+  CHECKSUM_ADDER +
+  process.env.PHONE_PAY_SALT_INDEX;
+
+/*
+      {
+  "success": true,
+  "code": "PAYMENT_SUCCESS",
+  "message": "Your request has been successfully completed.",
+  "data": {
+    "merchantId": "PGTESTPAYUAT",
+    "merchantTransactionId": "MT7850590068188104",
+    "transactionId": "T2206202020325589144911",
+    "amount": 100,
+    "state": "COMPLETED",
+    "responseCode": "SUCCESS",
+    "paymentInstrument": {
+      "type": "NETBANKING",
+      "pgTransactionId": "1856982900",
+      "pgServiceTransactionId": "PG2207281811271263274380",
+      "bankTransactionId": null,
+      "bankId": "SBIN"
+    }
+  }
+}
+
+  */
+export async function checkPaymentStatus({
+  merchantTransactionId,
+}: {
+  merchantTransactionId: string;
+}): Promise<unknown> {
+  const checkSum = generateCheckSumForPaymentStatus(merchantTransactionId);
+  const headers = {
+    accept: "application/json",
+    "Content-Type": "application/json",
+    "X-VERIFY": checkSum,
+    "X-MERCHANT-ID": process.env.PHONE_PAY_MERCHANT_ID,
+  };
+
+  const resp = await axios.get(
+    `${process.env.PHONE_PAY_BASE_URI}${PHONE_PAY_PAYMENT_STATUS_ENDPOINT}/${process.env.PHONE_PAY_MERCHANT_ID}/${merchantTransactionId}`,
+    { headers }
+  );
+
+  return resp.data;
+}
+
+export const handlePaymentSuccess = async ({
+  transactionId,
+}: {
+  transactionId: string;
+}) => {
+  // Update transaction history to COMPLETED
+  await prisma.transactionStatusHistory.create({
+    data: {
+      transactionId,
+      status: TransactionStatus.COMPLETED,
+    },
+  });
+};
+export const handlePaymentPending = async ({
+  transactionId,
+}: {
+  transactionId: string;
+}) => {
+  // Update transaction history to PENDING
+  await prisma.transactionStatusHistory.create({
+    data: {
+      transactionId,
+      status: TransactionStatus.PENDING,
+    },
+  });
+};
+export const handlePaymentFailed = async ({
+  transactionId,
+}: {
+  transactionId: string;
+}) => {
+  // Update transaction history to FAILED
+  await prisma.transactionStatusHistory.create({
+    data: {
+      transactionId,
+      status: TransactionStatus.FAILED,
+    },
+  });
+};

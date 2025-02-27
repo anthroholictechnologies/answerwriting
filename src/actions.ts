@@ -8,7 +8,13 @@ import { ContactInput } from "./validations/general.schema";
 import { Resend } from "resend";
 import ContactEmail from "../emails/contactus.email.template";
 import { prisma } from "./prisma";
-import { Duration, Plans, PlanType } from "./types/payment.types";
+import {
+  Duration,
+  Plans,
+  PlanType,
+  Subscription,
+  SubscriptionStatus,
+} from "./types/payment.types";
 
 export const logout = async () => {
   return signOut({ redirectTo: ApiRoutePaths.PAGE_LOGIN });
@@ -125,4 +131,31 @@ export const getPlans = async (): Promise<Plans[]> => {
       }),
     };
   });
+};
+
+export const getUserSubscription = async (
+  userId?: string
+): Promise<Subscription | null> => {
+  if (!userId) {
+    return null;
+  }
+  const [userSubscription] = await prisma.subscription.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 1,
+  });
+
+  if (!userSubscription) {
+    return null;
+  }
+
+  return {
+    id: userSubscription.id,
+    subscriptionStatus:
+      userSubscription.subscriptionStatus as SubscriptionStatus,
+  };
 };

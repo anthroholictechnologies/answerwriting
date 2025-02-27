@@ -70,7 +70,8 @@ export enum ErrorCodes {
 
   UNAUTHORIZED = "Unauthorized",
 
-  INVALID_BILLING_OPTIONS = "InvalidBillingOption",
+  PRODUCT_NOT_FOUND = "ProductNotFound",
+  ORDER_ALREADY_PENDING = "OrderAlreadyPending",
 }
 
 export interface ApiResponse<T = unknown> {

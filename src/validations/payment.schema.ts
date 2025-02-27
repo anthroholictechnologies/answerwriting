@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const purchaseSchema = z.object({
-  billingOptionId: z.string({ message: "billing id is required" }),
+  productId: z.string({ message: "product id is required for purchase" }),
 });
 
 export type PurchaseInput = z.infer<typeof purchaseSchema>;
