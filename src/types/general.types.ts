@@ -66,8 +66,6 @@ export enum ErrorCodes {
   INVALID_CREDENTIALS = "InvalidCredentials",
   ALREADY_REGISTERED_WITH_GOOGLE = "AlreadyRegisteredWithGoogle",
 
-  ALREADY_SUBSCRIBED = "AlreadySubscribed",
-
   UNAUTHORIZED = "Unauthorized",
 
   PRODUCT_NOT_FOUND = "ProductNotFound",
@@ -90,4 +88,16 @@ export interface AuthenticatedUser {
   emailVerified: Date | null;
   image: string | null;
   password: string | null;
+}
+
+export interface Feature {
+  description: string;
+  available: boolean;
+  tooltip?: string;
+}
+export interface UserDetailProp {
+  isLoggedIn?: boolean;
+  isProUser?: boolean;
+  hasPendingOrder?: boolean;
+  transactionId?: string;
 }

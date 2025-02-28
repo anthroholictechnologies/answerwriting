@@ -58,7 +58,7 @@ function PaymentStatusContent() {
               ? "Your payment has been processed successfully. We've sent a receipt to your email address."
               : status === "failure"
                 ? "We were unable to process your payment. Please check the details below and try again."
-                : "Your payment is being processed. This may take a moment."}
+                : "Your payment is being processed. This may take 24 hours."}
           </CardDescription>
         </CardHeader>
 

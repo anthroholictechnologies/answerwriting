@@ -1,4 +1,4 @@
-import { ApiRoutePaths } from "answerwriting/types/general.types";
+import { ApiRoutePaths, Feature } from "answerwriting/types/general.types";
 import {
   forgetPasswordSchema,
   registrationSchema,
@@ -17,7 +17,6 @@ export const apiRoutesWhichRequiresAuthentication: ApiRoutePaths[] = [
   ApiRoutePaths.EVALUATE_ANSWER,
   // PAYMENT
   ApiRoutePaths.PAYMENTS_PURCHASE,
-  ApiRoutePaths.PAYMENTS_STATUS,
 ];
 export const apiRoutesWhichRequiresValidations: ApiRoutePaths[] = [
   ApiRoutePaths.REGISTER,
@@ -63,3 +62,65 @@ export const LOGO_BANNER_URI = `https://res.cloudinary.com/dc36fxbog/image/uploa
 export const PHONE_PAY_PAYMENT_ENDPOINT = "/pg/v1/pay";
 export const PHONE_PAY_PAYMENT_STATUS_ENDPOINT = "/pg/v1/status";
 export const CHECKSUM_ADDER = "###";
+
+export const freeFeatures: Feature[] = [
+  {
+    description: "Evaluate 1 answer every month",
+    available: true,
+    tooltip: "You can submit one answer each month for AI evaluation.",
+  },
+  {
+    description: "Get instant AI-powered feedback",
+    available: true,
+    tooltip: "Receive AI-generated feedback immediately after submission.",
+  },
+  {
+    description: "Get Improved Model Answer",
+    available: true,
+    tooltip: "Access a refined model answer based on your submission.",
+  },
+  {
+    description: "Human Expert Feedback",
+    available: false,
+    tooltip: "Upgrade to a premium plan for expert feedback.",
+  },
+  {
+    description: "Answers saved forever",
+    available: false,
+    tooltip:
+      "Free-tier answers are stored temporarily. Upgrade to save them permanently.",
+  },
+];
+
+export const proFeatures: Feature[] = [
+  {
+    description: "Unlimited AI Answer Evaluations",
+    tooltip: "Get instant feedback on as many answers as you want.",
+    available: true,
+  },
+  {
+    description: "Human Expert Feedback",
+    tooltip: "Get feedback from UPSC subject experts.",
+    available: true,
+  },
+  {
+    description: "Saved Answers Forever",
+    tooltip: "Access your past evaluations anytime.",
+    available: true,
+  },
+  {
+    description: "Advanced Answer Insights",
+    tooltip: "In-depth analysis to improve structure, coherence, and content.",
+    available: true,
+  },
+  {
+    description: "Exclusive Writing Tips",
+    tooltip: "AI-powered suggestions to refine your answers.",
+    available: true,
+  },
+  {
+    description: "Priority Support",
+    tooltip: "Faster responses and assistance whenever you need.",
+    available: true,
+  },
+];

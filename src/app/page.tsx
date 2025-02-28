@@ -1,3 +1,4 @@
+import { proUser } from "answerwriting/actions";
 import { auth } from "answerwriting/auth";
 import { Section_1 } from "answerwriting/components/landing/hero_section";
 import {
@@ -10,23 +11,18 @@ import {
   Section_2,
   Section_5,
 } from "answerwriting/components/landing/with_violet_bg";
-import Footer from "answerwriting/components/react-common/header_footer/unauth_footer";
-import Header from "answerwriting/components/react-common/header_footer/unauth_header";
-
 export default async function Home() {
   const session = await auth();
-  const user = session?.user;
+  const { isProUser } = await proUser(session?.user?.id);
   return (
-    <div className="h-screen w-screen">
-      <Header isLoggedIn={!!user} />
+    <div>
       <Section_1 />
       <Section_2 />
-      <Section_3 isLoggedIn={!!user} />
+      <Section_3 userDetails={{ isLoggedIn: !!session, isProUser }} />
       <Section_4 />
-      <Section_5 isLoggedIn={!!user} />
+      <Section_5 userDetails={{ isLoggedIn: !!session, isProUser }} />
       <Section_6 />
-      <Section_7 isLoggedIn={!!user} />
-      <Footer />
+      <Section_7 userDetails={{ isLoggedIn: !!session, isProUser }} />
     </div>
   );
 }

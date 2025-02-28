@@ -1,11 +1,12 @@
 import ImpactSpan from "answerwriting/components/react-common/impact-span";
 import { CommonButton } from "../buttons/button_upgrade";
+import { UserDetailProp } from "answerwriting/types/general.types";
 
 interface TertiarySectionProps {
   title: string;
   highlightText: string;
   description: string;
-  isLoggedIn: boolean;
+  userDetails: UserDetailProp;
   gradientBackground?: boolean;
 }
 
@@ -13,7 +14,7 @@ export const TertiarySection = ({
   title,
   highlightText,
   description,
-  isLoggedIn,
+  userDetails,
   gradientBackground = false,
 }: TertiarySectionProps) => {
   return (
@@ -42,11 +43,7 @@ export const TertiarySection = ({
         </span>
       </h2>
       <p className="text-lg max-w-4xl lg:text-xl">{description}</p>
-      <CommonButton
-        isLoggedIn={isLoggedIn}
-        isProUser={false}
-        variant="primary"
-      />
+      <CommonButton userDetails={userDetails} variant="primary" />
     </section>
   );
 };

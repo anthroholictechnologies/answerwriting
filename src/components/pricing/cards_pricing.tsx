@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardContent,
@@ -14,106 +15,56 @@ import {
   getDurationMonths,
 } from "answerwriting/lib/utils";
 import { ButtonPrimary } from "../react-common/buttons/button_primary";
-import { ApiRoutePaths } from "answerwriting/types/general.types";
+import {
+  ApiRoutePaths,
+  Feature,
+  UserDetailProp,
+} from "answerwriting/types/general.types";
 import Link from "next/link";
-
-type Feature = {
-  d: string;
-  t?: string; // Made tooltip text optional
-  available?: boolean;
-};
+import { freeFeatures, proFeatures } from "answerwriting/config";
 
 type PricingCardProps = {
   title: string;
   price: string;
-  features: (string | Feature)[];
+  features: Feature[];
   isCurrentPlan: boolean;
   heading: string;
   featHeading: string;
-  showUpgradeButton?: boolean;
-  lucideIcon: React.ReactNode;
+  isProPlan?: boolean;
   isLoggedIn: boolean;
-  pricingPage?: boolean;
+  isPricingPage?: boolean;
+  isProUser?: boolean;
 };
 
-const freeFeatures = [
-  "Evaluate 1 answer every month",
-  "Get instant AI-powered feedback",
-  "Get Improved Model Answer",
-  { d: "Human Expert Feedback", available: false },
-  { d: "Answers saved forever", available: false },
-];
-
-const proFeatures = [
-  {
-    d: "Unlimited AI Answer Evaluations",
-    t: "Get instant feedback on as many answers as you want",
-  },
-  {
-    d: "Human Expert Fedback",
-    t: "Get feedback from UPSC subject experts",
-  },
-  { d: "Saved Answers Forever", t: "Access your past evaluations anytime" },
-  {
-    d: "Advanced Answer Insights",
-    t: "In-depth analysis to improve structure, coherence, and content",
-  },
-  {
-    d: "Exclusive Writing Tips",
-    t: "AI-powered suggestions to refine your answers",
-  },
-  {
-    d: "Priority Support",
-    t: "Faster responses and assistance whenever you need",
-  },
-];
-
-const PricingCard: React.FC<PricingCardProps> = ({
-  title,
+const PricingDetails = ({
   price,
-  features,
   isCurrentPlan,
-  heading,
-  featHeading,
-  showUpgradeButton = false,
-  lucideIcon,
-  pricingPage = false,
+  showProPlanDetails,
+}: {
+  price: string;
+  isCurrentPlan: boolean;
+  showProPlanDetails: boolean;
 }) => {
   return (
-    <Card className="w-full h-full flex flex-col bg-white overflow-hidden">
-      <CardHeader className="px-4 py-6 sm:px-6 text-center">
-        <CardTitle className="flex items-center gap-2 text-2xl font-bold justify-center">
-          {lucideIcon} {title}
-        </CardTitle>
-        <CardDescription className="space-y-4">
-          <p className="text-center text-sm text-secondary-dark max-w-xs mx-auto">
-            {heading}
-          </p>
-          {pricingPage && (
-            <div className="text-center">
-              <div className="flex items-baseline justify-center gap-1">
-                <span className="text-3xl sm:text-4xl font-bold text-secondary-dark">
-                  {price}
-                </span>
-                <span className="text-lg font-semibold text-secondary-dark">
-                  INR
-                </span>
-              </div>
-              <p className="mt-1 text-sm">Per month</p>
-            </div>
-          )}
-          {pricingPage && isCurrentPlan && (
-            <div className="flex justify-center">
-              <span className="bg-green-400 text-xs rounded-full px-3 py-1 text-white shadow">
-                Current Plan
-              </span>
-            </div>
-          )}
-        </CardDescription>
-      </CardHeader>
-
-      {pricingPage && showUpgradeButton && (
-        <div className="flex flex-col items-center gap-4 px-4 sm:px-6">
+    <div>
+      <div className="text-center">
+        <div className="flex items-baseline justify-center gap-1">
+          <span className="text-3xl sm:text-4xl font-bold text-secondary-dark">
+            {price}
+          </span>
+          <span className="text-lg font-semibold text-secondary-dark">INR</span>
+        </div>
+        <p className="mt-1 text-sm">Per month</p>
+      </div>
+      {isCurrentPlan && (
+        <div className="flex justify-center mt-2">
+          <span className="bg-green-400 text-xs rounded-full px-3 py-1 text-white shadow">
+            Current Plan
+          </span>
+        </div>
+      )}
+      {showProPlanDetails && (
+        <div className="flex flex-col items-center gap-4 mt-2 px-4 sm:px-6">
           <Link href={ApiRoutePaths.PAGE_UPGRADE}>
             <ButtonPrimary>
               <div className="flex gap-2 items-center">
@@ -128,6 +79,40 @@ const PricingCard: React.FC<PricingCardProps> = ({
           </div>
         </div>
       )}
+    </div>
+  );
+};
+
+const PricingCard: React.FC<PricingCardProps> = ({
+  title,
+  price,
+  features,
+  isCurrentPlan,
+  heading,
+  featHeading,
+  isProPlan = false,
+  isProUser,
+  isPricingPage = false,
+}) => {
+  return (
+    <Card className="w-full h-full flex flex-col bg-white overflow-hidden">
+      <CardHeader className="px-4 py-6 sm:px-6 text-center">
+        <CardTitle className="flex items-center gap-2 text-2xl font-bold justify-center">
+          {isProPlan && <RocketIcon />} {title}
+        </CardTitle>
+        <CardDescription className="space-y-4">
+          <p className="text-center text-sm text-secondary-dark max-w-xs mx-auto">
+            {heading}
+          </p>
+          {isPricingPage && (
+            <PricingDetails
+              price={price}
+              isCurrentPlan={isCurrentPlan}
+              showProPlanDetails={isProPlan && !isProUser}
+            />
+          )}
+        </CardDescription>
+      </CardHeader>
 
       <CardContent className="flex-grow px-4 pb-6 sm:px-6 space-y-2 py-4">
         <h2 className="font-bold mb-4">{featHeading}</h2>
@@ -135,8 +120,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
           {features.map((feature, i) => (
             <li key={i} className="flex items-start gap-3">
               <span className="mt-1">
-                {typeof feature === "string" ||
-                (typeof feature === "object" && feature.available !== false) ? (
+                {feature.available ? (
                   <Check size={20} className="text-green-500" />
                 ) : (
                   <X size={20} className=" text-red-500" />
@@ -144,17 +128,19 @@ const PricingCard: React.FC<PricingCardProps> = ({
               </span>
               <div className="flex items-center justify-between w-full gap-2">
                 {typeof feature === "string" ? (
-                  <span className={`${pricingPage ? "text-md" : "text-sm"}`}>
+                  <span className={`${isPricingPage ? "text-md" : "text-sm"}`}>
                     {feature}
                   </span>
                 ) : (
                   <>
-                    <span className={`${pricingPage ? "text-md" : "text-sm"}`}>
-                      {feature.d}
+                    <span
+                      className={`${isPricingPage ? "text-md" : "text-sm"}`}
+                    >
+                      {feature.description}
                     </span>
-                    {feature.t && (
+                    {feature.tooltip && (
                       <div className="shrink-0">
-                        <PricingToolTip text={feature.t} />
+                        <PricingToolTip text={feature.tooltip} />
                       </div>
                     )}
                   </>
@@ -169,22 +155,20 @@ const PricingCard: React.FC<PricingCardProps> = ({
 };
 
 const PricingCards = ({
-  userCurrentPlan,
-  pricingPage = false,
-  isLoggedIn,
+  isPricingPage = false,
   plans,
+  userDetails,
 }: {
-  pricingPage?: boolean;
-  userCurrentPlan: PlanType;
-  isLoggedIn: boolean;
+  isPricingPage?: boolean;
   plans: Plans[];
+  userDetails: UserDetailProp;
 }) => {
   const bestBillingOptionFree = maxBy(
-    plans.find((p) => p.name === PlanType.FREE)?.billingOptions ?? [],
+    plans.find((p) => p.name === PlanType.FREE)?.products ?? [],
     (bo) => bo.discountPercentage,
   );
   const bestBillingOptionPro = maxBy(
-    plans.find((p) => p.name === PlanType.PRO)?.billingOptions ?? [],
+    plans.find((p) => p.name === PlanType.PRO)?.products ?? [],
     (bo) => bo.discountPercentage,
   );
   const priceForFree = bestBillingOptionFree
@@ -207,24 +191,24 @@ const PricingCards = ({
           title="Free"
           price={`₹${priceForFree}`}
           features={freeFeatures}
-          isCurrentPlan={userCurrentPlan === PlanType.FREE}
+          isCurrentPlan={!userDetails.isProUser}
           heading="Evaluate answers, improve instantly, and track your progress"
           featHeading="Features you'll love:"
-          lucideIcon={<></>}
-          isLoggedIn={isLoggedIn}
-          pricingPage={pricingPage}
+          isLoggedIn={!!userDetails.isLoggedIn}
+          isProUser={!!userDetails.isProUser}
+          isPricingPage={isPricingPage}
         />
         <PricingCard
           title="Pro"
           price={`₹${priceForPro}`}
           features={proFeatures}
-          isCurrentPlan={userCurrentPlan === PlanType.PRO}
+          isCurrentPlan={!!userDetails.isProUser}
           heading="Write better, score higher, and improve without limits"
           featHeading="Everything included in the free plan, plus:"
-          lucideIcon={<RocketIcon />}
-          isLoggedIn={isLoggedIn}
-          showUpgradeButton
-          pricingPage={pricingPage}
+          isLoggedIn={!!userDetails.isLoggedIn}
+          isProUser={!!userDetails.isProUser}
+          isProPlan
+          isPricingPage={isPricingPage}
         />
       </div>
     </div>

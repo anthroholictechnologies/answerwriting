@@ -1,37 +1,39 @@
-import Footer from "answerwriting/components/react-common/header_footer/unauth_footer";
-import Header from "answerwriting/components/react-common/header_footer/unauth_header";
 import PricingCards from "answerwriting/components/pricing/cards_pricing";
 import PricingPlans from "answerwriting/components/pricing/plans_pricing";
 import { auth } from "answerwriting/auth";
-import { getPlans, getUserSubscription } from "answerwriting/actions";
+import { getPlans, proUser } from "answerwriting/actions";
 import { PlanType } from "answerwriting/types/payment.types";
 
 export default async function Upgrade(): Promise<React.ReactNode> {
   const session = await auth();
   const plans = await getPlans();
-  const userSubscription = await getUserSubscription(session?.user.id);
+  const { isProUser, hasPendingOrder, transactionId } = await proUser(
+    session?.user?.id,
+  );
+
   return (
     <>
-      <Header isLoggedIn={!!session} />
       <div className="flex flex-col-reverse mx-auto w-full xl:max-w-6xl xl:flex-row  gap-8 p-4 xl:py-16">
         <div className="flex justify-center w-full xl:w-1/2">
           <PricingCards
-            userCurrentPlan={PlanType.FREE}
-            isLoggedIn={!!session}
+            userDetails={{ isLoggedIn: !!session, isProUser: isProUser }}
             plans={plans}
           />
         </div>
         <div className="w-full space-y-6 xl:w-1/2">
           <PricingPlans
-            billingOptions={
-              plans.find((p) => p.name === PlanType.PRO)!.billingOptions
+            products={
+              plans.find((p) => p.name === PlanType.PRO)?.products ?? []
             }
-            userLoggedIn={!!session}
-            userSubscription={userSubscription}
+            userDetails={{
+              isLoggedIn: !!session,
+              isProUser: isProUser,
+              hasPendingOrder: hasPendingOrder,
+              transactionId,
+            }}
           />
         </div>
       </div>
-      <Footer />
     </>
   );
 }

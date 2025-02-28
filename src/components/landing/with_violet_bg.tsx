@@ -3,7 +3,10 @@ import { ButtonSecondary } from "../react-common/buttons/button_secondary";
 import { ButtonPrimary } from "../react-common/buttons/button_primary";
 import { CommonButton } from "../react-common/buttons/button_upgrade";
 import Link from "next/link";
-import { ApiRoutePaths } from "answerwriting/types/general.types";
+import {
+  ApiRoutePaths,
+  UserDetailProp,
+} from "answerwriting/types/general.types";
 
 export const Section_2 = () => {
   return (
@@ -29,7 +32,7 @@ export const Section_2 = () => {
   );
 };
 
-export const Section_5 = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+export const Section_5 = ({ userDetails }: { userDetails: UserDetailProp }) => {
   return (
     <SecondarySection
       title="Precise Feedback for"
@@ -41,11 +44,7 @@ export const Section_5 = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       imageSrc="/homepage_sectionfive.webp"
       transparentImage
       ctaButtons={
-        <CommonButton
-          variant="secondary"
-          isProUser={false}
-          isLoggedIn={isLoggedIn}
-        />
+        <CommonButton variant="secondary" userDetails={userDetails} />
       }
       reverseLayout // Flip layout for variation
     />

@@ -1,8 +1,13 @@
+"use server";
 import Image from "next/image";
 import Link from "next/link";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
 import { CommonButton } from "../buttons/button_upgrade";
-const Header = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+import { auth } from "answerwriting/auth";
+import { proUser } from "answerwriting/actions";
+export default async function Header() {
+  const session = await auth();
+  const isProUser = await proUser(session?.user?.id);
   return (
     <header>
       <nav className="flex w-full lg:justify-around py-4 bg-gray-50 lg:px-24">
@@ -19,8 +24,10 @@ const Header = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         </Link>
         <div className="items-center justify-end gap-4 flex-1 hidden lg:flex">
           <CommonButton
-            isProUser={false}
-            isLoggedIn={isLoggedIn}
+            userDetails={{
+              isLoggedIn: !!session,
+              isProUser: !!isProUser,
+            }}
             variant="primary"
             customSignUpMessage="Sign Up"
           />
@@ -38,8 +45,10 @@ const Header = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         </div>
         <div className="flex lg:hidden items-center px-4">
           <CommonButton
-            isProUser={false}
-            isLoggedIn={isLoggedIn}
+            userDetails={{
+              isLoggedIn: !!session,
+              isProUser: !!isProUser,
+            }}
             variant="primary"
             customEvaluationMessage="Evaluate"
             customSignUpMessage="Sign Up"
@@ -49,6 +58,4 @@ const Header = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       </nav>
     </header>
   );
-};
-
-export default Header;
+}

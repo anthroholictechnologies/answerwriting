@@ -1,21 +1,18 @@
 import FAQSection from "answerwriting/components/pricing/faq_pricing";
-import Footer from "answerwriting/components/react-common/header_footer/unauth_footer";
-import Header from "answerwriting/components/react-common/header_footer/unauth_header";
 import { Brain, Calculator } from "lucide-react";
 import Link from "next/link";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
 import PricingCards from "answerwriting/components/pricing/cards_pricing";
 import GuaranteeCard from "answerwriting/components/pricing/gurantee";
 import { auth } from "answerwriting/auth";
-import { getPlans } from "answerwriting/actions";
-import { PlanType } from "answerwriting/types/payment.types";
+import { getPlans, proUser } from "answerwriting/actions";
 
 export default async function PricingPage(): Promise<React.ReactNode> {
   const session = await auth();
   const plans = await getPlans();
+  const { isProUser } = await proUser(session?.user.id);
   return (
     <>
-      <Header isLoggedIn={!!session} />
       <div className="flex flex-col items-center gap-6 w-full p-4 py-16">
         <div>
           <h1 className="hidden md:block text-center text-4xl tracking-tighter font-bold mb-4">
@@ -53,17 +50,15 @@ export default async function PricingPage(): Promise<React.ReactNode> {
           </div>
         </div>
         <PricingCards
-          userCurrentPlan={PlanType.FREE}
-          isLoggedIn={!!session}
-          pricingPage
+          userDetails={{ isLoggedIn: !!session, isProUser }}
           plans={plans}
+          isPricingPage
         />
         <div>
           <GuaranteeCard />
         </div>
         <FAQSection />
       </div>
-      <Footer />
     </>
   );
 }

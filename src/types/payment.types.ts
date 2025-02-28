@@ -6,7 +6,7 @@ export enum PlanType {
 export enum Duration {
   ANNUAL = "ANNUAL",
   HALF_YEARLY = "HALF_YEARLY",
-  QUATERLY = "QUATERLY",
+  QUATERLY = "QUARTERLY",
   MONTHLY = "MONTHLY",
 }
 
@@ -42,7 +42,7 @@ export enum PaymentStatus {
   FAILED = "FAILED",
 }
 
-export interface BillingOptions {
+export interface Product {
   id: string;
   duration: Duration;
   discountPercentage: number;
@@ -52,7 +52,7 @@ export interface BillingOptions {
 export interface Plans {
   id: string;
   name: PlanType;
-  billingOptions: BillingOptions[];
+  products: Product[];
 }
 
 // DO NOT CHANGE THIS, PROVIDED BY PHONEPAY

@@ -1,28 +1,30 @@
 "use client";
 import { RocketIcon } from "lucide-react";
 import { ButtonPrimary } from "./button_primary";
-import { ApiRoutePaths } from "answerwriting/types/general.types";
+import {
+  ApiRoutePaths,
+  UserDetailProp,
+} from "answerwriting/types/general.types";
 import { ButtonSecondary } from "./button_secondary";
 import Link from "next/link";
 
 export const CommonButton = ({
-  isLoggedIn,
-  isProUser,
+  userDetails,
   variant,
-  customEvaluationMessage = "Start evaluating now",
+  customEvaluationMessage = "Dashboard",
   customSignUpMessage = `Sign Up now, it's Free`,
   customUpgradeMessage = "Upgrade to Pro",
 }: {
-  isLoggedIn: boolean;
-  isProUser: boolean;
+  userDetails: UserDetailProp;
   variant: string;
   customEvaluationMessage?: string;
   customSignUpMessage?: string;
   customUpgradeMessage?: string;
 }) => {
+  // const session = useSession()
   if (variant === "primary") {
-    if (isLoggedIn) {
-      if (isProUser) {
+    if (userDetails.isLoggedIn) {
+      if (userDetails.isProUser) {
         return (
           <Link href={ApiRoutePaths.PAGE_DASHBOARD_TOOLS_EVALUATOR}>
             <ButtonPrimary>
@@ -55,8 +57,8 @@ export const CommonButton = ({
       );
     }
   } else {
-    if (isLoggedIn) {
-      if (isProUser) {
+    if (userDetails.isLoggedIn) {
+      if (userDetails.isProUser) {
         return (
           <Link href={ApiRoutePaths.PAGE_DASHBOARD_TOOLS_EVALUATOR}>
             <ButtonSecondary>

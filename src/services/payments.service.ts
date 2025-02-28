@@ -8,6 +8,7 @@ import {
   Duration,
   PhonePePaymentInitiationResponse,
   PhonePePurchaseRequestPayload,
+  SubscriptionStatus,
   TransactionStatus,
 } from "answerwriting/types/payment.types";
 import crypto from "crypto";
@@ -168,6 +169,11 @@ export const handlePaymentSuccess = async ({
         expiryDate,
         orderId,
         userId,
+        history: {
+          create: {
+            status: SubscriptionStatus.ACTIVE,
+          },
+        },
       },
     });
   });

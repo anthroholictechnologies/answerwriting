@@ -3,6 +3,8 @@ import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "answerwriting/components/ui/toaster";
 import { GoogleTagManager } from "@next/third-parties/google";
+import Header from "answerwriting/components/react-common/header_footer/unauth_header";
+import Footer from "answerwriting/components/react-common/header_footer/unauth_footer";
 
 const openSans = Open_Sans({
   variable: "--font-open-sans",
@@ -31,7 +33,11 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
-        {children}
+        <div className="h-screen w-screen overflow-auto">
+          <Header />
+          {children}
+          <Footer />
+        </div>
         <Toaster />
       </body>
     </html>

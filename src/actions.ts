@@ -14,6 +14,7 @@ import {
   PlanType,
   Subscription,
   SubscriptionStatus,
+  TransactionStatus,
 } from "./types/payment.types";
 
 export const logout = async () => {
@@ -110,9 +111,9 @@ export const SendContactUsEmail = async (data: ContactInput) => {
 };
 
 export const getPlans = async (): Promise<Plans[]> => {
-  const plans = await prisma.subscriptionPlan.findMany({
+  const plans = await prisma.plan.findMany({
     include: {
-      billingOptions: true,
+      products: true,
     },
   });
 
@@ -120,7 +121,7 @@ export const getPlans = async (): Promise<Plans[]> => {
     return {
       id: plan.id,
       name: plan.name as PlanType,
-      billingOptions: plan.billingOptions.map((bo) => {
+      products: plan.products.map((bo) => {
         return {
           id: bo.id,
           planId: bo.planId,
@@ -155,7 +156,61 @@ export const getUserSubscription = async (
 
   return {
     id: userSubscription.id,
-    subscriptionStatus:
-      userSubscription.subscriptionStatus as SubscriptionStatus,
+    subscriptionStatus: SubscriptionStatus.ACTIVE,
+  };
+};
+
+export const proUser = async (
+  userId: string,
+): Promise<{
+  isProUser: boolean;
+  hasPendingOrder: boolean;
+  transactionId?: string;
+}> => {
+  if (!userId) return { isProUser: false, hasPendingOrder: false };
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    include: {
+      orders: {
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 1,
+        include: {
+          transaction: {
+            include: {
+              history: {
+                orderBy: {
+                  createdAt: "desc",
+                },
+                take: 1,
+              },
+            },
+          },
+        },
+      },
+      subscription: {
+        include: {
+          history: true,
+        },
+      },
+    },
+  });
+
+  if (!user) return { isProUser: false, hasPendingOrder: false };
+
+  const latestOrder = user?.orders?.[0];
+  const orderStatus = latestOrder?.transaction?.history?.[0]
+    ?.status as TransactionStatus;
+  const transactionId = latestOrder?.transaction?.id;
+
+  return {
+    isProUser:
+      user?.subscription?.history?.[0]?.status === SubscriptionStatus.ACTIVE,
+    hasPendingOrder: orderStatus === TransactionStatus.PENDING,
+    transactionId,
   };
 };
