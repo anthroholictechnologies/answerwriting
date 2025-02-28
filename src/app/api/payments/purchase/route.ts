@@ -3,6 +3,7 @@ import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
 import {
   CancellationReason,
   InitiatePaymentResponse,
+  SubscriptionStatus,
   TransactionStatus,
 } from "answerwriting/types/payment.types";
 import { PurchaseInput } from "answerwriting/validations/payment.schema";
@@ -50,7 +51,7 @@ async function handlePayment({
       data: {
         userId,
         productId,
-        transactionId: createdTransaction.id, // ✅ Explicitly linking Transaction
+        transactionId: createdTransaction.id,
       },
     });
   });
@@ -71,7 +72,6 @@ export async function POST(
   req: NextRequest,
 ): Promise<NextResponse<ApiResponse<InitiatePaymentResponse>>> {
   try {
-    // STEP 1: Check if the user is authenticated or not
     const session = await auth();
     if (!session) {
       return NextResponse.json(
@@ -84,7 +84,6 @@ export async function POST(
       );
     }
 
-    // STEP 2: CHECK THE PRODUCT EXISTS IN THE DATABASE
     const { productId } = (await req.json()) as PurchaseInput;
     const product = await prisma.product.findUnique({
       where: { id: productId },
@@ -102,6 +101,16 @@ export async function POST(
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
       include: {
+        subscription: {
+          include: {
+            history: {
+              orderBy: {
+                createdAt: "desc",
+              },
+              take: 1,
+            },
+          },
+        },
         orders: {
           include: {
             transaction: {
@@ -122,11 +131,27 @@ export async function POST(
     });
 
     if (!user) {
-      return NextResponse.json({
-        success: false,
-        message: "User not found",
-        errorCode: ErrorCodes.USER_NOT_FOUND,
-      });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "User not found",
+          errorCode: ErrorCodes.USER_NOT_FOUND,
+        },
+        { status: 404 },
+      );
+    }
+    const userSubscription = user.subscription;
+    const status = userSubscription?.history?.[0]?.status;
+
+    if (status === SubscriptionStatus.ACTIVE) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "User already has an active subscription",
+          errorCode: ErrorCodes.USER_ALREADY_HAS_ACTIVE_SUBSCRIPTION,
+        },
+        { status: 409 },
+      );
     }
 
     const [latestOrder] = user.orders;

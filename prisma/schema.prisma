@@ -27,9 +27,9 @@ model User {
   emailVerificationTokens EmailVerificationToken[]
   forgetPasswordTokens    ForgetPasswordToken[]
 
-  answers Answer[]
-
-  orders Order[]
+  answers      Answer[]
+  subscription Subscription?
+  orders       Order[]
 
   @@map("users")
 }
@@ -241,8 +241,48 @@ enum TransactionStatus {
   @@map("transaction_status")
 }
 
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+
+  @@map("subcsription_status")
+}
+
+model Subscription {
+  id String @id @default(cuid())
+
+  orderId String @unique @map("order_id")
+  order   Order? @relation(fields: [orderId], references: [id])
+
+  userId String @unique @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  activationDate DateTime? @map("activation_date")
+  expiryDate     DateTime? @map("expiry_date")
+
+  history SubscriptionHistory[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("subscriptions")
+}
+
+model SubscriptionHistory {
+  id             String             @id @default(cuid())
+  subscriptionId String             @map("subscription_id")
+  subscription   Subscription       @relation(fields: [subscriptionId], references: [id])
+  status         SubscriptionStatus
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("subscription_history")
+}
+
 model Order {
-  id                 String  @id @default(cuid())
+  id String @id @default(cuid())
 
   productId String  @map("product_id")
   product   Product @relation(fields: [productId], references: [id])
@@ -250,11 +290,12 @@ model Order {
   userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id])
 
-  transactionId String       @unique @map("transaction_id") 
+  transactionId String       @unique @map("transaction_id")
   transaction   Transaction? @relation(fields: [transactionId], references: [id])
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  subscription Subscription?
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
 
   @@index([userId])
   @@index([productId])

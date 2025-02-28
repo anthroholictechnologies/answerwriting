@@ -10,19 +10,6 @@ export enum Duration {
   MONTHLY = "MONTHLY",
 }
 
-export enum OrderStatus {
-  // Order is created when the user is at pay screen infront of the payment gateway
-  CREATED = "CREATED",
-  // Order is purchased when the user pays for the order and payment is successfull
-  PURCHASED = "PURCHASED",
-  // Cancelled by the user, if user goes back from the gateway screen and creates a new order
-  CANCELLED = "CANCELLED",
-  // If the payment failes then the order is in the failed state
-  FAILED = "FAILED",
-  // If the payment is made and confirmation is pending from the user
-  PENDING = "PENDING",
-}
-
 export enum TransactionStatus {
   // Transaction is started when the user is at pay screen infront of the payment gateway
   STARTED = "STARTED",
@@ -43,8 +30,6 @@ export enum SubscriptionStatus {
   EXPIRED = "EXPIRED",
   // Can create new subscription
   CANCELLED = "CANCELLED",
-  // Cannot create new subscription
-  PENDING = "PENDING",
 }
 
 export enum CancellationReason {

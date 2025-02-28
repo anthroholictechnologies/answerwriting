@@ -72,6 +72,8 @@ export enum ErrorCodes {
 
   PRODUCT_NOT_FOUND = "ProductNotFound",
   ORDER_ALREADY_PENDING = "OrderAlreadyPending",
+
+  USER_ALREADY_HAS_ACTIVE_SUBSCRIPTION = "UserAlreadyHasActiveSubscription",
 }
 
 export interface ApiResponse<T = unknown> {

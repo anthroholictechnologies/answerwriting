@@ -5,6 +5,7 @@ import {
 } from "answerwriting/config";
 import { ApiRoutePaths } from "answerwriting/types/general.types";
 import {
+  Duration,
   PhonePePaymentInitiationResponse,
   PhonePePurchaseRequestPayload,
   TransactionStatus,
@@ -12,6 +13,7 @@ import {
 import crypto from "crypto";
 import axios from "axios";
 import { prisma } from "answerwriting/prisma";
+import { DateTime } from "luxon";
 
 function generateRedirectURI({
   merchantTransactionId,
@@ -126,15 +128,48 @@ export async function checkPaymentStatus({
 
 export const handlePaymentSuccess = async ({
   transactionId,
+  orderId,
+  userId,
+  duration,
 }: {
   transactionId: string;
+  orderId: string;
+  userId: string;
+  duration: Duration;
 }) => {
+  const activationDate = DateTime.utc();
+  let expiryDate = null;
+  switch (duration) {
+    case Duration.ANNUAL: {
+      expiryDate = activationDate.plus({ days: 360 }).toJSDate();
+    }
+    case Duration.HALF_YEARLY: {
+      expiryDate = activationDate.plus({ days: 180 }).toJSDate();
+    }
+    case Duration.QUATERLY: {
+      expiryDate = activationDate.plus({ days: 90 }).toJSDate();
+    }
+    case Duration.MONTHLY: {
+      expiryDate = activationDate.plus({ days: 30 }).toJSDate();
+    }
+  }
   // Update transaction history to COMPLETED
-  await prisma.transactionStatusHistory.create({
-    data: {
-      transactionId,
-      status: TransactionStatus.COMPLETED,
-    },
+  await prisma.$transaction(async function (tx) {
+    await tx.transactionStatusHistory.create({
+      data: {
+        transactionId,
+        status: TransactionStatus.COMPLETED,
+      },
+    });
+
+    await tx.subscription.create({
+      data: {
+        activationDate: DateTime.utc().toJSDate(),
+        expiryDate,
+        orderId,
+        userId,
+      },
+    });
   });
 };
 export const handlePaymentPending = async ({

@@ -10,6 +10,9 @@ CREATE TYPE "duration" AS ENUM ('ANNUAL', 'HALF_YEARLY', 'QUARTERLY', 'MONTHLY')
 -- CreateEnum
 CREATE TYPE "transaction_status" AS ENUM ('STARTED', 'COMPLETED', 'CANCELLED', 'FAILED', 'PENDING');
 
+-- CreateEnum
+CREATE TYPE "subcsription_status" AS ENUM ('ACTIVE', 'CANCELLED', 'EXPIRED');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
@@ -172,6 +175,30 @@ CREATE TABLE "products" (
 );
 
 -- CreateTable
+CREATE TABLE "subscriptions" (
+    "id" TEXT NOT NULL,
+    "order_id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "activation_date" TIMESTAMP(3),
+    "expiry_date" TIMESTAMP(3),
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "subscriptions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "subscription_history" (
+    "id" TEXT NOT NULL,
+    "subscription_id" TEXT NOT NULL,
+    "status" "subcsription_status" NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "subscription_history_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "orders" (
     "id" TEXT NOT NULL,
     "product_id" TEXT NOT NULL,
@@ -229,6 +256,12 @@ CREATE UNIQUE INDEX "subjects_name_key" ON "subjects"("name");
 CREATE INDEX "subjects_exam_idx" ON "subjects"("exam");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "subscriptions_order_id_key" ON "subscriptions"("order_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "subscriptions_user_id_key" ON "subscriptions"("user_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "orders_transaction_id_key" ON "orders"("transaction_id");
 
 -- CreateIndex
@@ -260,6 +293,15 @@ ALTER TABLE "answers" ADD CONSTRAINT "answers_user_id_fkey" FOREIGN KEY ("user_i
 
 -- AddForeignKey
 ALTER TABLE "products" ADD CONSTRAINT "products_plan_id_fkey" FOREIGN KEY ("plan_id") REFERENCES "plans"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "orders"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "subscription_history" ADD CONSTRAINT "subscription_history_subscription_id_fkey" FOREIGN KEY ("subscription_id") REFERENCES "subscriptions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "orders" ADD CONSTRAINT "orders_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

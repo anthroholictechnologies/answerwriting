@@ -7,6 +7,7 @@ import {
 } from "answerwriting/services/payments.service";
 import { ApiRoutePaths, ErrorCodes } from "answerwriting/types/general.types";
 import {
+  Duration,
   PhonePayStatusCheckAPIResponse,
   PhonePayTransactionStates,
 } from "answerwriting/types/payment.types";
@@ -32,13 +33,26 @@ export async function POST(req: NextRequest) {
       where: {
         id: merchantTransactionId,
       },
+      include: {
+        order: {
+          include: {
+            user: true,
+            product: true,
+          },
+        },
+      },
     });
 
     // If transaction is not found, return an error
     if (!transaction) {
       throw new Error(`Transaction not found`);
     }
+    const order = transaction.order;
+    const user = transaction.order?.user;
+    const product = transaction.order?.product;
 
+    if (!order || !user || !product)
+      throw new Error(`Either of order user or product missing.`);
     // Store the raw payment response JSON for debugging/audit purposes
     await prisma.transaction.update({
       where: { id: transaction.id },
@@ -52,6 +66,9 @@ export async function POST(req: NextRequest) {
     if (paymentState === PhonePayTransactionStates.COMPLETED) {
       await handlePaymentSuccess({
         transactionId: transaction.id,
+        orderId: order.id,
+        userId: user.id,
+        duration: product.duration as Duration,
       });
       return NextResponse.redirect(
         `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=success`,
