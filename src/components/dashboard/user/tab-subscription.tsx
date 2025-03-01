@@ -81,7 +81,7 @@ export const SubscriptionTab = ({
                 </p>
               </div>
 
-              <Link href={ApiRoutePaths.EVALUATE_ANSWER}>
+              <Link href={ApiRoutePaths.PAGE_DASHBOARD_TOOLS_EVALUATOR}>
                 <ButtonPrimary>Practice</ButtonPrimary>
               </Link>
             </div>
