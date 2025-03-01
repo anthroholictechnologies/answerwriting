@@ -15,7 +15,7 @@ const ToolHeading = ({
       )}
     >
       <Image
-        src="logo_2.svg"
+        src="/logo_2.svg"
         height={100}
         width={100}
         alt="answerwriting logo"

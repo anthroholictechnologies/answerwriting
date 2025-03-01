@@ -44,7 +44,11 @@ export const Section_5 = ({ userDetails }: { userDetails: UserDetailProp }) => {
       imageSrc="/homepage_sectionfive.webp"
       transparentImage
       ctaButtons={
-        <CommonButton variant="secondary" userDetails={userDetails} />
+        <CommonButton
+          variant="secondary"
+          userDetails={userDetails}
+          customEvaluationMessage="Start Evaluating Now"
+        />
       }
       reverseLayout // Flip layout for variation
     />

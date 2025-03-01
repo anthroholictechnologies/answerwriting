@@ -43,7 +43,11 @@ export const TertiarySection = ({
         </span>
       </h2>
       <p className="text-lg max-w-4xl lg:text-xl">{description}</p>
-      <CommonButton userDetails={userDetails} variant="primary" />
+      <CommonButton
+        userDetails={userDetails}
+        variant="primary"
+        customEvaluationMessage="Start Evaluating Now"
+      />
     </section>
   );
 };

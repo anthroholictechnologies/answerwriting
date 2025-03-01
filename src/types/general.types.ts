@@ -29,11 +29,11 @@ export enum ApiRoutePaths {
   PAGE_DASHBOARD = "/dashboard",
 
   // Profile
-  PAGE_DASHBOARD_USER_PROFILE = "/me",
+  PAGE_DASHBOARD_USER_PROFILE = "/dashboard/me",
 
   // Tools
-  PAGE_DASHBOARD_TOOLS_EVALUATOR = "/evaluator",
-  PAGE_DASHBOARD_TOOLS_WORD_COUNTER = "/wordcounter",
+  PAGE_DASHBOARD_TOOLS_EVALUATOR = "/dashboard/evaluator",
+  PAGE_DASHBOARD_TOOLS_WORD_COUNTER = "/dashboard/wordcounter",
 
   // auth
   PAGE_LOGIN = "/login",
