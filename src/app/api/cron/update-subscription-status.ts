@@ -4,8 +4,9 @@ import { SubscriptionStatus } from "answerwriting/types/payment.types";
 import { DateTime } from "luxon";
 import { NextResponse } from "next/server";
 
-export default async function POST() {
+export default async function GET() {
   try {
+    console.log(`Running cron job for expiring the subscriptions `);
     // Fetch only active subscriptions whose expiryDate has passed
     const expiredSubscriptions = await prisma.subscription.findMany({
       where: {
@@ -20,6 +21,11 @@ export default async function POST() {
       },
       select: { id: true },
     });
+
+    console.log(
+      `Expiring the subscriptions ${JSON.stringify(expiredSubscriptions)}`
+    );
+
     // Bulk insert expired statuses
     await prisma.subscriptionHistory.createMany({
       data: expiredSubscriptions.map((sub) => ({
@@ -36,7 +42,7 @@ export default async function POST() {
         error: ErrorCodes.INTERNAL_SERVER_ERROR,
         success: false,
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

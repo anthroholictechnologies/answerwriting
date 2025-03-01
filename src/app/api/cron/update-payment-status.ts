@@ -14,8 +14,9 @@ import {
 } from "answerwriting/types/payment.types";
 import { NextResponse } from "next/server";
 
-export async function POST() {
+export async function GET() {
   try {
+    console.log(`Running the cron job to update the transaction status`);
     const transactionsWithTheirLatestStatus = await prisma.transaction.findMany(
       {
         include: {
@@ -30,12 +31,13 @@ export async function POST() {
             orderBy: { createdAt: "desc" },
           },
         },
-      },
+      }
     );
 
     const pendingTransactions = transactionsWithTheirLatestStatus.filter(
-      (tx) => tx.history?.[0]?.status === TransactionStatus.PENDING,
+      (tx) => tx.history?.[0]?.status === TransactionStatus.PENDING
     );
+    console.log("Checking pending transactions", pendingTransactions)
 
     for (const transaction of pendingTransactions) {
       const resp = (await checkPaymentStatus({
@@ -81,7 +83,7 @@ export async function POST() {
         success: true,
         data: pendingTransactions,
       },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (err: unknown) {
     console.error("Error upadting Payment Status", err);

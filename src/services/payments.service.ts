@@ -163,26 +163,33 @@ export const handlePaymentSuccess = async ({
   }
   // Update transaction history to COMPLETED
   await prisma.$transaction(async function (tx) {
-    await tx.transactionStatusHistory.create({
-      data: {
-        transactionId,
-        status: TransactionStatus.COMPLETED,
-      },
+    const existingSubscription = await tx.subscription.findUnique({
+      where: { orderId },
     });
-
-    await tx.subscription.create({
-      data: {
-        activationDate: DateTime.utc().toJSDate(),
-        expiryDate,
-        orderId,
-        userId,
-        history: {
-          create: {
-            status: SubscriptionStatus.ACTIVE,
+    
+    // This is to avoid race conditions
+    if (!existingSubscription) {
+      await tx.transactionStatusHistory.create({
+        data: {
+          transactionId,
+          status: TransactionStatus.COMPLETED,
+        },
+      });
+      // Create new subscription only if it doesn't exist
+      await tx.subscription.create({
+        data: {
+          activationDate: DateTime.utc().toJSDate(),
+          expiryDate,
+          orderId,
+          userId,
+          history: {
+            create: {
+              status: SubscriptionStatus.ACTIVE,
+            },
           },
         },
-      },
-    });
+      });
+    }
   });
 };
 export const handlePaymentPending = async ({
