@@ -7,7 +7,7 @@ import { auth } from "answerwriting/auth";
 import { proUser } from "answerwriting/actions";
 export default async function Header() {
   const session = await auth();
-  const isProUser = await proUser(session?.user?.id);
+  const {isProUser} = await proUser(session?.user?.id);
   return (
     <header>
       <nav className="flex w-full lg:justify-around py-4 bg-gray-50 lg:px-24">
