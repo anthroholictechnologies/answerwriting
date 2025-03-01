@@ -1,11 +1,11 @@
 {
   "crons": [
     {
-      "path": "/cron/update-payment-status",
+      "path": "/api/cron/update-subscription-status",
       "schedule": "0 5 * * *"
     },
     {
-      "path": "/cron/update-subscription-status",
+      "path": "/api/cron/update-subscription-status",
       "schedule": "0 6 * * *"
     }
   ]
