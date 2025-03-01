@@ -100,4 +100,6 @@ export interface UserDetailProp {
   isProUser?: boolean;
   hasPendingOrder?: boolean;
   transactionId?: string;
+  activationDate?: Date;
+  expirationDate?: Date;
 }

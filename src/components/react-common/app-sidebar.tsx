@@ -43,7 +43,7 @@ const profileMenuItems = [
     href: ApiRoutePaths.PAGE_DASHBOARD_USER_PROFILE,
   },
   {
-    label: "Upgrade to Premium",
+    label: "Upgrade to Pro",
     icon: DiamondPlusIcon,
     href: ApiRoutePaths.PAGE_PRICING,
   },

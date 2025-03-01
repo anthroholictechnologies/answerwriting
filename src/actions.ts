@@ -166,6 +166,8 @@ export const proUser = async (
   isProUser: boolean;
   hasPendingOrder: boolean;
   transactionId?: string;
+  activationDate?: Date;
+  expiryDate?: Date;
 }> => {
   if (!userId) return { isProUser: false, hasPendingOrder: false };
 
@@ -212,5 +214,7 @@ export const proUser = async (
       user?.subscription?.history?.[0]?.status === SubscriptionStatus.ACTIVE,
     hasPendingOrder: orderStatus === TransactionStatus.PENDING,
     transactionId,
+    activationDate: user.subscription?.activationDate ?? undefined,
+    expiryDate: user.subscription?.expiryDate ?? undefined,
   };
 };
