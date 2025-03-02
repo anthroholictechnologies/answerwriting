@@ -234,6 +234,22 @@ CREATE TABLE "transaction_status_history" (
     CONSTRAINT "transaction_status_history_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "phone_pay_auth_token" (
+    "id" TEXT NOT NULL,
+    "access_token" TEXT NOT NULL,
+    "encrypted_access_token" TEXT NOT NULL,
+    "expires_in" INTEGER,
+    "issued_at" INTEGER NOT NULL,
+    "expires_at" INTEGER NOT NULL,
+    "session_expires_at" INTEGER NOT NULL,
+    "token_type" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "phone_pay_auth_token_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 

@@ -10,7 +10,7 @@ import { PurchaseInput } from "answerwriting/validations/payment.schema";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "answerwriting/auth";
 import cuid from "cuid";
-import { initiatePayment } from "answerwriting/services/payments.service";
+import { getPaymentPage } from "answerwriting/services/phonepay";
 /**
  * Handles payment initiation and subscription creation.
  */
@@ -23,22 +23,23 @@ async function handlePayment({
   productId: string;
   amount: number;
 }) {
-  const merchantTransactionId = cuid();
-  const initiatePaymentResponse = await initiatePayment({
-    merchantTransactionId,
-    merchantUserId: userId,
-    amountInPaisa: amount,
+  const merchantOrderId = cuid();
+  const getPaymentPageResponse = await getPaymentPage({
+    merchantOrderId,
+    amount,
   });
 
-  const paymentGatewayUrl =
-    initiatePaymentResponse?.data?.instrumentResponse?.redirectInfo?.url;
+  const paymentGatewayUrl = getPaymentPageResponse.redirectUrl;
+  console.log("paymentGatewayUrl====", paymentGatewayUrl);
+
   if (!paymentGatewayUrl) throw new Error("Payment gateway URL is missing");
+
   await prisma.$transaction(async (tx) => {
     const createdTransaction = await tx.transaction.create({
       data: {
-        id: merchantTransactionId,
+        id: merchantOrderId,
         amount,
-        paymentInitiationJSON: initiatePaymentResponse,
+        paymentInitiationJSON: JSON.stringify(getPaymentPageResponse),
         history: {
           create: {
             status: TransactionStatus.STARTED,

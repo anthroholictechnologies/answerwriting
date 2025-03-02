@@ -34,7 +34,7 @@ export async function GET() {
     });
 
     console.log(
-      `Expiring the subscriptions ${JSON.stringify(expiryDatePassed)}`
+      `Expiring the subscriptions ${JSON.stringify(expiryDatePassed)}`,
     );
 
     // Bulk insert expired statuses
@@ -53,7 +53,7 @@ export async function GET() {
         error: ErrorCodes.INTERNAL_SERVER_ERROR,
         success: false,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

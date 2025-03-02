@@ -320,13 +320,28 @@ model Transaction {
 }
 
 model TransactionStatusHistory {
-  id            String            @id @default(cuid())
-  status        TransactionStatus
-  transactionId String            @map("transaction_id")
-  transaction   Transaction       @relation(fields: [transactionId], references: [id])
+  id                    String            @id @default(cuid())
+  status                TransactionStatus
+  transactionId         String            @map("transaction_id")
+  transaction           Transaction       @relation(fields: [transactionId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("transaction_status_history")
+}
+
+model PhonePeAuthToken {
+  id                   String   @id @default(cuid())
+  accessToken          String   @map("access_token")
+  encryptedAccessToken String   @map("encrypted_access_token")
+  expiresIn            Int?     @map("expires_in")
+  issuedAt             Int      @map("issued_at")
+  expiresAt            Int      @map("expires_at")
+  sessionExpiresAt     Int      @map("session_expires_at")
+  tokenType            String   @map("token_type")
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  @@map("phone_pay_auth_token")
 }

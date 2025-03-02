@@ -1,0 +1,35 @@
+{
+  "message": "Request failed with status code 404",
+  "name": "AxiosError",
+  "stack": "AxiosError: Request failed with status code 404\n    at settle (C:\\Users\\aayus\\Desktop\\answerwriting\\.next\\server\\chunks\\node_modules_axios_lib_afbb78._.js:2538:16)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\aayus\\Desktop\\answerwriting\\.next\\server\\chunks\\node_modules_axios_lib_afbb78._.js:3172:181)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1696:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)\n    at Axios.request (C:\\Users\\aayus\\Desktop\\answerwriting\\.next\\server\\chunks\\node_modules_axios_lib_afbb78._.js:4058:49)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async initiatePayment (C:\\Users\\aayus\\Desktop\\answerwriting\\.next\\server\\chunks\\[root of the server]__925fa3._.js:779:22)\n    at async handlePayment (C:\\Users\\aayus\\Desktop\\answerwriting\\.next\\server\\chunks\\[root of the server]__925fa3._.js:916:37)\n    at async POST (C:\\Users\\aayus\\Desktop\\answerwriting\\.next\\server\\chunks\\[root of the server]__925fa3._.js:1057:35)\n    at async AppRouteRouteModule.do (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\compiled\\next-server\\app-route.runtime.dev.js:10:32804)\n    at async AppRouteRouteModule.handle (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\compiled\\next-server\\app-route.runtime.dev.js:10:39825)\n    at async doRender (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\server\\base-server.js:1452:42)\n    at async responseGenerator (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\server\\base-server.js:1822:28)\n    at async DevServer.renderToResponseWithComponentsImpl (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\server\\base-server.js:1832:28)\n    at async DevServer.renderPageComponent (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\server\\base-server.js:2259:24)\n    at async DevServer.renderToResponseImpl (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\server\\base-server.js:2297:32)\n    at async DevServer.pipeImpl (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\server\\base-server.js:959:25)\n    at async NextNodeServer.handleCatchallRenderRequest (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\server\\next-server.js:281:17)\n    at async DevServer.handleRequestImpl (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\server\\base-server.js:853:17)\n    at async C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\server\\dev\\next-dev-server.js:371:20\n    at async Span.traceAsyncFn (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\trace\\trace.js:153:20)\n    at async DevServer.handleRequest (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\server\\dev\\next-dev-server.js:368:24)\n    at async invokeRender (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\server\\lib\\router-server.js:230:21)\n    at async handleRequest (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\server\\lib\\router-server.js:408:24)\n    at async requestHandlerImpl (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\server\\lib\\router-server.js:432:13)\n    at async Server.requestListener (C:\\Users\\aayus\\Desktop\\answerwriting\\node_modules\\next\\dist\\server\\lib\\start-server.js:146:13)",
+  "config": {
+    "transitional": {
+      "silentJSONParsing": true,
+      "forcedJSONParsing": true,
+      "clarifyTimeoutError": false
+    },
+    "adapter": ["xhr", "http", "fetch"],
+    "transformRequest": [null],
+    "transformResponse": [null],
+    "timeout": 0,
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+    "maxContentLength": -1,
+    "maxBodyLength": -1,
+    "env": {},
+    "headers": {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "X-VERIFY": "7bf4994e38b8a1da217d9fb7b1349a45c847e5641a5ab4111ce3a4ecedb03661###1",
+      "X-MERCHANT-ID": "ANSWERONLINE",
+      "User-Agent": "axios/1.7.9",
+      "Content-Length": "518",
+      "Accept-Encoding": "gzip, compress, deflate, br"
+    },
+    "method": "post",
+    "url": "https://api.phonepe.com/apis/hermes/pg/v1/pay",
+    "data": "{\"request\":\"eyJtZXJjaGFudElkIjoiQU5TV0VST05MSU5FIiwibWVyY2hhbnRUcmFuc2FjdGlvbklkIjoiY203cmkwNzBlMDAwMGRvaWRodWNtMjZncyIsIm1lcmNoYW50VXNlcklkIjoiY203cmVrcGI2MDAwNmw1MGNkZmY1b2xhbiIsImFtb3VudCI6Mjk5MDAsInJlZGlyZWN0VXJsIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9wYXltZW50cy9zdGF0dXM/aWQ9Y203cmkwNzBlMDAwMGRvaWRodWNtMjZncyIsImNhbGxiYWNrVXJsIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9wYXltZW50cy9zdGF0dXM/aWQ9Y203cmkwNzBlMDAwMGRvaWRodWNtMjZncyIsInBheW1lbnRJbnN0cnVtZW50Ijp7InR5cGUiOiJQQVlfUEFHRSJ9LCJyZWRpcmVjdE1vZGUiOiJQT1NUIn0=\"}"
+  },
+  "code": "ERR_BAD_REQUEST",
+  "status": 404
+}

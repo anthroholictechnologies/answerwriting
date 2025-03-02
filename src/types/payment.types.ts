@@ -107,3 +107,45 @@ export interface Subscription {
   id: string;
   subscriptionStatus: SubscriptionStatus;
 }
+
+export interface GetAuthTokenRequestPayload {
+  client_id: string;
+  client_version: string;
+  client_secret: string;
+  grant_type: "client_credentials";
+}
+
+export interface GetAuthTokenResponsePayload {
+  access_token: string;
+  encrypted_access_token: string;
+  expires_in: number | null;
+  issued_at: number;
+  expires_at: number;
+  session_expires_at: number;
+  token_type: "O-Bearer";
+}
+
+export interface PaymentInitiationPayload {
+  merchantOrderId: string;
+  amount: number;
+  paymentFlow: {
+    type: "PG_CHECKOUT";
+    merchantUrls: {
+      redirectUrl: string;
+    };
+  };
+}
+
+export interface PaymentInitiationResponse {
+  orderId: string;
+  state: string;
+  expireAt: number;
+  redirectUrl: string;
+}
+
+export interface PaymentStatusCheckResponse {
+  orderId: string;
+  state: PhonePayTransactionStates;
+  amount: string;
+  expireAt: number;
+}

@@ -1,14 +1,13 @@
 import { prisma } from "answerwriting/prisma";
 import {
-  checkPaymentStatus,
   handlePaymentFailed,
   handlePaymentPending,
   handlePaymentSuccess,
 } from "answerwriting/services/payments.service";
+import { getPaymentStatus } from "answerwriting/services/phonepay";
 import { ApiRoutePaths, ErrorCodes } from "answerwriting/types/general.types";
 import {
   Duration,
-  PhonePayStatusCheckAPIResponse,
   PhonePayTransactionStates,
 } from "answerwriting/types/payment.types";
 import { NextRequest, NextResponse } from "next/server";
@@ -24,9 +23,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Fetch the payment status from PhonePe's API
-    const resp = (await checkPaymentStatus({
-      merchantTransactionId,
-    })) as PhonePayStatusCheckAPIResponse;
+    const resp = await getPaymentStatus(merchantTransactionId);
 
     // Retrieve the transaction from the database
     const transaction = await prisma.transaction.findUnique({
@@ -56,11 +53,11 @@ export async function POST(req: NextRequest) {
     // Store the raw payment response JSON for debugging/audit purposes
     await prisma.transaction.update({
       where: { id: transaction.id },
-      data: { paymentResultJSON: resp },
+      data: { paymentResultJSON: JSON.stringify(resp) },
     });
 
     // Extract the payment status
-    const paymentState = resp?.data?.state;
+    const paymentState = resp.state;
 
     // Handle different transaction statuses
     if (paymentState === PhonePayTransactionStates.COMPLETED) {

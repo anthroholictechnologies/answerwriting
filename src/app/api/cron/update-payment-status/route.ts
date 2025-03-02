@@ -1,15 +1,14 @@
 import { TransactionStatus } from "@prisma/client";
 import { prisma } from "answerwriting/prisma";
 import {
-  checkPaymentStatus,
   handlePaymentFailed,
   handlePaymentPending,
   handlePaymentSuccess,
 } from "answerwriting/services/payments.service";
+import { getPaymentStatus } from "answerwriting/services/phonepay";
 import { ErrorCodes } from "answerwriting/types/general.types";
 import {
   Duration,
-  PhonePayStatusCheckAPIResponse,
   PhonePayTransactionStates,
 } from "answerwriting/types/payment.types";
 import { NextResponse } from "next/server";
@@ -40,18 +39,16 @@ export async function GET() {
     console.log("Checking pending transactions", pendingTransactions);
 
     for (const transaction of pendingTransactions) {
-      const resp = (await checkPaymentStatus({
-        merchantTransactionId: transaction.id,
-      })) as PhonePayStatusCheckAPIResponse;
+      const resp = await getPaymentStatus(transaction.id);
 
       // Store the raw payment response JSON for debugging/audit purposes
       await prisma.transaction.update({
         where: { id: transaction.id },
-        data: { paymentResultJSON: resp },
+        data: { paymentResultJSON: JSON.stringify(resp) },
       });
 
       // Extract the payment status
-      const paymentState = resp?.data?.state;
+      const paymentState = resp.state;
 
       const order = transaction.order;
       const user = transaction.order?.user;
