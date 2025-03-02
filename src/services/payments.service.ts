@@ -166,7 +166,7 @@ export const handlePaymentSuccess = async ({
     const existingSubscription = await tx.subscription.findUnique({
       where: { orderId },
     });
-    
+
     // This is to avoid race conditions
     if (!existingSubscription) {
       await tx.transactionStatusHistory.create({
