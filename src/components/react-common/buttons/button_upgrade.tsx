@@ -22,7 +22,7 @@ export const CommonButton = ({
   customUpgradeMessage?: string;
 }) => {
   // const session = useSession()
-  console.log("userDetails=====", userDetails)
+  console.log("userDetails=====", userDetails);
   if (variant === "primary") {
     if (userDetails.isLoggedIn) {
       if (userDetails.isProUser) {

@@ -31,13 +31,13 @@ export async function GET() {
             orderBy: { createdAt: "desc" },
           },
         },
-      }
+      },
     );
 
     const pendingTransactions = transactionsWithTheirLatestStatus.filter(
-      (tx) => tx.history?.[0]?.status === TransactionStatus.PENDING
+      (tx) => tx.history?.[0]?.status === TransactionStatus.PENDING,
     );
-    console.log("Checking pending transactions", pendingTransactions)
+    console.log("Checking pending transactions", pendingTransactions);
 
     for (const transaction of pendingTransactions) {
       const resp = (await checkPaymentStatus({
@@ -83,7 +83,7 @@ export async function GET() {
         success: true,
         data: pendingTransactions,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (err: unknown) {
     console.error("Error upadting Payment Status", err);

@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
 
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
       console.error(
-        `Cron job ${pathName} failed to execute. Auth header missing`
+        `Cron job ${pathName} failed to execute. Auth header missing`,
       );
       return NextResponse.json(
         {
@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest) {
           errorCode: ErrorCodes.UNAUTHORIZED,
           message: "Invalid or expired token",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
   }
@@ -41,17 +41,17 @@ export async function middleware(request: NextRequest) {
             errorCode: ErrorCodes.UNAUTHORIZED,
             message: "User not authenticated",
           },
-          { status: 401 }
+          { status: 401 },
         );
       }
       return NextResponse.redirect(
-        new URL(ApiRoutePaths.PAGE_LOGIN, request.url)
+        new URL(ApiRoutePaths.PAGE_LOGIN, request.url),
       );
     }
 
     if (session.user.password && !session.user.emailVerified) {
       return NextResponse.redirect(
-        new URL(ApiRoutePaths.PAGE_LOGIN, request.url)
+        new URL(ApiRoutePaths.PAGE_LOGIN, request.url),
       );
     }
   }
@@ -67,7 +67,7 @@ export async function middleware(request: NextRequest) {
       const formattedError = formatZodErrors(validations.error);
       console.error(
         `validation error in middleware for path: ${pathName}`,
-        formattedError
+        formattedError,
       );
       /*
        * Follow response format
@@ -84,7 +84,7 @@ export async function middleware(request: NextRequest) {
           errorCode: ErrorCodes.BAD_REQUEST_EXCEPTION,
           message: formattedError,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
   }

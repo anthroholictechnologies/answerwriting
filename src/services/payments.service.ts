@@ -52,7 +52,7 @@ export async function initiatePayment({
   };
 
   const baseSixtyFourPayload = Buffer.from(JSON.stringify(payload)).toString(
-    "base64"
+    "base64",
   );
   const checkSum = generateCheckSumForPaymentInitiation(baseSixtyFourPayload);
 
@@ -66,7 +66,7 @@ export async function initiatePayment({
   const response = await axios.post(
     `${process.env.PHONE_PAY_BASE_URI}${PHONE_PAY_PAYMENT_ENDPOINT}`,
     { request: baseSixtyFourPayload },
-    { headers }
+    { headers },
   );
 
   const respData = <PhonePePaymentInitiationResponse>response.data;
@@ -77,7 +77,7 @@ const generateCheckSumForPaymentStatus = (merchantTransactionId: string) =>
   crypto
     .createHash("sha256")
     .update(
-      `${PHONE_PAY_PAYMENT_STATUS_ENDPOINT}/${process.env.PHONE_PAY_MERCHANT_ID}/${merchantTransactionId}${process.env.PHONE_PAY_SALT_KEY}`
+      `${PHONE_PAY_PAYMENT_STATUS_ENDPOINT}/${process.env.PHONE_PAY_MERCHANT_ID}/${merchantTransactionId}${process.env.PHONE_PAY_SALT_KEY}`,
     )
     .digest("hex") +
   CHECKSUM_ADDER +
@@ -121,7 +121,7 @@ export async function checkPaymentStatus({
 
   const resp = await axios.get(
     `${process.env.PHONE_PAY_BASE_URI}${PHONE_PAY_PAYMENT_STATUS_ENDPOINT}/${process.env.PHONE_PAY_MERCHANT_ID}/${merchantTransactionId}`,
-    { headers }
+    { headers },
   );
 
   return resp.data;
