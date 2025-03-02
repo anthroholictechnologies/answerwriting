@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/cron/update-subscription-status",
-      "schedule": "* * * * *"
+      "schedule": "* 6 * * *"
     }
   ]
 }
