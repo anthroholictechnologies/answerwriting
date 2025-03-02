@@ -8,33 +8,44 @@ export async function GET() {
   try {
     console.log(`Running cron job for expiring the subscriptions `);
     // Fetch only active subscriptions whose expiryDate has passed
-    const expiredSubscriptions = await prisma.subscription.findMany({
-      where: {
+    const allSubscriptions = await prisma.subscription.findMany({
+      include: {
         history: {
-          some: {
-            status: SubscriptionStatus.ACTIVE,
-          },
-        },
-        expiryDate: {
-          lt: DateTime.utc().toJSDate(),
+          orderBy: { createdAt: "desc" },
+          take: 1,
         },
       },
-      select: { id: true },
+    });
+
+    const allActiveSubscriptions = allSubscriptions.filter((sub) => {
+      const status = sub.history[0].status;
+      return status === SubscriptionStatus.ACTIVE;
+    });
+
+    const expiryDatePassed = allActiveSubscriptions.filter((sub) => {
+      if (sub.expiryDate) {
+        return (
+          DateTime.fromJSDate(sub.expiryDate).toMillis() <
+          DateTime.utc().toMillis()
+        );
+      }
+
+      return false;
     });
 
     console.log(
-      `Expiring the subscriptions ${JSON.stringify(expiredSubscriptions)}`,
+      `Expiring the subscriptions ${JSON.stringify(expiryDatePassed)}`
     );
 
     // Bulk insert expired statuses
     await prisma.subscriptionHistory.createMany({
-      data: expiredSubscriptions.map((sub) => ({
+      data: expiryDatePassed.map((sub) => ({
         status: SubscriptionStatus.EXPIRED,
         subscriptionId: sub.id,
       })),
     });
 
-    return NextResponse.json({ success: true, data: expiredSubscriptions });
+    return NextResponse.json({ success: true, data: expiryDatePassed });
   } catch (error) {
     console.error("Error updating subscriptions:", error);
     return NextResponse.json(
@@ -42,7 +53,7 @@ export async function GET() {
         error: ErrorCodes.INTERNAL_SERVER_ERROR,
         success: false,
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
