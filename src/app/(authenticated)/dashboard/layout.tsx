@@ -1,3 +1,5 @@
+import { proUser } from "answerwriting/actions";
+import { auth } from "answerwriting/auth";
 import Appsidebar from "answerwriting/components/react-common/app-sidebar";
 import {
   SidebarProvider,
@@ -10,9 +12,11 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
+  const userDetails = await proUser(session?.user?.id);
   return (
     <SidebarProvider>
-      <Appsidebar />
+      <Appsidebar userDetails={userDetails} />
       <div className="h-screen w-screen">
         <div className="md:hidden flex justify-center py-4 m-0 relative">
           <SidebarTrigger className="absolute top-0 left-0 w-12 h-12" />
