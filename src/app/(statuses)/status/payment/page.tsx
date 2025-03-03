@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import {
   CardDescription,
   CardFooter,
@@ -14,129 +14,150 @@ import { ButtonPrimary } from "answerwriting/components/react-common/buttons/but
 import { ApiRoutePaths } from "answerwriting/types/general.types";
 import Image from "next/image";
 
+type PaymentStatusType = "success" | "failure" | "pending";
+
 function PaymentStatusContent() {
   const searchParams = useSearchParams();
-  const [status, setStatus] = useState("pending");
+  const [status, setStatus] = useState<PaymentStatusType>("pending");
 
   useEffect(() => {
-    const statusParam = searchParams.get("status") || "pending";
-    setStatus(statusParam.toLowerCase());
+    const statusParam = searchParams.get("status") as PaymentStatusType | null;
+    if (
+      statusParam &&
+      ["success", "failure", "pending"].includes(statusParam)
+    ) {
+      setStatus(statusParam);
+    }
   }, [searchParams]);
 
-  // Select the appropriate GIF based on the payment status
-  const statusGif =
+  const statusGif: Record<PaymentStatusType, string> = {
+    success: "/payment_success.gif",
+    failure: "/payment_failed.gif",
+    pending: "/payment_pending.gif",
+  };
+
+  const statusConfig: Record<
+    PaymentStatusType,
     {
-      success: "/payment_success.gif",
-      failure: "/payment_failed.gif",
-      pending: "/payment_pending.gif",
-    }[status] || "/payment_pending.gif"; // Default to pending gif if status is unknown
+      bgColor: string;
+      iconColor: string;
+      icon: React.ReactNode;
+      title: string;
+      description: string;
+    }
+  > = {
+    success: {
+      bgColor: "bg-green-100",
+      iconColor: "text-green-600",
+      icon: <Check className="h-8 w-8 text-green-600" />,
+      title: "Payment Successful!",
+      description:
+        "Your payment has been processed successfully. You have unlimited AI evaluations now.",
+    },
+    failure: {
+      bgColor: "bg-red-100",
+      iconColor: "text-red-600",
+      icon: <X className="h-8 w-8 text-red-600" />,
+      title: "Payment Failed",
+      description:
+        "We were unable to process your payment. Please try again after 30 minutes.",
+    },
+    pending: {
+      bgColor: "bg-yellow-100",
+      iconColor: "text-yellow-600",
+      icon: <Clock className="h-8 w-8 text-yellow-600" />,
+      title: "Payment Processing",
+      description: "Your payment is being processed. This may take 24 hours.",
+    },
+  };
+
+  const currentStatus = statusConfig[status];
 
   return (
-    <>
-      {/* Mobile Background - Only visible on smaller screens */}
-      <div
-        className="fixed inset-0 xl:hidden z-0"
-        style={{
-          backgroundImage: `url(${statusGif})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          filter: "blur(1px)",
-        }}
-      >
-        <div className="absolute inset-0 bg-white opacity-80"></div>
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 lg:flex-row-reverse lg:items-center lg:gap-10 overflow-hidden">
+      {/* Image Section */}
+      <div className="w-full max-w-md flex justify-center lg:max-w-xl">
+        <Image
+          src={statusGif[status]}
+          alt="Payment Status Illustration"
+          width={1080}
+          height={1080}
+          className="w-full h-auto max-h-[50vh] object-cover rounded-lg"
+          priority
+        />
       </div>
 
-      {/* Main Content */}
-      <div className="flex w-full h-screen overflow-hidden">
-        {/* Left Section - Payment Status */}
-        <div className="w-full xl:w-[50%] flex items-center justify-center p-4 z-10 relative">
-          <div className="w-full max-w-md bg-white bg-opacity-90 rounded-lg p-6">
-            <CardHeader className="text-center">
-              {/* Icon with Dynamic Background */}
-              <div
-                className={`mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full ${
-                  status === "success"
-                    ? "bg-green-100"
-                    : status === "failure"
-                      ? "bg-red-100"
-                      : "bg-yellow-100"
-                }`}
+      {/* Card Section */}
+      <div className="w-full flex justify-center lg:max-w-xl lg:border-r lg:border-gray-200">
+        <div className="w-full text-center flex flex-col items-center md:p-8 max-h-[80vh] overflow-hidden">
+          <CardHeader className="pb-2">
+            <div
+              className={`mx-auto hidden xl:flex mb-6 h-16 w-16 items-center justify-center rounded-full ${currentStatus.bgColor}`}
+            >
+              {currentStatus.icon}
+            </div>
+            <CardTitle className="text-2xl md:text-3xl font-bold mb-2">
+              {currentStatus.title}
+            </CardTitle>
+            <CardDescription className="text-base md:text-lg text-gray-600">
+              {currentStatus.description}
+            </CardDescription>
+          </CardHeader>
+
+          <CardFooter className="flex flex-col pt-4 pb-2 w-full">
+            {(status === "success" || status === "pending") && (
+              <Link
+                href={ApiRoutePaths.PAGE_DASHBOARD}
+                className="w-full flex justify-center"
               >
-                {status === "success" ? (
-                  <Check className="h-8 w-8 text-green-600" />
-                ) : status === "failure" ? (
-                  <X className="h-8 w-8 text-red-600" />
-                ) : (
-                  <Clock className="h-8 w-8 text-yellow-600" />
-                )}
-              </div>
+                <ButtonPrimary styles="py-3 text-base font-medium text-center">
+                  Back to Dashboard
+                </ButtonPrimary>
+              </Link>
+            )}
 
-              {/* Title and Description */}
-              <CardTitle className="text-2xl md:text-4xl font-bold">
-                {status === "success"
-                  ? "Payment Successful!"
-                  : status === "failure"
-                    ? "Payment Failed"
-                    : "Payment Processing"}
-              </CardTitle>
+            {status === "failure" && (
+              <Link
+                href={ApiRoutePaths.PAGE_UPGRADE}
+                className="w-full flex justify-center"
+              >
+                <ButtonPrimary styles="w-full py-3 text-base font-medium text-center">
+                  Try Again
+                </ButtonPrimary>
+              </Link>
+            )}
 
-              <CardDescription className="text-base md:text-lg">
-                {status === "success"
-                  ? "Your payment has been processed successfully. You have unlimited AI evaluations now."
-                  : status === "failure"
-                    ? "We were unable to process your payment. Please try again after 30 minutes."
-                    : "Your payment is being processed. This may take 24 hours."}
-              </CardDescription>
-            </CardHeader>
-
-            {/* Action Buttons */}
-            <CardFooter className="flex flex-col space-y-2">
-              {(status === "success" || status === "pending") && (
-                <Link href={ApiRoutePaths.PAGE_DASHBOARD}>
-                  <ButtonPrimary>Back to Dashboard</ButtonPrimary>
+            {(status === "failure" || status === "pending") && (
+              <p className="text-sm text-center mt-4 text-gray-500">
+                Need help?{" "}
+                <Link
+                  href={ApiRoutePaths.PAGE_CONTACT_US}
+                  className="text-primary-dark hover:underline font-medium"
+                >
+                  Contact our support team
                 </Link>
-              )}
-
-              {status === "failure" && (
-                <Link href={ApiRoutePaths.PAGE_UPGRADE}>
-                  <ButtonPrimary>Try Again</ButtonPrimary>
-                </Link>
-              )}
-
-              {(status === "failure" || status === "pending") && (
-                <p className="text-xs text-center mt-4 text-gray-500">
-                  Need help?{" "}
-                  <Link
-                    href={ApiRoutePaths.PAGE_CONTACT_US}
-                    className="text-primary-dark hover:underline"
-                  >
-                    Contact our support team
-                  </Link>
-                </p>
-              )}
-            </CardFooter>
-          </div>
-        </div>
-
-        {/* Right Section - GIF Display (only for xl screens) */}
-        <div className="xl:w-[50%] h-screen hidden xl:block border-l border-gray-200">
-          <Image
-            src={statusGif}
-            alt="Payment Status Image"
-            width={1080}
-            height={1080}
-            className="h-full w-full object-cover"
-            priority
-          />
+              </p>
+            )}
+          </CardFooter>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
 export default function PaymentStatus() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="animate-pulse flex flex-col items-center">
+            <div className="h-16 w-16 bg-gray-200 rounded-full mb-4"></div>
+            <div className="h-8 w-64 bg-gray-200 rounded mb-4"></div>
+            <div className="h-4 w-48 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      }
+    >
       <PaymentStatusContent />
     </Suspense>
   );
