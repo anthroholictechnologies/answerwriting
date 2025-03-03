@@ -180,6 +180,9 @@ model Answer {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
   @@map("answers")
 }
 
@@ -320,10 +323,10 @@ model Transaction {
 }
 
 model TransactionStatusHistory {
-  id                    String            @id @default(cuid())
-  status                TransactionStatus
-  transactionId         String            @map("transaction_id")
-  transaction           Transaction       @relation(fields: [transactionId], references: [id])
+  id            String            @id @default(cuid())
+  status        TransactionStatus
+  transactionId String            @map("transaction_id")
+  transaction   Transaction       @relation(fields: [transactionId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

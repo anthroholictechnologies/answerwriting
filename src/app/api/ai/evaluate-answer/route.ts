@@ -15,6 +15,7 @@ import { StructuredOutputParser } from "langchain/output_parsers";
 import { NextRequest, NextResponse } from "next/server";
 import cuid from "cuid";
 import { sumBy } from "lodash";
+import { isRateLimitReached } from "answerwriting/services/rate-limit.service";
 
 export const maxDuration = 60;
 /**
@@ -27,7 +28,7 @@ export const maxDuration = 60;
 async function uploadFiles(
   userId: string,
   answerId: string,
-  files: Blob[], // Accepts Blob instead of File
+  files: Blob[] // Accepts Blob instead of File
 ): Promise<string[]> {
   return Promise.all(
     files.map(async (file) => {
@@ -35,13 +36,13 @@ async function uploadFiles(
       const path = `answers/${userId}/${answerId}/${cuid()}.${contentType.split("/")[1]}`;
       await uploadFile({ fileBuffer: buffer, filePath: path, contentType });
       return path;
-    }),
+    })
   );
 }
 
 // Helper function to convert Blob to Buffer
 async function convertBlobToBuffer(
-  blob: Blob,
+  blob: Blob
 ): Promise<{ buffer: Buffer; contentType: string }> {
   const arrayBuffer = await blob.arrayBuffer();
   return { buffer: Buffer.from(arrayBuffer), contentType: blob.type };
@@ -53,10 +54,9 @@ async function convertBlobToBuffer(
  * @returns A JSON response with the evaluation results.
  */
 export async function POST(
-  request: NextRequest,
+  request: NextRequest
 ): Promise<NextResponse<ApiResponse<EvaluateAnswerAPIResponse>>> {
   try {
-    console.log("request recieved");
     // Authenticate user
     const session = await auth();
     const user = session?.user;
@@ -67,10 +67,20 @@ export async function POST(
           errorCode: ErrorCodes.UNAUTHORIZED,
           message: "User not authenticated.",
         },
-        { status: 401 },
+        { status: 401 }
       );
     }
-    console.log("user queried from the db");
+
+    if (await isRateLimitReached(user.id)) {
+      return NextResponse.json(
+        {
+          success: false,
+          errorCode: ErrorCodes.TOO_MANY_REQUESTS_FOR_EVALUATION,
+          message: "Please upgrade to pro to continue evaluating",
+        },
+        { status: 429 }
+      );
+    }
     // Parse form data
     const formData = await request.formData();
     const exam = formData.get("exam") as Exams;
@@ -79,7 +89,7 @@ export async function POST(
     const answerPDF = formData.get("answerPDF") as Blob | undefined; // Fix: Use Blob instead of File
     const imageFiles: Blob[] = Array.from(formData.entries())
       .filter(
-        ([key, value]) => key.startsWith("image-") && value instanceof Blob,
+        ([key, value]) => key.startsWith("image-") && value instanceof Blob
       )
       .map(([, value]) => value as Blob);
 
@@ -113,19 +123,13 @@ export async function POST(
       }),
       prisma.baseCriteria.findMany(),
     ]);
-
-    console.log("selected subjects from database fetched: ", selectedSubjects);
-
+    
     const subjectSpecificCriterias = await prisma.subjectCriteria.findMany({
       where: {
         subjectId: { in: selectedSubjects.map((subject) => subject.id) },
       },
     });
 
-    console.log(
-      "subject specific criterias fetched: ",
-      subjectSpecificCriterias,
-    );
     // Prepare evaluation parameters
     const evaluationParameters = [
       ...baseCriterias.map(({ parameter, logic }) => ({
@@ -142,7 +146,6 @@ export async function POST(
 
     // Convert images to base64
     const base64Urls = await Promise.all(imageFiles.map(convertBlobToBase64));
-    console.log("Images converted to base64");
 
     // Perform evaluation
     const evaluation = (await evaluate({
@@ -151,12 +154,10 @@ export async function POST(
       answer_word_limit: getWordsFromMarks(marks),
       output_format:
         StructuredOutputParser.fromZodSchema(
-          evaluationSchema,
+          evaluationSchema
         ).getFormatInstructions(),
       evaluation_parameters: evaluationParameters,
     })) as Evaluation;
-
-    console.log("Evaluation created successfully", evaluation);
 
     // Save evaluation result to the database
     await prisma.answer.create({
@@ -171,17 +172,15 @@ export async function POST(
         imagesPath,
       },
     });
-
-    console.log("answer created");
-
+    
     // Total score calculation logic
     const baseParamsWeightage = 0.3 * Number(marks);
     const subjectSpecificParamsWeightage = 0.5 * Number(marks);
     const baseParamScores = evaluation.parameter_scores.filter(
-      (ps) => ps.category === "base_parameter",
+      (ps) => ps.category === "base_parameter"
     );
     const subjectSpecificParamScores = evaluation.parameter_scores.filter(
-      (ps) => ps.category === "subject_specific_parameter",
+      (ps) => ps.category === "subject_specific_parameter"
     );
 
     const marksScoredBaseParams =
@@ -229,7 +228,7 @@ export async function POST(
         errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,
         message: "Error processing Evaluate Answer Request",
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

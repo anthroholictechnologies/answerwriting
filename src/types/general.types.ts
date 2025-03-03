@@ -72,6 +72,7 @@ export enum ErrorCodes {
   ORDER_ALREADY_PENDING = "OrderAlreadyPending",
 
   USER_ALREADY_HAS_ACTIVE_SUBSCRIPTION = "UserAlreadyHasActiveSubscription",
+  TOO_MANY_REQUESTS_FOR_EVALUATION = "TooManyRequestsForEvaluation",
 }
 
 export interface ApiResponse<T = unknown> {
