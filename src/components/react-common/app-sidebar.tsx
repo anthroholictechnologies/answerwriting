@@ -92,7 +92,7 @@ export function AppSidebar({ userDetails }: { userDetails: UserDetailProp }) {
               "relative overflow-hidden",
               isActive
                 ? "bg-gradient-to-r from-primary-dark/20 to-primary-dark/10 shadow-sm"
-                : ""
+                : "",
             )}
           >
             {/* Active state left accent */}
@@ -104,14 +104,14 @@ export function AppSidebar({ userDetails }: { userDetails: UserDetailProp }) {
               className={cn(
                 "h-5 w-5 transition-transform duration-200",
                 isActive ? "text-primary-dark" : "text-zinc-400",
-                "group-hover:scale-105"
+                "group-hover:scale-105",
               )}
             />
 
             <span
               className={cn(
                 "ml-3 font-medium tracking-tight",
-                isActive ? "text-primary-dark" : "text-zinc-700"
+                isActive ? "text-primary-dark" : "text-zinc-700",
               )}
             >
               {label}

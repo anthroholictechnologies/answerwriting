@@ -64,7 +64,7 @@ const ScoreDisplay = ({
         <div className="flex flex-col gap-2">
           {/* Score Circle */}
           <div className="text-2xl font-bold">
-            <span className="text-tertiary">{scoredMarks}</span>
+            <span className="text-tertiary">{scoredMarks ?? 0}</span>
             <span className="text-tertiary ">/</span>
             <span className="text-tertiary ">{totalMarks}</span>
           </div>

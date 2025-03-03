@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
       });
       return NextResponse.redirect(
         `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=success`,
-        { status: 301 }
+        { status: 301 },
       );
     } else if (paymentState === PhonePayTransactionStates.PENDING) {
       await handlePaymentPending({
@@ -77,7 +77,7 @@ export async function GET(req: NextRequest) {
       });
       return NextResponse.redirect(
         `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=pending`,
-        { status: 301 }
+        { status: 301 },
       );
     } else {
       await handlePaymentFailed({
@@ -86,7 +86,7 @@ export async function GET(req: NextRequest) {
       // Redirect to failure page
       return NextResponse.redirect(
         `${process.env.APP_BASE_URI}${ApiRoutePaths.PAGE_PAYMENT_STATUS}?status=failure`,
-        { status: 301 }
+        { status: 301 },
       );
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
