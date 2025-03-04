@@ -2,7 +2,7 @@ import { prisma } from "answerwriting/prisma";
 import {
   ApiResponse,
   ErrorCodes,
-  NodeENV,
+  ENVNext,
 } from "answerwriting/types/general.types";
 import {
   CancellationReason,
@@ -37,7 +37,7 @@ async function handlePayment({
   });
 
   let paymentGatewayUrl;
-  if (process.env.NODE_ENV !== NodeENV.PRODUCTION) {
+  if (process.env.ENV_NEXT !== ENVNext.PRODUCTION) {
     paymentGatewayUrl = (
       getPaymentPageResponse as Sandbox_PhonePePaymentInitiationResponse
     )?.data?.instrumentResponse?.redirectInfo?.url;

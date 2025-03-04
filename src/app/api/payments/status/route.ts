@@ -8,7 +8,7 @@ import { getPaymentStatus } from "answerwriting/services/phonepay";
 import {
   ApiRoutePaths,
   ErrorCodes,
-  NodeENV,
+  ENVNext,
 } from "answerwriting/types/general.types";
 import {
   Duration,
@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
 
     // Extract the payment status
     let paymentState;
-    if (process.env.NODE_ENV === NodeENV.PRODUCTION)
+    if (process.env.ENV_NEXT === ENVNext.PRODUCTION)
       paymentState = (resp as PaymentStatusCheckResponse).state;
     else paymentState = (resp as Sandbox_PaymentStatusCheckResponse).data.state;
 
@@ -156,7 +156,7 @@ export async function POST(req: NextRequest) {
 
     // Extract the payment status
     let paymentState;
-    if (process.env.NODE_ENV === NodeENV.PRODUCTION)
+    if (process.env.ENV_NEXT === ENVNext.PRODUCTION)
       paymentState = (resp as PaymentStatusCheckResponse).state;
     else paymentState = (resp as Sandbox_PaymentStatusCheckResponse).data.state;
 

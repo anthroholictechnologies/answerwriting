@@ -19,7 +19,7 @@ import {
 } from "answerwriting/types/payment.types";
 import { DateTime } from "luxon";
 import axios from "axios";
-import { ApiRoutePaths, NodeENV } from "answerwriting/types/general.types";
+import { ApiRoutePaths, ENVNext } from "answerwriting/types/general.types";
 import crypto from "crypto";
 
 export async function getAuthToken(): Promise<string> {
@@ -146,8 +146,9 @@ export async function getPaymentPage({
 }): Promise<
   PaymentInitiationResponse | Sandbox_PhonePePaymentInitiationResponse
 > {
-  console.log("NODE ENV", process.env.NODE_ENV)
-  if (process.env.NODE_ENV !== NodeENV.PRODUCTION) {
+  console.log("NODE ENV", process.env.NODE_ENV);
+  console.log("ENV_NEXT", process.env.ENV_NEXT);
+  if (process.env.ENV_NEXT !== ENVNext.PRODUCTION) {
     return sandbox_GetPaymentPage({
       merchantTransactionId: merchantOrderId,
       amountInPaisa: amount,
@@ -221,7 +222,7 @@ export async function sandbox_GetPaymentStatus({
 export async function getPaymentStatus(
   merchantOrderId: string
 ): Promise<PaymentStatusCheckResponse | Sandbox_PaymentStatusCheckResponse> {
-  if (process.env.NODE_ENV !== NodeENV.PRODUCTION) {
+  if (process.env.ENV_NEXT !== ENVNext.PRODUCTION) {
     return sandbox_GetPaymentStatus({ merchantTransactionId: merchantOrderId });
   }
   console.log("Checking in the payment status");

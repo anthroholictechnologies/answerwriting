@@ -6,7 +6,7 @@ import {
   handlePaymentSuccess,
 } from "answerwriting/services/payments.service";
 import { getPaymentStatus } from "answerwriting/services/phonepay";
-import { ErrorCodes, NodeENV } from "answerwriting/types/general.types";
+import { ErrorCodes, ENVNext } from "answerwriting/types/general.types";
 import {
   Duration,
   PaymentStatusCheckResponse,
@@ -51,7 +51,7 @@ export async function GET() {
 
       // Extract the payment status
       let paymentState;
-      if (process.env.NODE_ENV === NodeENV.PRODUCTION)
+      if (process.env.ENV_NEXT=== ENVNext.PRODUCTION)
         paymentState = (resp as PaymentStatusCheckResponse).state;
       else
         paymentState = (resp as Sandbox_PaymentStatusCheckResponse).data.state;
