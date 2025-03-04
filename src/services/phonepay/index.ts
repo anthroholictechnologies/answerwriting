@@ -146,6 +146,7 @@ export async function getPaymentPage({
 }): Promise<
   PaymentInitiationResponse | Sandbox_PhonePePaymentInitiationResponse
 > {
+  console.log("NODE ENV", process.env.NODE_ENV)
   if (process.env.NODE_ENV !== NodeENV.PRODUCTION) {
     return sandbox_GetPaymentPage({
       merchantTransactionId: merchantOrderId,
