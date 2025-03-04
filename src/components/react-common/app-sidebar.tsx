@@ -24,7 +24,10 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "answerwriting/lib/utils";
-import { ApiRoutePaths } from "answerwriting/types/general.types";
+import {
+  ApiRoutePaths,
+  UserDetailProp,
+} from "answerwriting/types/general.types";
 import { logout } from "answerwriting/actions";
 
 // Add Home to menu items
@@ -36,7 +39,7 @@ const mainMenuItems = [
   },
 ];
 
-const profileMenuItems = [
+const getProfileMenuItems = (isProUser: boolean) => [
   {
     label: "My Profile",
     icon: User,
@@ -46,6 +49,7 @@ const profileMenuItems = [
     label: "Upgrade to Pro",
     icon: DiamondPlusIcon,
     href: ApiRoutePaths.PAGE_PRICING,
+    hidden: isProUser,
   },
 ];
 
@@ -62,7 +66,7 @@ const aiToolsMenuItems = [
   },
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ userDetails }: { userDetails: UserDetailProp }) {
   const pathname = usePathname();
 
   const MenuItem = ({
@@ -160,14 +164,18 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-2">
-              {profileMenuItems.map((item) => (
-                <MenuItem
-                  key={item.href}
-                  href={item.href}
-                  icon={item.icon}
-                  label={item.label}
-                />
-              ))}
+              {getProfileMenuItems(!!userDetails.isProUser).map((item) => {
+                return (
+                  !item.hidden && (
+                    <MenuItem
+                      key={item.href}
+                      href={item.href}
+                      icon={item.icon}
+                      label={item.label}
+                    />
+                  )
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

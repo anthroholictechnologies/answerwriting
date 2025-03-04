@@ -125,6 +125,23 @@ export default function AnswerEvalTool() {
             });
             router.push(ApiRoutePaths.PAGE_LOGIN);
             return null;
+          } else if (
+            result.errorCode === ErrorCodes.TOO_MANY_REQUESTS_FOR_EVALUATION
+          ) {
+            toast.error({
+              title: "You are out of your free quota.",
+              description:
+                "Please Upgrade to PRO to continue evaluating your answers.",
+              action: (
+                <ToastAction
+                  altText="Try again"
+                  className="px-2 md:px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/20 hover:border-white/30 transition-all backdrop-blur-sm font-medium text-sm"
+                  onClick={() => router.push(ApiRoutePaths.PAGE_UPGRADE)}
+                >
+                  Upgrade
+                </ToastAction>
+              ),
+            });
           }
         }
       } catch (err) {

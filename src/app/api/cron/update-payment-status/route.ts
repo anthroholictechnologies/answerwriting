@@ -6,10 +6,12 @@ import {
   handlePaymentSuccess,
 } from "answerwriting/services/payments.service";
 import { getPaymentStatus } from "answerwriting/services/phonepay";
-import { ErrorCodes } from "answerwriting/types/general.types";
+import { ErrorCodes, ENVNext } from "answerwriting/types/general.types";
 import {
   Duration,
+  PaymentStatusCheckResponse,
   PhonePayTransactionStates,
+  Sandbox_PaymentStatusCheckResponse,
 } from "answerwriting/types/payment.types";
 import { NextResponse } from "next/server";
 
@@ -30,11 +32,11 @@ export async function GET() {
             orderBy: { createdAt: "desc" },
           },
         },
-      },
+      }
     );
 
     const pendingTransactions = transactionsWithTheirLatestStatus.filter(
-      (tx) => tx.history?.[0]?.status === TransactionStatus.PENDING,
+      (tx) => tx.history?.[0]?.status === TransactionStatus.PENDING
     );
     console.log("Checking pending transactions", pendingTransactions);
 
@@ -48,7 +50,11 @@ export async function GET() {
       });
 
       // Extract the payment status
-      const paymentState = resp.state;
+      let paymentState;
+      if (process.env.ENV_NEXT=== ENVNext.PRODUCTION)
+        paymentState = (resp as PaymentStatusCheckResponse).state;
+      else
+        paymentState = (resp as Sandbox_PaymentStatusCheckResponse).data.state;
 
       const order = transaction.order;
       const user = transaction.order?.user;
@@ -80,7 +86,7 @@ export async function GET() {
         success: true,
         data: pendingTransactions,
       },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (err: unknown) {
     console.error("Error upadting Payment Status", err);

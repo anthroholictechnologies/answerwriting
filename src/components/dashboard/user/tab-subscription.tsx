@@ -90,7 +90,7 @@ export const SubscriptionTab = ({
               <li className="flex font-bold items-center gap-2">
                 {userDetails.expirationDate &&
                   DateTime.fromJSDate(userDetails.expirationDate).toFormat(
-                    "yyyy-MM-dd",
+                    "dd MMMM yyyy",
                   )}
               </li>
             </ul>

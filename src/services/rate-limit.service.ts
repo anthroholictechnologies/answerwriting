@@ -45,7 +45,7 @@ export const isRateLimitReached = async (userId: string): Promise<boolean> => {
 
   const totalDaysSpentByUser = DateTime.now().diff(
     DateTime.fromJSDate(user.createdAt),
-    "days"
+    "days",
   ).days;
 
   if (totalDaysSpentByUser < 30) {

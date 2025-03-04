@@ -45,7 +45,7 @@ export enum ApiRoutePaths {
   //pricing
   PAGE_PRICING = "/pricing",
   PAGE_UPGRADE = "/upgrade",
-  PAGE_PAYMENT_STATUS = "/payment-status",
+  PAGE_PAYMENT_STATUS = "/status/payment",
 }
 
 export enum ErrorCodes {
@@ -103,4 +103,10 @@ export interface UserDetailProp {
   transactionId?: string;
   activationDate?: Date;
   expirationDate?: Date;
+}
+
+export enum ENVNext {
+  PRODUCTION = "production",
+  DEVELOPMENT = "development",
+  SANDBOX = "sandbox",
 }

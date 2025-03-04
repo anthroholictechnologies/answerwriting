@@ -13,12 +13,22 @@ import { Button } from "answerwriting/components/ui/button";
 import { User as UserShape } from "next-auth";
 import { useCustomToast } from "../react-common/toast";
 import { useRouter } from "next/navigation";
-import { ApiRoutePaths } from "answerwriting/types/general.types";
+import {
+  ApiRoutePaths,
+  UserDetailProp,
+} from "answerwriting/types/general.types";
 import ImpactSpan from "../react-common/impact-span";
 
-const DashBoardClient = ({ user }: { user?: UserShape }) => {
+const DashBoardClient = ({
+  user,
+  userDetails,
+}: {
+  user?: UserShape;
+  userDetails: UserDetailProp;
+}) => {
   const toast = useCustomToast();
   const router = useRouter();
+  const { isProUser } = userDetails;
 
   const [text] = useTypewriter({
     words: [`${user?.name ? user.name.split(" ")[0] : "Aspirant"}!`],
@@ -150,27 +160,63 @@ const DashBoardClient = ({ user }: { user?: UserShape }) => {
           </Card>
         </div>
 
-        <div className="relative rounded-2xl overflow-hidden bg-primary-dark p-8 md:p-12 text-white">
+        <div
+          className={`relative rounded-2xl overflow-hidden ${isProUser ? "bg-green-500" : "bg-primary-dark"} p-8 md:p-12 text-white`}
+        >
           <div className="absolute top-4 right-4">
             <Star className="h-12 w-12 text-yellow-400 animate-pulse" />
           </div>
           <div className="max-w-4xl">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 flex flex-col md:flex-row items-center gap-3">
-              Upgrade to Premium
+              {isProUser ? (
+                <div className="flex tracking-tighter">
+                  {" "}
+                  <p> Congratulations! You are a pro user </p>
+                </div>
+              ) : (
+                <div className="flex tracking-tighter">
+                  <p> Upgrade to Premium </p>
+                </div>
+              )}
               <span className="mr-auto px-3 py-1 text-secondary-dark bg-yellow-400 text-sm rounded-full">
-                Limited Time Offer
+                {isProUser ? (
+                  <> Enjoy Unlimited Evaluations </>
+                ) : (
+                  <> Limited time Offer </>
+                )}
               </span>
             </h2>
             <p className="text-lg md:text-xl mb-8 text-white/90">
-              Unlock advanced features and take your UPSC preparation to the
-              next level
+              {isProUser ? (
+                <span className="font-bold">
+                  Evaluate unlimited answers using AI and take your preparation
+                  to the next level.{" "}
+                </span>
+              ) : (
+                <span className="font-bold">
+                  {" "}
+                  Unlock advanced features and take your UPSC preparation to the
+                  next level
+                </span>
+              )}
             </p>
             <div className="flex flex-col md:flex-row items-center gap-4">
               <Button
                 className="bg-yellow-400 hover:bg-yellow-500 text-secondary-dark font-bold px-8 py-6 text-lg"
                 onClick={() => router.push(ApiRoutePaths.PAGE_PRICING)}
               >
-                Pricing <ArrowRight className="ml-2 h-5 w-5" />
+                <></>
+                {isProUser ? (
+                  <>
+                    {" "}
+                    Start Evaluating <ArrowRight className="ml-2 h-5 w-5" />{" "}
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    Pricing <ArrowRight className="ml-2 h-5 w-5" />{" "}
+                  </>
+                )}
               </Button>
             </div>
           </div>
