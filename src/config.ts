@@ -61,10 +61,10 @@ export const LOGO_BANNER_URI = `https://res.cloudinary.com/dc36fxbog/image/uploa
 // Payment
 export const PHONE_PAY_PAYMENT_ENDPOINT = "/pg/v1/pay";
 export const PHONE_PAY_PAYMENT_STATUS_ENDPOINT = "/pg/v1/status";
-export const CHECKSUM_ADDER = "###";
-
 export const PAY_GET_TOKEN_URI = "/v1/oauth/token";
 export const PAY_PAYMENT_INITIATION_URI = "/checkout/v2/pay";
+
+export const SANDBOX_CHECKSUM_ADDER = "###";
 export const getPaymentStatusURI = (merchantOrderId: string) =>
   `/checkout/v2/order/${merchantOrderId}/status`;
 
@@ -96,7 +96,6 @@ export const freeFeatures: Feature[] = [
       "Free-tier answers are stored temporarily. Upgrade to save them permanently.",
   },
 ];
-
 export const proFeatures: Feature[] = [
   {
     description: "Unlimited AI Answer Evaluations",

@@ -104,3 +104,9 @@ export interface UserDetailProp {
   activationDate?: Date;
   expirationDate?: Date;
 }
+
+export enum NodeENV {
+  PRODUCTION = "production",
+  DEVELOPMENT = "development",
+  SANDBOX = "sandbox",
+}

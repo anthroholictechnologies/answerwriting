@@ -1,8 +1,14 @@
 import { prisma } from "answerwriting/prisma";
-import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
+import {
+  ApiResponse,
+  ErrorCodes,
+  NodeENV,
+} from "answerwriting/types/general.types";
 import {
   CancellationReason,
   InitiatePaymentResponse,
+  PaymentInitiationResponse,
+  Sandbox_PhonePePaymentInitiationResponse,
   SubscriptionStatus,
   TransactionStatus,
 } from "answerwriting/types/payment.types";
@@ -27,10 +33,18 @@ async function handlePayment({
   const getPaymentPageResponse = await getPaymentPage({
     merchantOrderId,
     amount,
+    merchantUserId: userId,
   });
 
-  const paymentGatewayUrl = getPaymentPageResponse.redirectUrl;
-  console.log("paymentGatewayUrl====", paymentGatewayUrl);
+  let paymentGatewayUrl;
+  if (process.env.NODE_ENV !== NodeENV.PRODUCTION) {
+    paymentGatewayUrl = (
+      getPaymentPageResponse as Sandbox_PhonePePaymentInitiationResponse
+    )?.data?.instrumentResponse?.redirectInfo?.url;
+  } else {
+    paymentGatewayUrl = (getPaymentPageResponse as PaymentInitiationResponse)
+      .redirectUrl;
+  }
 
   if (!paymentGatewayUrl) throw new Error("Payment gateway URL is missing");
 
@@ -70,7 +84,7 @@ async function handlePayment({
               - PENDING => THROW ERROR
 */
 export async function POST(
-  req: NextRequest,
+  req: NextRequest
 ): Promise<NextResponse<ApiResponse<InitiatePaymentResponse>>> {
   try {
     const session = await auth();
@@ -81,7 +95,7 @@ export async function POST(
           message: "User not authenticated",
           errorCode: ErrorCodes.UNAUTHORIZED,
         },
-        { status: 401 },
+        { status: 401 }
       );
     }
 
@@ -96,7 +110,7 @@ export async function POST(
           message: "Product not found",
           errorCode: ErrorCodes.PRODUCT_NOT_FOUND,
         },
-        { status: 400 },
+        { status: 400 }
       );
     }
     const user = await prisma.user.findUnique({
@@ -138,7 +152,7 @@ export async function POST(
           message: "User not found",
           errorCode: ErrorCodes.USER_NOT_FOUND,
         },
-        { status: 404 },
+        { status: 404 }
       );
     }
     const userSubscription = user.subscription;
@@ -151,7 +165,7 @@ export async function POST(
           message: "User already has an active subscription",
           errorCode: ErrorCodes.USER_ALREADY_HAS_ACTIVE_SUBSCRIPTION,
         },
-        { status: 409 },
+        { status: 409 }
       );
     }
 
@@ -206,7 +220,7 @@ export async function POST(
         message: "Failed Purchase",
         errorCode: ErrorCodes.INTERNAL_SERVER_ERROR,
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

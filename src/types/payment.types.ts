@@ -56,7 +56,7 @@ export interface Plans {
 }
 
 // DO NOT CHANGE THIS, PROVIDED BY PHONEPAY
-export interface PhonePePurchaseRequestPayload {
+export interface Sandbox_PhonePePurchaseRequestPayload {
   merchantId: string;
   merchantTransactionId: string;
   // Always in paisa
@@ -70,7 +70,7 @@ export interface PhonePePurchaseRequestPayload {
   };
 }
 
-export type PhonePePaymentInitiationResponse = {
+export type Sandbox_PhonePePaymentInitiationResponse = {
   success: boolean;
   code: "PAYMENT_INITIATED";
   message: string;
@@ -84,6 +84,12 @@ export type PhonePePaymentInitiationResponse = {
         method: "POST";
       };
     };
+  };
+};
+
+export type Sandbox_PaymentStatusCheckResponse = {
+  data: {
+    state: PhonePayTransactionStates;
   };
 };
 
