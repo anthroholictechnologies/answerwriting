@@ -56,7 +56,7 @@ const convertPDFToImages = async (pdfFile: File): Promise<File[]> => {
 
       // Convert canvas to Blob
       const blob = await new Promise<Blob | null>((resolve) =>
-        canvas.toBlob(resolve, "image/png", 1.0)
+        canvas.toBlob(resolve, "image/png", 1.0),
       );
 
       if (blob) {
@@ -184,7 +184,7 @@ export default function AnswerEvalTool() {
           ),
         });
       }
-    }
+    },
   );
 
   const AnswerEvalForm = () => {

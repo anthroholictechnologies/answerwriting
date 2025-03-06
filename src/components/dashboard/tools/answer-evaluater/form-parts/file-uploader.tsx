@@ -160,9 +160,9 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   return (
     <Card className="w-full max-w-3xl mx-auto md:shadow-sm md:hover:shadow-md transition-shadow">
       <CardHeader>
-      <CardTitle className="text-xl">
+        <CardTitle className="text-xl">
           <div className="flex gap-1">
-           <div>  Upload your answer </div>
+            <div> Upload your answer </div>
             <UploadAnswerToolTip />
           </div>
         </CardTitle>

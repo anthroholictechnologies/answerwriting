@@ -46,16 +46,16 @@ const SkipQuestionGuidelines = () => (
     <ImpactSpan text="Skip question guidelines" />
     <li>
       {" "}
-      If you are uploading <strong>answer PDF</strong> your question must be
-      on the <strong> top of the first page of the answer PDF</strong>. Make
-      sure that there is a <strong> clear seperation</strong> between the answer
-      and question
+      If you are uploading <strong>answer PDF</strong> your question must be on
+      the <strong> top of the first page of the answer PDF</strong>. Make sure
+      that there is a <strong> clear seperation</strong> between the answer and
+      question
     </li>
 
     <li>
       {" "}
-      If you are uploading <strong> answer images </strong>your question must
-      be on <strong> the top of the first image that you upload </strong>. Make
+      If you are uploading <strong> answer images </strong>your question must be
+      on <strong> the top of the first image that you upload </strong>. Make
       sure that there is a <strong> clear seperation </strong>
       between the answer and question
     </li>

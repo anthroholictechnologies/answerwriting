@@ -73,7 +73,7 @@ export enum ErrorCodes {
 
   USER_ALREADY_HAS_ACTIVE_SUBSCRIPTION = "UserAlreadyHasActiveSubscription",
   TOO_MANY_REQUESTS_FOR_EVALUATION = "TooManyRequestsForEvaluation",
-  UNABLE_TO_DETECT_QUESTION = "UnableToDetectQuestion"
+  UNABLE_TO_DETECT_QUESTION = "UnableToDetectQuestion",
 }
 
 export interface ApiResponse<T = unknown> {

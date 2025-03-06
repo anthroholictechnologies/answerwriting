@@ -32,11 +32,11 @@ export async function GET() {
             orderBy: { createdAt: "desc" },
           },
         },
-      }
+      },
     );
 
     const pendingTransactions = transactionsWithTheirLatestStatus.filter(
-      (tx) => tx.history?.[0]?.status === TransactionStatus.PENDING
+      (tx) => tx.history?.[0]?.status === TransactionStatus.PENDING,
     );
     console.log("Checking pending transactions", pendingTransactions);
 
@@ -51,7 +51,7 @@ export async function GET() {
 
       // Extract the payment status
       let paymentState;
-      if (process.env.ENV_NEXT=== ENVNext.PRODUCTION)
+      if (process.env.ENV_NEXT === ENVNext.PRODUCTION)
         paymentState = (resp as PaymentStatusCheckResponse).state;
       else
         paymentState = (resp as Sandbox_PaymentStatusCheckResponse).data.state;
@@ -86,7 +86,7 @@ export async function GET() {
         success: true,
         data: pendingTransactions,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (err: unknown) {
     console.error("Error upadting Payment Status", err);

@@ -1,3 +1,1 @@
-export const QuestionUploader = () => { 
-
-}
+export const QuestionUploader = () => {};

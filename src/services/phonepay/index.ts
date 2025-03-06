@@ -56,7 +56,7 @@ export async function getAuthToken(): Promise<string> {
   const response = await axios.post(
     `${process.env.PAY_BASE_AUTH_URL}${PAY_GET_TOKEN_URI}`,
     body,
-    { headers }
+    { headers },
   );
 
   const respData = response.data as GetAuthTokenResponsePayload;
@@ -113,7 +113,7 @@ export async function sandbox_GetPaymentPage({
   };
 
   const baseSixtyFourPayload = Buffer.from(JSON.stringify(payload)).toString(
-    "base64"
+    "base64",
   );
   const checkSum =
     sandbox_GenerateCheckSumForPaymentInitiation(baseSixtyFourPayload);
@@ -128,7 +128,7 @@ export async function sandbox_GetPaymentPage({
   const response = await axios.post(
     `${process.env.PHONE_PAY_BASE_URI}${PHONE_PAY_PAYMENT_ENDPOINT}`,
     { request: baseSixtyFourPayload },
-    { headers }
+    { headers },
   );
 
   const respData = <Sandbox_PhonePePaymentInitiationResponse>response.data;
@@ -177,7 +177,7 @@ export async function getPaymentPage({
   const response = await axios.post(
     `${process.env.PAY_BASE_PAYMENT_URL}${PAY_PAYMENT_INITIATION_URI}`,
     body,
-    { headers }
+    { headers },
   );
 
   const respData = response.data as PaymentInitiationResponse;
@@ -186,12 +186,12 @@ export async function getPaymentPage({
 }
 
 const sandbox_GenerateCheckSumForPaymentStatus = (
-  merchantTransactionId: string
+  merchantTransactionId: string,
 ) =>
   crypto
     .createHash("sha256")
     .update(
-      `${PHONE_PAY_PAYMENT_STATUS_ENDPOINT}/${process.env.PHONE_PAY_MERCHANT_ID}/${merchantTransactionId}${process.env.PHONE_PAY_SALT_KEY}`
+      `${PHONE_PAY_PAYMENT_STATUS_ENDPOINT}/${process.env.PHONE_PAY_MERCHANT_ID}/${merchantTransactionId}${process.env.PHONE_PAY_SALT_KEY}`,
     )
     .digest("hex") +
   SANDBOX_CHECKSUM_ADDER +
@@ -203,7 +203,7 @@ export async function sandbox_GetPaymentStatus({
   merchantTransactionId: string;
 }): Promise<Sandbox_PaymentStatusCheckResponse> {
   const checkSum = sandbox_GenerateCheckSumForPaymentStatus(
-    merchantTransactionId
+    merchantTransactionId,
   );
   const headers = {
     accept: "application/json",
@@ -214,13 +214,13 @@ export async function sandbox_GetPaymentStatus({
 
   const resp = await axios.get(
     `${process.env.PHONE_PAY_BASE_URI}${PHONE_PAY_PAYMENT_STATUS_ENDPOINT}/${process.env.PHONE_PAY_MERCHANT_ID}/${merchantTransactionId}`,
-    { headers }
+    { headers },
   );
 
   return resp.data as Sandbox_PaymentStatusCheckResponse;
 }
 export async function getPaymentStatus(
-  merchantOrderId: string
+  merchantOrderId: string,
 ): Promise<PaymentStatusCheckResponse | Sandbox_PaymentStatusCheckResponse> {
   if (process.env.ENV_NEXT !== ENVNext.PRODUCTION) {
     return sandbox_GetPaymentStatus({ merchantTransactionId: merchantOrderId });
@@ -235,7 +235,7 @@ export async function getPaymentStatus(
 
   const response = await axios.get(
     `${process.env.PAY_BASE_PAYMENT_URL}${getPaymentStatusURI(merchantOrderId)}`,
-    { headers }
+    { headers },
   );
 
   const respData = response.data as PaymentStatusCheckResponse;
