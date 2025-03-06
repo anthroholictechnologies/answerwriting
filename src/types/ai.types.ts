@@ -3,6 +3,7 @@ export enum Exams {
   GS2 = "GS2",
   GS3 = "GS3",
   GS4 = "GS4",
+  ESSAY = "ESSAY",
 }
 
 export enum Marks {

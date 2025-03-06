@@ -115,12 +115,18 @@ interface FileUploaderProps {
   setPdfFile: (file: File | null) => void;
   images: File[];
   setImages: (files: File[]) => void;
+  looks?: {
+    heading: string;
+  };
 }
 export const FileUploader: React.FC<FileUploaderProps> = ({
   pdfFile,
   setPdfFile,
   images,
   setImages,
+  looks = {
+    heading: "Upload Answer",
+  },
 }) => {
   const pdfInputRef = useRef<HTMLInputElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -129,7 +135,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       const selectedFile = event.target.files[0];
       if (selectedFile.size > MAX_PDF_UPLOAD_SIZE_BYTES) {
         alert(
-          `PDF file too large. Max size is ${MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`,
+          `PDF file too large. Max size is ${MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`
         );
         return;
       }
@@ -141,11 +147,11 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     if (event.target.files?.length) {
       const newImages = Array.from(event.target.files).slice(
         0,
-        MAX_IMAGES_ALLOWED - images.length,
+        MAX_IMAGES_ALLOWED - images.length
       );
       if (newImages.some((img) => img.size > SINGLE_IMAGE_UPLOAD_SIZE_BYTES)) {
         alert(
-          `Each image must be under ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`,
+          `Each image must be under ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`
         );
         return;
       }
@@ -162,7 +168,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       <CardHeader>
         <CardTitle className="text-xl">
           <div className="flex gap-1">
-            <div> Upload your answer </div>
+            <div className="text-primary-dark"> {looks.heading} </div>
             <UploadAnswerToolTip />
           </div>
         </CardTitle>

@@ -33,6 +33,7 @@ export enum ApiRoutePaths {
 
   // Tools
   PAGE_DASHBOARD_TOOLS_EVALUATOR = "/dashboard/evaluator",
+  PAGE_ESSAY_EVALUATOR = "/dashboard/essay",
   PAGE_DASHBOARD_TOOLS_WORD_COUNTER = "/dashboard/wordcounter",
 
   // auth

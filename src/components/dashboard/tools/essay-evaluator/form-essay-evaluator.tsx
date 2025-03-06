@@ -1,23 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "answerwriting/components/ui/card";
-import { Button } from "answerwriting/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "answerwriting/components/ui/select";
 import { Exams, Marks } from "answerwriting/types/ai.types";
-import { SelectGSToolTip } from "./tooltips/select-gs-tooltip";
-import { FileUploader } from "./form-parts/file-uploader";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -25,15 +8,16 @@ import {
   EvaluateAnswerInput,
   evaluateAnswerSchema,
 } from "answerwriting/validations/ai.schema";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "answerwriting/components/ui/form";
+import { Form } from "answerwriting/components/ui/form";
 import { QuestionInput } from "answerwriting/components/react-common/inputs/question";
+import FileUploader from "../answer-evaluater/form-parts/file-uploader";
+import {
+  SkipEssayTopicToolTip,
+  UploadEssayToolTip,
+} from "../answer-evaluater/tooltips/upload-question-tooltip";
+import { Button } from "answerwriting/components/ui/button";
 
-export const AnswerEvaluatorForm = ({
+export const EssayEvaluatorForm = ({
   makeRequest,
 }: {
   makeRequest: ({
@@ -75,47 +59,6 @@ export const AnswerEvaluatorForm = ({
 
   return (
     <Form {...form}>
-      {/* Exam Selection Card */}
-      <Card>
-        <CardHeader>
-          <div className="flex gap-2">
-            <CardTitle className="text-xl text-primary-dark">
-              Select GS
-            </CardTitle>
-            <SelectGSToolTip />
-          </div>
-          <CardDescription>
-            Select the most appropriate GS paper for the question.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FormField
-            control={form.control}
-            name="exam"
-            render={({ field }) => (
-              <FormItem>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select exam paper" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.values(Exams).map((value) => (
-                      <SelectItem key={value} value={value}>
-                        {value}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </CardContent>
-      </Card>
-
       <QuestionInput
         form={form}
         isQuestionAlreadyPresentInAnswer={isQuestionAlreadyPresentInAnswer}
@@ -124,6 +67,16 @@ export const AnswerEvaluatorForm = ({
           setIsQuestionAlreadyPresentInAnswer
         }
         setQuestionImage={setQuestionImage}
+        looks={{
+          mainHeading: "Essay Topic/Question Details",
+          mainDescription:
+            "Either type the question, upload an image of the question, or skip this part if your essay image already includes the question",
+          skipQuestionLabel: "Question already present in the essay image ?",
+          questionTextLabel: "Essay topic/question",
+          skipQuestionUploadToolTip: <SkipEssayTopicToolTip />,
+          uploadQuestionImageToolTip: <UploadEssayToolTip />,
+          questionPlaceHolder: "Type your essay topic/question here...",
+        }}
       />
 
       <FileUploader
@@ -131,6 +84,9 @@ export const AnswerEvaluatorForm = ({
         setPdfFile={setPdfFile}
         images={images}
         setImages={setImages}
+        looks={{
+          heading: "Upload Essay",
+        }}
       />
 
       {/* Submit Button */}
@@ -173,4 +129,4 @@ export const AnswerEvaluatorForm = ({
   );
 };
 
-export default AnswerEvaluatorForm;
+export default EssayEvaluatorForm;

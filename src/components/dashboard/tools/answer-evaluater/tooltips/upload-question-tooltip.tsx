@@ -61,6 +61,57 @@ const SkipQuestionGuidelines = () => (
     </li>
   </ul>
 );
+export const SkipEssayTopicToolTip = () => {
+  return (
+    <>
+      {/* Tooltip for larger screens */}
+      <div className="hidden lg:block">
+        <Tooltip>
+          <TooltipTrigger>
+            <Info className="h-4 w-4 cursor-pointer" />
+          </TooltipTrigger>
+          <TooltipContent className="max-w-xs text-sm bg-white text-black flex flex-col p-4 gap-2 shadow-md">
+            <SkipEssayTopicGuidelines />
+          </TooltipContent>
+        </Tooltip>
+      </div>
+
+      {/* Popover for smaller screens */}
+      <div className="lg:hidden">
+        <Popover>
+          <PopoverTrigger>
+            <Info className="h-4 w-4 cursor-pointer" />
+          </PopoverTrigger>
+          <PopoverContent className="max-w-xs text-sm bg-white text-black flex flex-col p-4 gap-2 shadow-md">
+            <SkipEssayTopicGuidelines />
+          </PopoverContent>
+        </Popover>
+      </div>
+    </>
+  );
+};
+// Extract guidelines into a separate component for reusability
+const SkipEssayTopicGuidelines = () => (
+  <ul className="flex flex-col gap-4">
+    <ImpactSpan text="Skip topic/question guidelines" />
+    <li>
+      {" "}
+      If you are uploading <strong>essay as a PDF</strong> your essay topic or
+      question must be on the{" "}
+      <strong> top of the first page of the essay PDF</strong>. Make sure that
+      there is a <strong> clear seperation</strong> between the essay and the
+      topic/question
+    </li>
+
+    <li>
+      {" "}
+      If you are uploading <strong> essay as images </strong>your topic/question
+      must be on <strong> the top of the first image that you upload </strong>.
+      Make sure that there is a <strong> clear seperation </strong>
+      between the essay and topic/question
+    </li>
+  </ul>
+);
 
 export const UploadQuestionToolTip = () => {
   return (
@@ -92,12 +143,54 @@ export const UploadQuestionToolTip = () => {
   );
 };
 // Extract guidelines into a separate component for reusability
+const UploadEssayGuideLines = () => (
+  <>
+    <ImpactSpan text="Upload question image guideliness" />
+    <p>
+      Upload a clear, image displaying only a <strong> single essay topic/question,</strong>
+      properly <strong> cropped </strong>to remove unnecessary details.The image{" "}
+      <strong>should not include any essay.</strong>
+    </p>
+  </>
+);
+
+
+export const UploadEssayToolTip = () => {
+  return (
+    <>
+      {/* Tooltip for larger screens */}
+      <div className="hidden lg:block">
+        <Tooltip>
+          <TooltipTrigger>
+            <Info className="h-4 w-4 cursor-pointer" />
+          </TooltipTrigger>
+          <TooltipContent className="max-w-xs text-sm bg-white text-black flex flex-col p-4 gap-2 shadow-md">
+            <UploadEssayGuideLines />
+          </TooltipContent>
+        </Tooltip>
+      </div>
+
+      {/* Popover for smaller screens */}
+      <div className="lg:hidden">
+        <Popover>
+          <PopoverTrigger>
+            <Info className="h-4 w-4 cursor-pointer" />
+          </PopoverTrigger>
+          <PopoverContent className="max-w-xs text-sm bg-white text-black flex flex-col p-4 gap-2 shadow-md">
+            <UploadEssayGuideLines />
+          </PopoverContent>
+        </Popover>
+      </div>
+    </>
+  );
+};
+// Extract guidelines into a separate component for reusability
 const UploadQuestionGuideLines = () => (
   <>
     <ImpactSpan text="Upload question image guideliness" />
     <p>
       Upload a clear, image displaying only a <strong>single question,</strong>
-      properly <strong> cropped</strong>to remove unnecessary details.The image{" "}
+      properly <strong> cropped </strong>to remove unnecessary details.The image{" "}
       <strong>should not include any answers.</strong>
     </p>
   </>
