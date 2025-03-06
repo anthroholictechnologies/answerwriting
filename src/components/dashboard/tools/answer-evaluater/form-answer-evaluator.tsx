@@ -15,8 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "answerwriting/components/ui/select";
-import { Textarea } from "answerwriting/components/ui/textarea";
-import { Label } from "answerwriting/components/ui/label";
 import { Exams, Marks } from "answerwriting/types/ai.types";
 import { SelectGSToolTip } from "./tooltips/select-gs-tooltip";
 import { FileUploader } from "./form-parts/file-uploader";
@@ -29,11 +27,11 @@ import {
 } from "answerwriting/validations/ai.schema";
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormMessage,
 } from "answerwriting/components/ui/form";
+import { QuestionInput } from "./form-parts/question-input";
 
 export const AnswerEvaluatorForm = ({
   makeRequest,
@@ -44,21 +42,34 @@ export const AnswerEvaluatorForm = ({
     question,
     marks,
     exam,
+    questionImage,
+    questionInAnswer,
   }: {
     pdfFile?: File;
     images?: File[];
-    question: string;
+    question?: string;
     marks: Marks;
     exam: Exams;
+    questionImage?: File;
+    questionInAnswer: boolean;
   }) => Promise<EvaluateAnswerAPIResponse | null | undefined>;
 }) => {
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [images, setImages] = useState<File[]>([]);
+  const [questionImage, setQuestionImage] = useState<File | null>(null);
+  const [
+    isQuestionAlreadyPresentInAnswer,
+    setIsQuestionAlreadyPresentInAnswer,
+  ] = useState(false);
 
   const form = useForm<EvaluateAnswerInput>({
     resolver: zodResolver(evaluateAnswerSchema),
     mode: "onChange",
-    defaultValues: { question: "", exam: Exams.GS1, marks: Marks.FIFTEEN },
+    defaultValues: {
+      question: "",
+      exam: Exams.GS1,
+      marks: Marks.FIFTEEN,
+    },
     shouldFocusError: true,
   });
 
@@ -71,7 +82,6 @@ export const AnswerEvaluatorForm = ({
             <CardTitle className="text-xl text-primary-dark">
               Select GS
             </CardTitle>
-
             <SelectGSToolTip />
           </div>
           <CardDescription>
@@ -106,62 +116,15 @@ export const AnswerEvaluatorForm = ({
         </CardContent>
       </Card>
 
-      {/* Question and Marks Card */}
-      <Card className="shadow-sm hover:shadow-md transition-shadow">
-        <CardHeader>
-          <CardTitle className="text-xl text-primary-dark">
-            Question Details
-          </CardTitle>
-          <CardDescription>
-            Enter the question and select the marks
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <FormField
-            control={form.control}
-            name="question"
-            render={({ field }) => (
-              <FormItem>
-                <Label htmlFor="question">Question</Label>
-                <FormControl>
-                  <Textarea
-                    id="question"
-                    placeholder="Type your question here..."
-                    className="min-h-[100px] resize-none"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="marks"
-            render={({ field }) => (
-              <FormItem>
-                <Label htmlFor="marks">Marks</Label>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select marks" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.values(Marks).map((item) => (
-                      <SelectItem key={item} value={item}>
-                        {`${item} marks`}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </CardContent>
-      </Card>
+      <QuestionInput
+        form={form}
+        isQuestionAlreadyPresentInAnswer={isQuestionAlreadyPresentInAnswer}
+        questionImage={questionImage}
+        setIsQuestionAlreadyPresentInAnswer={
+          setIsQuestionAlreadyPresentInAnswer
+        }
+        setQuestionImage={setQuestionImage}
+      />
 
       <FileUploader
         pdfFile={pdfFile}
@@ -169,13 +132,27 @@ export const AnswerEvaluatorForm = ({
         images={images}
         setImages={setImages}
       />
+
       {/* Submit Button */}
       <div className="flex justify-center">
         <Button
           size="lg"
           type="submit"
           className="flex gap-2"
-          disabled={!(form.formState.isValid && (pdfFile || images.length))}
+          disabled={
+            isQuestionAlreadyPresentInAnswer
+              ? !(
+                  (pdfFile || images.length) &&
+                  form.getValues("marks") &&
+                  form.getValues("exam")
+                )
+              : !(
+                  (pdfFile || images.length) &&
+                  (questionImage || form.getValues("question")) &&
+                  form.getValues("marks") &&
+                  form.getValues("exam")
+                )
+          }
           onClick={() => {
             const { exam, marks, question } = form.getValues();
             makeRequest({
@@ -184,6 +161,8 @@ export const AnswerEvaluatorForm = ({
               question,
               pdfFile: pdfFile ?? undefined,
               images: images.length ? images : undefined,
+              questionImage: questionImage ?? undefined,
+              questionInAnswer: isQuestionAlreadyPresentInAnswer,
             });
           }}
         >

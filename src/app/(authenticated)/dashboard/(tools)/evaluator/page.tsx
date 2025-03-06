@@ -56,7 +56,7 @@ const convertPDFToImages = async (pdfFile: File): Promise<File[]> => {
 
       // Convert canvas to Blob
       const blob = await new Promise<Blob | null>((resolve) =>
-        canvas.toBlob(resolve, "image/png", 1.0),
+        canvas.toBlob(resolve, "image/png", 1.0)
       );
 
       if (blob) {
@@ -81,18 +81,35 @@ export default function AnswerEvalTool() {
       pdfFile,
       images,
       question,
+      questionImage,
       marks,
       exam,
     }: {
       pdfFile?: File;
       images?: File[];
-      question: string;
+      question?: string;
       marks: Marks;
       exam: Exams;
+      questionImage?: File;
     }) => {
       setActiveTab("results");
       const formData = new FormData();
-      formData.append("question", question);
+      console.log("=====formData====", {
+        pdfFile,
+        images,
+        question,
+        questionImage,
+        marks,
+        exam,
+      });
+      if (question) {
+        formData.append("question", question);
+      }
+
+      if (questionImage) {
+        formData.append("questionImage", questionImage);
+      }
+
       formData.append("marks", marks);
       formData.append("exam", exam);
 
@@ -125,6 +142,13 @@ export default function AnswerEvalTool() {
             });
             router.push(ApiRoutePaths.PAGE_LOGIN);
             return null;
+          } else if (
+            result.errorCode === ErrorCodes.UNABLE_TO_DETECT_QUESTION
+          ) {
+            toast.error({
+              title: "Unable to Detect Question",
+              description: result.message,
+            });
           } else if (
             result.errorCode === ErrorCodes.TOO_MANY_REQUESTS_FOR_EVALUATION
           ) {
@@ -160,7 +184,7 @@ export default function AnswerEvalTool() {
           ),
         });
       }
-    },
+    }
   );
 
   const AnswerEvalForm = () => {

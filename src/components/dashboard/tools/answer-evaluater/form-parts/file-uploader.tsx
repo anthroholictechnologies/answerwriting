@@ -129,7 +129,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       const selectedFile = event.target.files[0];
       if (selectedFile.size > MAX_PDF_UPLOAD_SIZE_BYTES) {
         alert(
-          `PDF file too large. Max size is ${MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`
+          `PDF file too large. Max size is ${MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`,
         );
         return;
       }
@@ -141,11 +141,11 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     if (event.target.files?.length) {
       const newImages = Array.from(event.target.files).slice(
         0,
-        MAX_IMAGES_ALLOWED - images.length
+        MAX_IMAGES_ALLOWED - images.length,
       );
       if (newImages.some((img) => img.size > SINGLE_IMAGE_UPLOAD_SIZE_BYTES)) {
         alert(
-          `Each image must be under ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`
+          `Each image must be under ${SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024}MB.`,
         );
         return;
       }
@@ -160,9 +160,9 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   return (
     <Card className="w-full max-w-3xl mx-auto md:shadow-sm md:hover:shadow-md transition-shadow">
       <CardHeader>
-        <CardTitle className="text-xl">
+      <CardTitle className="text-xl">
           <div className="flex gap-1">
-            <div> Upload your answer </div>
+           <div>  Upload your answer </div>
             <UploadAnswerToolTip />
           </div>
         </CardTitle>
