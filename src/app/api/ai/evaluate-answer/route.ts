@@ -19,7 +19,7 @@ import { sumBy } from "lodash";
 import { isRateLimitReached } from "answerwriting/services/rate-limit.service";
 import detectQuestion from "answerwriting/services/evaluate-answer/extractQuestion.service";
 
-export const maxDuration = 60;
+export const maxDuration = 120;
 /**
  * Uploads files to S3 and returns their paths.
  * @param userId - ID of the user.
