@@ -117,3 +117,13 @@ export type EvaluateAnswerAPIResponse = Omit<Evaluation, "parameter_scores"> & {
   exam: Exams;
   marksScored: number;
 };
+
+export const detectQuestionSchema = z.object({
+  detectedQuestion: z
+    .string()
+    .describe(
+      `The detected question from the image. Give empty string if you are unable to detect the question`,
+    ),
+});
+
+export type DetectQuestion = z.infer<typeof detectQuestionSchema>;

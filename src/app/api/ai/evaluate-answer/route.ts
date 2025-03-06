@@ -7,6 +7,7 @@ import { uploadFile } from "answerwriting/services/misc/s3.service";
 import { Exams, Marks } from "answerwriting/types/ai.types";
 import { ApiResponse, ErrorCodes } from "answerwriting/types/general.types";
 import {
+  detectQuestionSchema,
   EvaluateAnswerAPIResponse,
   Evaluation,
   evaluationSchema,
@@ -16,8 +17,9 @@ import { NextRequest, NextResponse } from "next/server";
 import cuid from "cuid";
 import { sumBy } from "lodash";
 import { isRateLimitReached } from "answerwriting/services/rate-limit.service";
+import detectQuestion from "answerwriting/services/evaluate-answer/extractQuestion.service";
 
-export const maxDuration = 60;
+export const maxDuration = 120;
 /**
  * Uploads files to S3 and returns their paths.
  * @param userId - ID of the user.
@@ -57,10 +59,14 @@ export async function POST(
   request: NextRequest,
 ): Promise<NextResponse<ApiResponse<EvaluateAnswerAPIResponse>>> {
   try {
+    console.log(
+      "Evaluate Answer API - Check if the user is authenticated or not...",
+    );
     // Authenticate user
     const session = await auth();
     const user = session?.user;
     if (!user) {
+      console.error("Evaluate Answer API - User not authenticated...");
       return NextResponse.json(
         {
           success: false,
@@ -71,7 +77,13 @@ export async function POST(
       );
     }
 
+    console.error(
+      `Evaluate Answer API - Checking in if the user ${user.id}  has answers quota left...`,
+    );
     if (await isRateLimitReached(user.id)) {
+      console.error(
+        `Evaluate Answer API - user ${user.id} has no answers quota left...`,
+      );
       return NextResponse.json(
         {
           success: false,
@@ -81,21 +93,42 @@ export async function POST(
         { status: 429 },
       );
     }
+
+    console.log(`Parsing the form data...`);
     // Parse form data
     const formData = await request.formData();
+
+    // Exam and marks are compulsory
     const exam = formData.get("exam") as Exams;
-    const question = formData.get("question") as string;
     const marks = formData.get("marks") as Marks;
-    const answerPDF = formData.get("answerPDF") as Blob | undefined; // Fix: Use Blob instead of File
+
+    console.log(
+      `Evaluate Answer API - Exam ==== ${exam} and marks ==== ${marks}`,
+    );
+
+    // Question can come as image or string or may not come
+    const question = formData.get("question") as string | undefined;
+    const questionImage = formData.get("questionImage") as Blob | undefined;
+
+    console.log(
+      `Evaluate Answer API - ${question ? "Question is typed and passed" : ""} ${questionImage ? "Question Image is uploaded" : ""} ${!question && !questionImage ? "No question passed from FE" : ""}`,
+    );
+
+    // Answer may come as images or a pdf file
+    const answerPDF = formData.get("answerPDF") as Blob | undefined;
     const imageFiles: Blob[] = Array.from(formData.entries())
       .filter(
         ([key, value]) => key.startsWith("image-") && value instanceof Blob,
       )
       .map(([, value]) => value as Blob);
 
+    console.log(
+      `Evaluate Answer API - ${answerPDF ? "Answer uploaded as PDF" : ""} ${imageFiles ? "Answer Uploaded as Images" : ""}`,
+    );
+
     const userId = user.id;
     const answerId = cuid();
-    console.log("form data parsed");
+    console.log("Evaluate Answer API - form data parsed");
 
     // Upload files to S3
     const [pdfPath, imagesPath] = await Promise.all([
@@ -109,12 +142,72 @@ export async function POST(
       uploadFiles(userId, answerId, imageFiles),
     ]);
 
-    console.log("files uploaded to S3 bucket");
+    console.log("Evaluate Answer API - files uploaded to S3 bucket");
 
+    let finalQuestion: string = "";
+    if (question) {
+      console.log(
+        `Evaluate Answer API - Assigning final Question as typed question ${question}`,
+      );
+      finalQuestion = question;
+    } else if (questionImage) {
+      const questionImageBase64 = await convertBlobToBase64(questionImage);
+      const response = await detectQuestion({
+        image: questionImageBase64,
+        output_format:
+          StructuredOutputParser.fromZodSchema(
+            detectQuestionSchema,
+          ).getFormatInstructions(),
+      });
+
+      if (response.detectedQuestion === "") {
+        return NextResponse.json({
+          errorCode: ErrorCodes.UNABLE_TO_DETECT_QUESTION,
+          success: false,
+          message:
+            "Unable to detect question from the uploaded image. Please try again with a clearer image.",
+        });
+      }
+
+      console.log(
+        `Evaluate Answer API - Extracting the question from the question image ${response.detectedQuestion}`,
+      );
+      finalQuestion = response.detectedQuestion;
+    } else if (!question && !questionImage) {
+      const firstImageBase64 = await convertBlobToBase64(imageFiles[0]);
+      const response = await detectQuestion({
+        image: firstImageBase64,
+        output_format:
+          StructuredOutputParser.fromZodSchema(
+            detectQuestionSchema,
+          ).getFormatInstructions(),
+      });
+
+      if (response.detectedQuestion === "") {
+        return NextResponse.json({
+          errorCode: ErrorCodes.UNABLE_TO_DETECT_QUESTION,
+          success: false,
+          message:
+            "Unable to detect question from the uploaded image / pdf. Please try again with a clearer image or pdf.",
+        });
+      }
+
+      console.log(
+        `Evaluate Answer API - Extracting the question from the answer's first image ${response.detectedQuestion}`,
+      );
+      finalQuestion = response.detectedQuestion;
+    }
+
+    console.log(
+      "Evaluate Answer API - Starting the predict subject model call",
+    );
     // Predict subjects based on the question
-    const predictedSubjects = await predictSubject({ exam, question });
+    const predictedSubjects = await predictSubject({
+      exam,
+      question: finalQuestion,
+    });
 
-    console.log("subjects predicted", predictedSubjects);
+    console.log("Evaluate Answer API - subjects predicted", predictedSubjects);
 
     // Retrieve relevant subjects and evaluation criteria from the database
     const [selectedSubjects, baseCriterias] = await Promise.all([
@@ -147,9 +240,10 @@ export async function POST(
     // Convert images to base64
     const base64Urls = await Promise.all(imageFiles.map(convertBlobToBase64));
 
+    console.log("Evaluate Answer API - Predicting the evaluation");
     // Perform evaluation
     const evaluation = (await evaluate({
-      question,
+      question: finalQuestion,
       images: base64Urls,
       answer_word_limit: getWordsFromMarks(marks),
       output_format:
@@ -159,13 +253,15 @@ export async function POST(
       evaluation_parameters: evaluationParameters,
     })) as Evaluation;
 
+    console.log("====evaluation===", evaluation);
+
     // Save evaluation result to the database
     await prisma.answer.create({
       data: {
         id: answerId,
         userId,
         exam,
-        question,
+        question: finalQuestion,
         marks,
         evaluationJson: JSON.stringify(evaluation),
         pdfPath: pdfPath ?? "",
@@ -215,7 +311,7 @@ export async function POST(
         improved_answer: evaluation.improved_answer,
         marks,
         overall_feedback: evaluation.overall_feedback,
-        question,
+        question: finalQuestion,
         visual_aid: evaluation.visual_aid,
         marksScored: Math.round(totalScore),
       },

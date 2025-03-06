@@ -6,10 +6,10 @@ export const TypewriterHeading = () => {
   return (
     <>
       <h1 className="hidden lg:block text-center text-secondary-dark text-[2rem] lg:text-[4rem] font-bold md:max-w-4xl tracking-tighter leading-tight">
-        Master UPSC Mains Answer Writing with{" "}
+        Master UPSC Mains Answer Writing{" "}
         <span className="text-primary-dark">
           <Typewriter
-            words={["AI Precision", "for Free"]}
+            words={["with AI Precision", "for Free"]}
             loop={true}
             cursor
             cursorStyle="|"

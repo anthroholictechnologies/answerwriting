@@ -26,6 +26,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "answerwriting/components/ui/dialog";
+import { UploadAnswerToolTip } from "../tooltips/upload-answer-tooltip";
 
 const ImageGallery = ({
   images,
@@ -159,7 +160,12 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   return (
     <Card className="w-full max-w-3xl mx-auto md:shadow-sm md:hover:shadow-md transition-shadow">
       <CardHeader>
-        <CardTitle className="text-xl">Upload Answer</CardTitle>
+        <CardTitle className="text-xl">
+          <div className="flex gap-1">
+            <div> Upload your answer </div>
+            <UploadAnswerToolTip />
+          </div>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="pdf" className="w-full">
