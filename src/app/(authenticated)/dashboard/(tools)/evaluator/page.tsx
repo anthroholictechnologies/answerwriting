@@ -19,6 +19,7 @@ import { useState } from "react";
 import "pdfjs-dist/web/pdf_viewer.css";
 import { GlobalWorkerOptions, getDocument } from "pdfjs-dist";
 import ToolHeading from "answerwriting/components/dashboard/tools/tool-heading";
+import { MAX_PAYLOAD_SIZE } from "answerwriting/config";
 
 const convertPDFToImages = async (pdfFile: File): Promise<File[]> => {
   if (typeof window !== "undefined") {
@@ -43,7 +44,7 @@ const convertPDFToImages = async (pdfFile: File): Promise<File[]> => {
 
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
-    const viewport = page.getViewport({ scale: 3.0 });
+    const viewport = page.getViewport({ scale: 2.0 });
 
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
@@ -56,11 +57,11 @@ const convertPDFToImages = async (pdfFile: File): Promise<File[]> => {
 
       // Convert canvas to Blob
       const blob = await new Promise<Blob | null>((resolve) =>
-        canvas.toBlob(resolve, "image/png", 1.0),
+        canvas.toBlob(resolve, "image/webp", 0.8),
       );
 
       if (blob) {
-        const file = new File([blob], `page-${i}.png`, { type: "image/png" });
+        const file = new File([blob], `page-${i}.webp`, { type: "image/webp" });
         imageFiles.push(file);
       } else {
         console.error(`Failed to convert page ${i} to Blob`);
@@ -93,29 +94,29 @@ export default function AnswerEvalTool() {
       questionImage?: File;
     }) => {
       setActiveTab("results");
+      let totalSize = 0;
       const formData = new FormData();
-      console.log("=====formData====", {
-        pdfFile,
-        images,
-        question,
-        questionImage,
-        marks,
-        exam,
-      });
       if (question) {
+        totalSize += new Blob([question]).size;
         formData.append("question", question);
       }
 
       if (questionImage) {
+        totalSize += questionImage.size;
         formData.append("questionImage", questionImage);
       }
 
       formData.append("marks", marks);
+      totalSize += new Blob([marks]).size;
+
       formData.append("exam", exam);
+      totalSize += new Blob([exam]).size;
 
       let answerImages: File[] = [];
       if (pdfFile) {
         formData.append("answerPDF", pdfFile);
+        console.log("pdfFile Size====", pdfFile.size, totalSize);
+        totalSize += pdfFile.size;
         answerImages = await convertPDFToImages(pdfFile);
       } else {
         if (images) {
@@ -123,8 +124,20 @@ export default function AnswerEvalTool() {
         }
       }
       answerImages.forEach((answerImage, index) => {
+        totalSize += answerImage.size;
+        console.log("answerImage Size====", answerImage.size, totalSize);
         formData.append(`image-${index}`, answerImage);
       });
+
+      if (totalSize > MAX_PAYLOAD_SIZE) {
+        toast.error({
+          title: "Answer file size too large",
+          description:
+            "Please try to reduce the number of images or number of PDF pages.",
+        });
+        return null;
+      }
+
       try {
         const result = await evaluateAnswer(formData);
         if (result.success) {

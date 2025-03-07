@@ -11,6 +11,8 @@ import {
 import {
   MAX_IMAGES_ALLOWED,
   MAX_PDF_UPLOAD_SIZE_BYTES,
+  MAX_PDF_NUM_PAGES,
+  SINGLE_IMAGE_UPLOAD_SIZE_BYTES,
 } from "answerwriting/config";
 import { Info } from "lucide-react";
 
@@ -56,17 +58,27 @@ const UploadGuidelines = () => (
         <strong> one or more images </strong> is allowed.
       </li>
       <li>
+        If you are uploading the images then ensure that you are uploading in
+        them correct <strong>order</strong>
+      </li>
+      <li>
+        The question must be written on the <strong> first page </strong> of the
+        PDF or the question must be written in the{" "}
+        <strong> first uploaded image</strong>
+      </li>
+      <li>
         Maximum PDF size:{" "}
         <strong> {MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024} MB </strong>
       </li>
       <li>
-        Maximum image size:{" "}
-        <strong> {MAX_PDF_UPLOAD_SIZE_BYTES / 1024 / 1024} MB </strong>, up to{" "}
-        {MAX_IMAGES_ALLOWED} images.
+        Maximum PDF page limit: <strong> {MAX_PDF_NUM_PAGES} pages </strong>
       </li>
       <li>
-        Upload a <strong>single</strong> PDF or <strong>multiple</strong> images
-        in <strong>correct</strong> order.
+        Maximum image size:{" "}
+        <strong> {SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024} MB </strong>
+      </li>
+      <li>
+        Number of images allowed: <strong> {MAX_IMAGES_ALLOWED} images </strong>
       </li>
     </ul>
   </>

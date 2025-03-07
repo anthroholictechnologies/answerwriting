@@ -10,6 +10,7 @@ import {
 } from "answerwriting/components/ui/popover";
 import { Info } from "lucide-react";
 import ImpactSpan from "answerwriting/components/react-common/impact-span";
+import { SINGLE_IMAGE_UPLOAD_SIZE_BYTES } from "answerwriting/config";
 
 export const SkipQuestionUploadToolTip = () => {
   return (
@@ -97,8 +98,12 @@ const UploadQuestionGuideLines = () => (
     <ImpactSpan text="Upload question image guideliness" />
     <p>
       Upload a clear, image displaying only a <strong>single question,</strong>
-      properly <strong> cropped</strong>to remove unnecessary details.The image{" "}
+      properly <strong> cropped </strong>to remove unnecessary details.The image{" "}
       <strong>should not include any answers.</strong>
+      <br />
+      <br />
+      Maximum image size:{" "}
+      <strong> {SINGLE_IMAGE_UPLOAD_SIZE_BYTES / 1024 / 1024} MB </strong>
     </p>
   </>
 );
